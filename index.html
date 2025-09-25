@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>My first three.js app</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        overflow-x: hidden;
+      }
+      
+      .header {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+      }
+      
+      .header h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      
+      .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+      
+      .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: start;
+      }
+      
+      .info-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      
+      .info-card h2 {
+        margin-bottom: 1rem;
+        color: #ffd700;
+      }
+      
+      .info-card ul {
+        list-style: none;
+        padding-left: 0;
+      }
+      
+      .info-card li {
+        margin-bottom: 0.5rem;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+      
+      .info-card li::before {
+        content: "✨";
+        position: absolute;
+        left: 0;
+      }
+      
+      .canvas-container {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+      
+      .footer {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(0, 0, 0, 0.3);
+        margin-top: 2rem;
+      }
+      
+      @media (max-width: 768px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+        
+        .header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>🚀 Three.js Visualizer</h1>
+      <p>Interactive 3D Graphics and WebGL Magic</p>
+    </div>
+    
+    <div class="content">
+      <div class="info-card">
+        <h2>🎯 Features</h2>
+        <ul>
+          <li>Real-time 3D rendering</li>
+          <li>Interactive camera controls</li>
+          <li>Dynamic lighting effects</li>
+          <li>Responsive design</li>
+          <li>Modern WebGL graphics</li>
+        </ul>
+      </div>
+      
+      <div class="info-card">
+        <h2>🛠️ Technologies</h2>
+        <ul>
+          <li>Three.js for 3D graphics</li>
+          <li>WebGL for hardware acceleration</li>
+          <li>ES6 modules</li>
+          <li>CSS Grid & Flexbox</li>
+          <li>Modern JavaScript</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="canvas-container">
+      <script type="module" src="/main.js"></script>
+    </div>
+    
+    <div class="footer">
+      <p>Built with ❤️ using Three.js | Interactive 3D Web Experience</p>
+    </div>
+  </body>
+</html>
+    
