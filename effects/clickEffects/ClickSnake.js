@@ -44,7 +44,17 @@ class ClickSnake extends ClickEffect {
     update(camera, scene, mouse) {
         super.update(camera, scene, mouse);
 
-        
+        console.log("Updatte of click snake", this.autoFade);
+        if(this.autoFade) {
+            console.log("Auto fading");
+            this.cubeArray.forEach((cube, index) => {
+                console.log("Cube ", index, cube.material.opacity);
+                cube.material.opacity -= 0.01;
+                if(cube.material.opacity <= 0) {
+                    this.removeCube(index);
+                }
+            });
+        }
         
     }
 

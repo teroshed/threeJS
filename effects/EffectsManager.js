@@ -38,7 +38,7 @@ export default class EffectsManager {
         this.lastClickTime = 0;
         this.lastFrameTime = 0;
         
-        this.onClickEffects.push(new ClickSnake(10));
+        this.onClickEffects.push(new ClickSnake(10, true));
 
         setInterval(this.onClickTick.bind(this), EffectsManager.ON_CLICK_RATE);
 
@@ -48,7 +48,6 @@ export default class EffectsManager {
     onClickTick() {
         if(this.mouseDown) {
             for(let i = 0; i < this.onClickEffects.length; i++) {
-                console.log("Checking effect", this.onClickEffects[i].name, this.onClickEffects[i].active, this.mouseDown);
                 if(this.onClickEffects[i].active && this.mouseDown) {
                     this.onClickEffects[i].onClick(this.mouse, this.camera);
                 }
