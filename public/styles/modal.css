@@ -1,0 +1,178 @@
+/**
+ * 🎭 Modal System Styles
+ */
+
+/* Modal Overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Container */
+.modal-container {
+    background: rgba(30, 30, 40, 0.95);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    width: 90vw;
+    max-width: 900px;
+    height: 80vh;
+    max-height: 700px;
+    display: flex;
+    flex-direction: row-reverse; /* Tabs on the right! */
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+/* Modal Sidebar (Tabs) */
+.modal-sidebar {
+    width: 200px;
+    background: rgba(20, 20, 30, 0.8);
+    border-left: 1px solid rgba(255, 255, 255, 0.1); /* Left border now */
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal-tab {
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-right: 3px solid transparent; /* Border on right now */
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-tab:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.modal-tab.active {
+    background: rgba(138, 43, 226, 0.2);
+    color: #ffffff;
+    border-right-color: #8a2be2; /* Border on right */
+}
+
+/* Modal Content */
+.modal-content {
+    flex: 1;
+    padding: 30px 50px; /* More padding for centered feel */
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 700px; /* Constrain width for better layout */
+    margin: 0 auto; /* Center the content */
+}
+
+.modal-header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.modal-description {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin: 8px 0 0 0;
+}
+
+/* Tab Content Sections */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+/* Close Button */
+.modal-close {
+    position: absolute;
+    top: 20px;
+    left: 20px; /* Left side now since tabs are on right */
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #ffffff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    background: rgba(255, 0, 0, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Scrollbar for modal content */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: rgba(138, 43, 226, 0.5);
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(138, 43, 226, 0.7);
+}
+
