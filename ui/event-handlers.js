@@ -155,7 +155,9 @@ function setupCameraOrbitControls() {
 
 function setupGlobalControls() {
     setupRangeControl('clickRate', 'clickRateValue', (value) => {
-        console.log('Click rate:', value);
+        const rateMs = parseInt(value);
+        effectsManager?.setClickRate(rateMs);
+        console.log(`⏱️ Click rate updated to: ${rateMs}ms`);
     });
 
     setupRangeControl('bgOpacity', 'bgOpacityValue', (value) => {
@@ -174,12 +176,39 @@ function setupGlobalControls() {
         setDirection(e.target.value);
         updateGradientPreviews();
         applyGradientBackground(currentGradient);
+        toggleAngleSlider(e.target.value);
         console.log(`🧭 Gradient direction changed to: ${e.target.value}`);
     });
 
     document.getElementById('clearEffects')?.addEventListener('click', () => {
         effectsManager?.clearEffects();
     });
+}
+
+function toggleAngleSlider(direction) {
+    const angleGroup = document.getElementById('bgAngle')?.closest('.control-group');
+    if (angleGroup) {
+        if (direction === 'radial') {
+            angleGroup.style.display = 'none';
+        } else {
+            angleGroup.style.display = 'block';
+        }
+    }
+}
+
+function toggleGradientControls(gradientKey) {
+    const directionGroup = document.getElementById('bgGradientDirection')?.closest('.control-group');
+    const angleGroup = document.getElementById('bgAngle')?.closest('.control-group');
+    
+    // Hide direction and angle controls for solid colors (pure black/white)
+    const isSolidColor = gradientKey === 'pure-black' || gradientKey === 'pure-white';
+    
+    if (directionGroup) {
+        directionGroup.style.display = isSolidColor ? 'none' : 'block';
+    }
+    if (angleGroup) {
+        angleGroup.style.display = isSolidColor ? 'none' : 'block';
+    }
 }
 
 function updateEffectConfig(effectName, property, value) {

@@ -19,7 +19,7 @@ export function calculateSliderRange(defaultValue, overrides = {}) {
         max = overrides.max || 1;
         step = 0.01;
     } else if (defaultValue < 1 && defaultValue > 0) {
-        // Small decimal values
+        // Small decimal values (0 < x < 1)
         min = Math.max(0, defaultValue * 0.1);
         max = defaultValue * 5;
         step = Math.max(0.001, defaultValue * 0.1);
@@ -28,8 +28,13 @@ export function calculateSliderRange(defaultValue, overrides = {}) {
         min = defaultValue * 5;
         max = Math.abs(defaultValue) * 5;
         step = Math.max(0.1, Math.abs(defaultValue) * 0.1);
+    } else if (defaultValue <= 10) {
+        // Values 1-10: use fine control (0.1 steps)
+        min = Math.max(0.1, defaultValue * 0.1);
+        max = defaultValue * 5;
+        step = 0.1;
     } else {
-        // Larger integer values
+        // Large values (> 10): use integer steps
         min = Math.max(1, Math.floor(defaultValue * 0.1));
         max = Math.ceil(defaultValue * 5);
         step = Math.max(1, Math.floor(defaultValue * 0.05));

@@ -4,8 +4,14 @@ import CameraOrbit from './idleEffects/CameraOrbit.js';
 import { Z_MODES } from '../ui/ui-constants.js';
 
 /**
- * Centralized configuration for all effects
- * Change values here and they'll propagate to EffectsManager AND UI
+ * 🎯 CENTRALIZED EFFECT CONFIGURATION
+ * 
+ * This is THE single source of truth for all effect parameters!
+ * Change values here and they automatically propagate to:
+ * - EffectsManager (effect behavior)
+ * - UI sliders and controls (default values)
+ * 
+ * All effect parameters (cubeSize, speed, colors, etc.) are defined here.
  */
 const EFFECTS_DEFAULTS = {
 
@@ -16,7 +22,7 @@ const EFFECTS_DEFAULTS = {
         maxLength: 200,
         autoFade: true,
         cubeSize: 1,
-        fadeSpeed: 0.01,
+        fadeSpeed: 0.05,
         rotationSpeed: 0.1,
         randomColor: true,
         fixedColor: '#ff00ff',
@@ -33,7 +39,7 @@ const EFFECTS_DEFAULTS = {
         name: "RandomCubes",
         class: RandomCubes,
         maxCubes: 10,
-        cubeSize: 0.5,
+        cubeSize: 0.25,
         cubeSpawnRate: 0.1,
         cubeFadeRate: 0.01,
         cubeRandomColor: true,

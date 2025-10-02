@@ -29,6 +29,7 @@ export default class EffectsManager {
 
         this.mouse = null;
         this.mouseDown = false;
+        this.clickRateInterval = null;
     }
 
     isMouseDown() {
@@ -51,7 +52,9 @@ export default class EffectsManager {
             // Create instance with spread parameters
             const effectInstance = new EffectClass(...paramValues);
             
-            console.log(`Initialized click effect: ${name}`, params);
+            console.log(`✅ Initialized click effect: ${name}`);
+            console.log(`   Config params:`, params);
+            console.log(`   cubeSize from config:`, params.cubeSize);
             this.onClickEffects.push(effectInstance);
         });
 
@@ -69,7 +72,7 @@ export default class EffectsManager {
             this.idleEffects.push(effectInstance);
         });
 
-        setInterval(this.onClickTick.bind(this), EffectsManager.ON_CLICK_RATE);
+        this.clickRateInterval = setInterval(this.onClickTick.bind(this), EffectsManager.ON_CLICK_RATE);
     }
 
     onClickTick() {
@@ -171,5 +174,19 @@ export default class EffectsManager {
 
     updateMouseDown(mouseDown) {
         this.mouseDown = mouseDown;
+    }
+
+    /**
+     * Update click rate dynamically
+     * @param {number} rateMs - Click rate in milliseconds
+     */
+    setClickRate(rateMs) {
+        // Clear old interval
+        if (this.clickRateInterval) {
+            clearInterval(this.clickRateInterval);
+        }
+        // Create new interval with updated rate
+        this.clickRateInterval = setInterval(this.onClickTick.bind(this), rateMs);
+        console.log(`✅ Click rate interval updated to ${rateMs}ms`);
     }
 }

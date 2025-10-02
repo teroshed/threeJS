@@ -42,6 +42,21 @@ export const Z_MODE_INFO = {
     }
 };
 
+// 🎨 Background Gradient Keys (Enum-style)
+export const GRADIENT_KEYS = {
+    MIDNIGHT: 'midnight',
+    TWILIGHT: 'twilight',
+    SUNSET: 'sunset',
+    OCEAN: 'ocean',
+    FOREST: 'forest',
+    NEON: 'neon',
+    AURORA: 'aurora',
+    FIRE: 'fire',
+    COSMIC: 'cosmic',
+    PURE_BLACK: 'pure-black',
+    PURE_WHITE: 'pure-white'
+};
+
 // 🎨 Background Gradient Presets
 export const BACKGROUND_GRADIENTS = {
     'midnight': {
@@ -89,11 +104,25 @@ export const BACKGROUND_GRADIENTS = {
         colors: ['#360033', '#0b8793', '#d31027'],
         emoji: '🪐'
     },
-    'pure': {
+    'pure-black': {
         name: 'Pure Black',
-        colors: ['#000000', '#000000', '#000000'],
+        colors: ['#000000'],
         emoji: '⚫'
+    },
+    'pure-white': {
+        name: 'Pure White',
+        colors: ['#ffffff'],
+        emoji: '⚪'
     }
+};
+
+// 🧭 Gradient Direction Keys (Enum-style)
+export const DIRECTION_KEYS = {
+    VERTICAL: 'vertical',
+    HORIZONTAL: 'horizontal',
+    DIAGONAL_TL: 'diagonal-tl',
+    DIAGONAL_TR: 'diagonal-tr',
+    RADIAL: 'radial'
 };
 
 // 🧭 Gradient Direction Options

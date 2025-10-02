@@ -70,6 +70,16 @@ export function initializeUIValues() {
     
     populateGradientDirections();
     createGradientGrid();
+    
+    // Hide angle slider if radial is selected by default
+    const defaultDirection = UI_DEFAULTS.gradientDirection;
+    if (defaultDirection === 'radial') {
+        const angleGroup = document.getElementById('bgAngle')?.closest('.control-group');
+        if (angleGroup) angleGroup.style.display = 'none';
+    }
+    
+    // Hide gradient controls if solid color is selected by default
+    toggleGradientControlsForSolids(UI_DEFAULTS.defaultBackground);
 }
 
 function populateZModes() {
@@ -151,4 +161,22 @@ function handleGradientClick(key, clickedOption) {
     });
     clickedOption.classList.add('selected');
     applyGradientBackground(key);
+    
+    // Toggle gradient controls visibility for solid colors
+    toggleGradientControlsForSolids(key);
+}
+
+function toggleGradientControlsForSolids(gradientKey) {
+    const directionGroup = document.getElementById('bgGradientDirection')?.closest('.control-group');
+    const angleGroup = document.getElementById('bgAngle')?.closest('.control-group');
+    
+    // Hide direction and angle controls for solid colors (pure black/white)
+    const isSolidColor = gradientKey === 'pure-black' || gradientKey === 'pure-white';
+    
+    if (directionGroup) {
+        directionGroup.style.display = isSolidColor ? 'none' : 'block';
+    }
+    if (angleGroup) {
+        angleGroup.style.display = isSolidColor ? 'none' : 'block';
+    }
 }
