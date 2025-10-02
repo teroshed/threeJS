@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>My first three.js app</title>
+    <title>Three.js Visualizer</title>
     <style>
       * {
         margin: 0;
@@ -11,49 +11,561 @@
       }
       
       body {
-        font-family: 'Arial', sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #0a0a0a;
+        color: white;
+        overflow: hidden;
+      }
+
+      canvas {
+        display: block;
+      }
+      
+      /* Control Panel */
+      .control-panel {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 350px;
+        max-height: calc(100vh - 40px);
+        background: rgba(20, 20, 30, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        overflow-y: auto;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        transition: transform 0.3s ease;
+      }
+
+      .control-panel.collapsed {
+        transform: translateX(calc(100% + 20px));
+      }
+
+      .control-panel::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .control-panel::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+      }
+
+      .control-panel::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .panel-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .toggle-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(102, 126, 234, 0.9);
+        border: none;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        transition: all 0.3s ease;
+      }
+
+      .toggle-btn:hover {
+        background: rgba(102, 126, 234, 1);
+        transform: scale(1.1);
+      }
+
+      .control-panel.collapsed + .toggle-btn {
+        display: flex;
+      }
+
+      .control-section {
+        margin-bottom: 25px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #667eea;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .control-group {
+        margin-bottom: 15px;
+      }
+
+      .control-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .control-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .control-value {
+        font-weight: 600;
+        color: #764ba2;
+        font-size: 0.85rem;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        cursor: pointer;
+        border: none;
+      }
+
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #667eea;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: white;
+        font-size: 0.9rem;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+
+      select:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(102, 126, 234, 0.5);
+      }
+
+      select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+      }
+
+      select option {
+        background: #1a1a2e;
+        color: white;
+      }
+
+      /* Gradient Preview Grid */
+      .gradient-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .gradient-option {
+        position: relative;
+        height: 70px;
+        border-radius: 10px;
+        cursor: pointer;
+        overflow: hidden;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .gradient-option:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .gradient-option.selected {
+        border-color: #667eea;
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+      }
+
+      .gradient-preview {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+      }
+
+      .gradient-label {
+        position: absolute;
+        bottom: 5px;
+        left: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        overflow-x: hidden;
       }
-      
-      .header {
-        position: fixed;
-        top: 0;
-        z-index: 1000;
-        text-align: center;
-        padding: 2rem;
-        background: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px);
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
       }
-      
-      .header h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+      .btn-danger {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        margin-top: 10px;
       }
-      
-      .header p {
-        font-size: 1.2rem;
-        opacity: 0.9;
+
+      .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
       }
-      
-      
+
+      input[type="color"] {
+        width: 100%;
+        height: 40px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: transparent;
+      }
+
+      .effect-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        margin-bottom: 10px;
+      }
+
+      .info-badge {
+        display: inline-block;
+        background: rgba(102, 126, 234, 0.2);
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        color: #667eea;
+        margin-left: 8px;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .close-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      @media (max-width: 768px) {
+        .control-panel {
+          width: calc(100vw - 40px);
+          max-width: 350px;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="header">
-      <h1>🚀 Three.js Visualizer</h1>
-      <p>Interactive 3D Graphics and WebGL Magic</p>
-    </div>
-    
-    
-    
-    <div class="canvas-container">
-      <script type="module" src="/main.js"></script>
-    </div>
-    
+    <!-- Control Panel -->
+    <div class="control-panel" id="controlPanel">
+      <div class="panel-header">
+        <h2 class="panel-title">🎛️ Controls</h2>
+        <button class="close-btn" id="closePanel">×</button>
+      </div>
 
+      <!-- Click Snake Effect -->
+      <div class="control-section">
+        <div class="section-title">
+          🐍 Click Snake
+          <div class="effect-toggle">
+            <input type="checkbox" id="clickSnakeActive" checked>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Max Length</span>
+            <span class="control-value" id="snakeMaxLengthValue">--</span>
+          </div>
+          <input type="range" id="snakeMaxLength">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Cube Size</span>
+            <span class="control-value" id="snakeCubeSizeValue">--</span>
+          </div>
+          <input type="range" id="snakeCubeSize">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Fade Speed</span>
+            <span class="control-value" id="snakeFadeSpeedValue">--</span>
+          </div>
+          <input type="range" id="snakeFadeSpeed">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Rotation Speed</span>
+            <span class="control-value" id="snakeRotationSpeedValue">--</span>
+          </div>
+          <input type="range" id="snakeRotationSpeed">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Z-Position Mode</span>
+          </div>
+          <select id="snakeZMode">
+            <option value="random">Random</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Z Min</span>
+            <span class="control-value" id="snakeZMinValue">--</span>
+          </div>
+          <input type="range" id="snakeZMin">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Z Max</span>
+            <span class="control-value" id="snakeZMaxValue">--</span>
+          </div>
+          <input type="range" id="snakeZMax">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Z Variance</span>
+            <span class="control-value" id="snakeZVarianceValue">--</span>
+          </div>
+          <input type="range" id="snakeZVariance">
+        </div>
+
+        <div class="control-group">
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="snakeAutoFade" checked>
+            <label for="snakeAutoFade">Auto Fade</label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="snakeRandomColor" checked>
+            <label for="snakeRandomColor">Random Colors</label>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Fixed Color</span>
+          </div>
+          <input type="color" id="snakeColor" value="#ff00ff">
+        </div>
+      </div>
+
+      <!-- Random Cubes Effect -->
+      <div class="control-section">
+        <div class="section-title">
+          ✨ Random Cubes
+          <div class="effect-toggle">
+            <input type="checkbox" id="randomCubesActive">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Max Cubes</span>
+            <span class="control-value" id="rcMaxCubesValue">--</span>
+          </div>
+          <input type="range" id="rcMaxCubes">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Cube Size</span>
+            <span class="control-value" id="rcCubeSizeValue">--</span>
+          </div>
+          <input type="range" id="rcCubeSize">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Spawn Rate</span>
+            <span class="control-value" id="rcSpawnRateValue">--</span>
+          </div>
+          <input type="range" id="rcSpawnRate">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Fade Rate</span>
+            <span class="control-value" id="rcFadeRateValue">--</span>
+          </div>
+          <input type="range" id="rcFadeRate">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Rotation Speed</span>
+            <span class="control-value" id="rcRotationSpeedValue">--</span>
+          </div>
+          <input type="range" id="rcRotationSpeed">
+        </div>
+
+        <div class="control-group">
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="rcRandomColor" checked>
+            <label for="rcRandomColor">Random Colors</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Global Settings -->
+      <div class="control-section">
+        <div class="section-title">⚙️ Global Settings</div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Click Rate (ms)</span>
+            <span class="control-value" id="clickRateValue">--</span>
+          </div>
+          <input type="range" id="clickRate">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Background Gradient</span>
+          </div>
+          <div class="gradient-grid" id="gradientGrid">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Gradient Direction</span>
+          </div>
+          <select id="bgGradientDirection">
+            <option value="vertical">Vertical ↕️</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Gradient Opacity</span>
+            <span class="control-value" id="bgOpacityValue">--</span>
+          </div>
+          <input type="range" id="bgOpacity">
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="control-section">
+        <button class="btn btn-danger" id="clearEffects">Clear All Effects</button>
+      </div>
+    </div>
+
+    <button class="toggle-btn" id="togglePanel">⚙️</button>
+
+    <script type="module" src="/main.js"></script>
+    <script type="module" src="/ui-controller.js"></script>
   </body>
 </html>
     
