@@ -6,282 +6,352 @@
     <!-- Modular CSS imports -->
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/panel.css">
+    <link rel="stylesheet" href="/styles/panel-new.css">
     <link rel="stylesheet" href="/styles/controls.css">
     <link rel="stylesheet" href="/styles/inputs.css">
     <link rel="stylesheet" href="/styles/gradients.css">
     <link rel="stylesheet" href="/styles/buttons.css">
+    <link rel="stylesheet" href="/styles/modal.css">
   </head>
   <body>
-    <!-- Control Panel -->
+    <!-- Simplified Control Panel -->
     <div class="control-panel" id="controlPanel">
       <div class="panel-header">
-        <h2 class="panel-title">🎛️ Controls</h2>
+        <h2 class="panel-title">🎛️ Effects</h2>
         <button class="close-btn" id="closePanel">×</button>
       </div>
 
-      <!-- Click Snake Effect -->
-      <div class="control-section">
-        <div class="section-title">
-          🐍 Click Snake
+      <!-- Click Effects Section -->
+      <div class="effect-category">
+        <div class="category-header">
+          <h3>⚡ Click Effects</h3>
+          <button class="cog-btn" data-modal="click-effects" title="Configure">⚙️</button>
+        </div>
+        
+        <div class="effect-toggle">
           <input type="checkbox" id="clickSnakeActive" checked>
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Max Length</span>
-            <span class="control-value" id="snakeMaxLengthValue">--</span>
-          </div>
-          <input type="range" id="snakeMaxLength">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Cube Size</span>
-            <span class="control-value" id="snakeCubeSizeValue">--</span>
-          </div>
-          <input type="range" id="snakeCubeSize">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Fade Speed</span>
-            <span class="control-value" id="snakeFadeSpeedValue">--</span>
-          </div>
-          <input type="range" id="snakeFadeSpeed">
-        </div>
-
-        <div class="control-group">
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="snakeRotationEnabled" checked>
-            <label for="snakeRotationEnabled">Enable Rotation</label>
-          </div>
-        </div>
-
-        <div class="control-group" id="snakeRotationSliderGroup">
-          <div class="control-label">
-            <span>Rotation Speed</span>
-            <span class="control-value" id="snakeRotationSpeedValue">--</span>
-          </div>
-          <input type="range" id="snakeRotationSpeed">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Z-Position Mode</span>
-          </div>
-          <select id="snakeZMode"></select>
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Z Min</span>
-            <span class="control-value" id="snakeZMinValue">--</span>
-          </div>
-          <input type="range" id="snakeZMin">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Z Max</span>
-            <span class="control-value" id="snakeZMaxValue">--</span>
-          </div>
-          <input type="range" id="snakeZMax">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Z Variance</span>
-            <span class="control-value" id="snakeZVarianceValue">--</span>
-          </div>
-          <input type="range" id="snakeZVariance">
-        </div>
-
-        <div class="control-group">
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="snakeAutoFade" checked>
-            <label for="snakeAutoFade">Auto Fade</label>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="snakeRandomColor" checked>
-            <label for="snakeRandomColor">Random Colors</label>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Fixed Color</span>
-          </div>
-          <input type="color" id="snakeColor" value="#ff00ff">
+          <label for="clickSnakeActive">🐍 Click Snake</label>
         </div>
       </div>
 
-      <!-- Random Cubes Effect -->
-      <div class="control-section">
-        <div class="section-title">
-          ✨ Random Cubes
+      <!-- Idle Effects Section -->
+      <div class="effect-category">
+        <div class="category-header">
+          <h3>✨ Idle Effects</h3>
+          <button class="cog-btn" data-modal="idle-effects" title="Configure">⚙️</button>
+        </div>
+        
+        <div class="effect-toggle">
           <input type="checkbox" id="randomCubesActive">
+          <label for="randomCubesActive">✨ Random Cubes</label>
         </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Max Cubes</span>
-            <span class="control-value" id="rcMaxCubesValue">--</span>
-          </div>
-          <input type="range" id="rcMaxCubes">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Cube Size</span>
-            <span class="control-value" id="rcCubeSizeValue">--</span>
-          </div>
-          <input type="range" id="rcCubeSize">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Spawn Rate</span>
-            <span class="control-value" id="rcSpawnRateValue">--</span>
-          </div>
-          <input type="range" id="rcSpawnRate">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Fade Rate</span>
-            <span class="control-value" id="rcFadeRateValue">--</span>
-          </div>
-          <input type="range" id="rcFadeRate">
-        </div>
-
-        <div class="control-group">
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="rcRotationEnabled" checked>
-            <label for="rcRotationEnabled">Enable Rotation</label>
-          </div>
-        </div>
-
-        <div class="control-group" id="rcRotationSliderGroup">
-          <div class="control-label">
-            <span>Rotation Speed</span>
-            <span class="control-value" id="rcRotationSpeedValue">--</span>
-          </div>
-          <input type="range" id="rcRotationSpeed">
-        </div>
-
-        <div class="control-group">
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="rcRandomColor" checked>
-            <label for="rcRandomColor">Random Colors</label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Camera Orbit Effect -->
-      <div class="control-section">
-        <div class="section-title">
-          🔄 Camera Orbit
+        
+        <div class="effect-toggle">
           <input type="checkbox" id="cameraOrbitActive">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Orbit Radius</span>
-            <span class="control-value" id="orbitRadiusValue">--</span>
-          </div>
-          <input type="range" id="orbitRadius">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Orbit Speed</span>
-            <span class="control-value" id="orbitSpeedValue">--</span>
-          </div>
-          <input type="range" id="orbitSpeed">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Direction</span>
-          </div>
-          <select id="orbitDirection">
-            <option value="1">Clockwise ↻</option>
-            <option value="-1">Counter-Clockwise ↺</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Height Offset</span>
-            <span class="control-value" id="orbitHeightValue">--</span>
-          </div>
-          <input type="range" id="orbitHeight">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Camera Tilt</span>
-            <span class="control-value" id="orbitTiltValue">--</span>
-          </div>
-          <input type="range" id="orbitTilt">
+          <label for="cameraOrbitActive">🔄 Camera Orbit</label>
         </div>
       </div>
 
       <!-- Global Settings -->
-      <div class="control-section">
-        <div class="section-title">⚙️ Global Settings</div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Click Delay</span>
-            <span class="control-value" id="clickDelayValue">--ms</span>
-          </div>
-          <input type="range" id="clickDelay">
+      <div class="effect-category">
+        <div class="category-header">
+          <h3>🌍 Global</h3>
+          <button class="cog-btn" data-modal="global-settings" title="Configure">⚙️</button>
         </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Background Gradient</span>
-          </div>
-          <div class="gradient-grid" id="gradientGrid"></div>
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Gradient Direction</span>
-          </div>
-          <select id="bgGradientDirection"></select>
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Gradient Angle</span>
-            <span class="control-value" id="bgAngleValue">--</span>
-          </div>
-          <input type="range" id="bgAngle">
-        </div>
-
-        <div class="control-group">
-          <div class="control-label">
-            <span>Gradient Opacity</span>
-            <span class="control-value" id="bgOpacityValue">--</span>
-          </div>
-          <input type="range" id="bgOpacity">
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="control-section">
-        <button class="btn btn-danger" id="clearEffects">Clear All Effects</button>
+        
+        <button class="btn btn-danger" id="clearEffects" style="margin-top: 10px;">Clear All</button>
       </div>
     </div>
 
     <button class="toggle-btn" id="togglePanel">⚙️</button>
 
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+      <div class="modal-container">
+        <button class="modal-close" id="modalClose">×</button>
+        
+        <!-- Sidebar with Tabs -->
+        <div class="modal-sidebar">
+          <div class="modal-tab active" data-tab="click-effects">
+            🐍 Click Snake
+          </div>
+          <div class="modal-tab" data-tab="idle-effects">
+            ✨ Idle Effects
+          </div>
+          <div class="modal-tab" data-tab="global-settings">
+            🌍 Global
+          </div>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="modal-content">
+          <!-- Click Snake Settings -->
+          <div class="tab-content active" id="click-effects">
+            <div class="modal-header">
+              <h2 class="modal-title">🐍 Click Snake Settings</h2>
+              <p class="modal-description">Configure the trail of cubes that follows your clicks</p>
+            </div>
+
+            <div class="control-section">
+              <!-- All ClickSnake controls will go here -->
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Max Length</span>
+                  <span class="control-value" id="snakeMaxLengthValue">--</span>
+                </div>
+                <input type="range" id="snakeMaxLength">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Cube Size</span>
+                  <span class="control-value" id="snakeCubeSizeValue">--</span>
+                </div>
+                <input type="range" id="snakeCubeSize">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Fade Speed</span>
+                  <span class="control-value" id="snakeFadeSpeedValue">--</span>
+                </div>
+                <input type="range" id="snakeFadeSpeed">
+              </div>
+
+              <div class="control-group">
+                <div class="checkbox-wrapper">
+                  <input type="checkbox" id="snakeRotationEnabled" checked>
+                  <label for="snakeRotationEnabled">Enable Rotation</label>
+                </div>
+              </div>
+
+              <div class="control-group" id="snakeRotationSliderGroup">
+                <div class="control-label">
+                  <span>Rotation Speed</span>
+                  <span class="control-value" id="snakeRotationSpeedValue">--</span>
+                </div>
+                <input type="range" id="snakeRotationSpeed">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Z-Position Mode</span>
+                </div>
+                <select id="snakeZMode"></select>
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Z Min</span>
+                  <span class="control-value" id="snakeZMinValue">--</span>
+                </div>
+                <input type="range" id="snakeZMin">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Z Max</span>
+                  <span class="control-value" id="snakeZMaxValue">--</span>
+                </div>
+                <input type="range" id="snakeZMax">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Z Variance</span>
+                  <span class="control-value" id="snakeZVarianceValue">--</span>
+                </div>
+                <input type="range" id="snakeZVariance">
+              </div>
+
+              <div class="control-group">
+                <div class="checkbox-wrapper">
+                  <input type="checkbox" id="snakeAutoFade" checked>
+                  <label for="snakeAutoFade">Auto Fade</label>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <div class="checkbox-wrapper">
+                  <input type="checkbox" id="snakeRandomColor" checked>
+                  <label for="snakeRandomColor">Random Colors</label>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Fixed Color</span>
+                </div>
+                <input type="color" id="snakeColor" value="#ff00ff">
+              </div>
+            </div>
+          </div>
+
+          <!-- Idle Effects Settings -->
+          <div class="tab-content" id="idle-effects">
+            <div class="modal-header">
+              <h2 class="modal-title">✨ Idle Effects Settings</h2>
+              <p class="modal-description">Configure background effects (Random Cubes & Camera Orbit)</p>
+            </div>
+
+            <div class="control-section">
+              <h4 style="color: #8a2be2; margin-bottom: 15px;">✨ Random Cubes</h4>
+              
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Max Cubes</span>
+                  <span class="control-value" id="rcMaxCubesValue">--</span>
+                </div>
+                <input type="range" id="rcMaxCubes">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Cube Size</span>
+                  <span class="control-value" id="rcCubeSizeValue">--</span>
+                </div>
+                <input type="range" id="rcCubeSize">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Spawn Rate</span>
+                  <span class="control-value" id="rcSpawnRateValue">--</span>
+                </div>
+                <input type="range" id="rcSpawnRate">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Fade Rate</span>
+                  <span class="control-value" id="rcFadeRateValue">--</span>
+                </div>
+                <input type="range" id="rcFadeRate">
+              </div>
+
+              <div class="control-group">
+                <div class="checkbox-wrapper">
+                  <input type="checkbox" id="rcRotationEnabled" checked>
+                  <label for="rcRotationEnabled">Enable Rotation</label>
+                </div>
+              </div>
+
+              <div class="control-group" id="rcRotationSliderGroup">
+                <div class="control-label">
+                  <span>Rotation Speed</span>
+                  <span class="control-value" id="rcRotationSpeedValue">--</span>
+                </div>
+                <input type="range" id="rcRotationSpeed">
+              </div>
+
+              <div class="control-group">
+                <div class="checkbox-wrapper">
+                  <input type="checkbox" id="rcRandomColor" checked>
+                  <label for="rcRandomColor">Random Colors</label>
+                </div>
+              </div>
+
+              <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
+
+              <h4 style="color: #8a2be2; margin-bottom: 15px;">🔄 Camera Orbit</h4>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Orbit Radius</span>
+                  <span class="control-value" id="orbitRadiusValue">--</span>
+                </div>
+                <input type="range" id="orbitRadius">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Orbit Speed</span>
+                  <span class="control-value" id="orbitSpeedValue">--</span>
+                </div>
+                <input type="range" id="orbitSpeed">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Direction</span>
+                </div>
+                <select id="orbitDirection">
+                  <option value="1">Clockwise ↻</option>
+                  <option value="-1">Counter-Clockwise ↺</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Height Offset</span>
+                  <span class="control-value" id="orbitHeightValue">--</span>
+                </div>
+                <input type="range" id="orbitHeight">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Camera Tilt</span>
+                  <span class="control-value" id="orbitTiltValue">--</span>
+                </div>
+                <input type="range" id="orbitTilt">
+              </div>
+            </div>
+          </div>
+
+          <!-- Global Settings -->
+          <div class="tab-content" id="global-settings">
+            <div class="modal-header">
+              <h2 class="modal-title">🌍 Global Settings</h2>
+              <p class="modal-description">Configure app-wide settings and background</p>
+            </div>
+
+            <div class="control-section">
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Click Delay</span>
+                  <span class="control-value" id="clickDelayValue">--ms</span>
+                </div>
+                <input type="range" id="clickDelay">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Background Gradient</span>
+                </div>
+                <div class="gradient-grid" id="gradientGrid"></div>
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Gradient Direction</span>
+                </div>
+                <select id="bgGradientDirection"></select>
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Gradient Angle</span>
+                  <span class="control-value" id="bgAngleValue">--</span>
+                </div>
+                <input type="range" id="bgAngle">
+              </div>
+
+              <div class="control-group">
+                <div class="control-label">
+                  <span>Gradient Opacity</span>
+                  <span class="control-value" id="bgOpacityValue">--</span>
+                </div>
+                <input type="range" id="bgOpacity">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/main.js"></script>
     <script type="module" src="/ui/ui-controller.js"></script>
   </body>
 </html>
+

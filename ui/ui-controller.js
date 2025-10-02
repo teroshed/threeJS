@@ -5,6 +5,7 @@
 import { initGradientManager, applyGradientBackground } from './gradient-manager.js';
 import { initializeUIValues } from './ui-init.js';
 import { setupAllEventListeners, setEffectsManager } from './event-handlers.js';
+import { initModalSystem } from './modal-manager.js';
 import { UI_DEFAULTS } from './ui-defaults.js';
 
 // Export the main initialization function
@@ -14,6 +15,9 @@ export function initUI(manager, sceneRef, rendererRef) {
     
     // Set effects manager reference for event handlers
     setEffectsManager(manager);
+    
+    // Initialize modal system
+    initModalSystem();
     
     // Initialize all UI values from defaults
     initializeUIValues();
