@@ -1,0 +1,108 @@
+Date : 2025-10-02 14:09:44
+Directory : a:\Desktop\Coding\Visualizer\threeJS
+Total : 54 files,  5827 codes, 248 comments, 1219 blanks, all 7294 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| Markdown   |         18 |      2,775 |          0 |        727 |      3,502 |
+| JavaScript |         23 |      1,603 |        221 |        405 |      2,229 |
+| JSON       |          2 |      1,023 |          0 |          2 |      1,025 |
+| HTML       |         10 |        426 |         27 |         84 |        537 |
+| CSS        |          1 |          0 |          0 |          1 |          1 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                      | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                         |         54 |      5,827 |        248 |      1,219 |      7,294 |
+| . (Files)                                                                                                 |          8 |      1,588 |         18 |        152 |      1,758 |
+| docs                                                                                                      |         15 |      2,240 |          0 |        576 |      2,816 |
+| effects                                                                                                   |          9 |        530 |         99 |        150 |        779 |
+| effects (Files)                                                                                           |          3 |        245 |         46 |         56 |        347 |
+| effects\clickEffects                                                                                      |          2 |        114 |         14 |         31 |        159 |
+| effects\idleEffects                                                                                       |          4 |        171 |         39 |         63 |        273 |
+| ui                                                                                                        |         22 |      1,469 |        131 |        341 |      1,941 |
+| ui (Files)                                                                                                |         10 |        988 |         97 |        246 |      1,331 |
+| ui\components                                                                                             |         12 |        481 |         34 |         95 |        610 |
+| ui\components (Files)                                                                                     |          1 |         87 |          9 |         10 |        106 |
+| ui\components\settings                                                                                    |         11 |        394 |         25 |         85 |        504 |
+| ui\components\settings (Files)                                                                            |          2 |        148 |         14 |         38 |        200 |
+| ui\components\settings\effects                                                                            |          4 |        217 |          6 |         37 |        260 |
+| ui\components\settings\effects\click                                                                      |          1 |          9 |          1 |          2 |         12 |
+| ui\components\settings\effects\click\templates                                                            |          1 |          9 |          1 |          2 |         12 |
+| ui\components\settings\effects\drag                                                                       |          1 |         82 |          1 |         14 |         97 |
+| ui\components\settings\effects\drag\templates                                                             |          1 |         82 |          1 |         14 |         97 |
+| ui\components\settings\effects\global                                                                     |          1 |         36 |          1 |          7 |         44 |
+| ui\components\settings\effects\global\templates                                                           |          1 |         36 |          1 |          7 |         44 |
+| ui\components\settings\effects\idle                                                                       |          1 |         90 |          3 |         14 |        107 |
+| ui\components\settings\effects\idle\templates                                                             |          1 |         90 |          3 |         14 |        107 |
+| ui\components\settings\grid                                                                               |          1 |         29 |          5 |          6 |         40 |
+| ui\components\settings\grid\templates                                                                     |          1 |         29 |          5 |          6 |         40 |
+| ui\components\settings\outline                                                                            |          4 |          0 |          0 |          4 |          4 |
+| ui\components\settings\outline\styles                                                                     |          1 |          0 |          0 |          1 |          1 |
+| ui\components\settings\outline\templates                                                                  |          3 |          0 |          0 |          3 |          3 |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                  | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| a:\Desktop\Coding\Visualizer\threeJS\README.md                                                            | Markdown   |        208 |          0 |         58 |        266 |
+| a:\Desktop\Coding\Visualizer\threeJS\REFACTOR_SUMMARY.md                                                  | Markdown   |        119 |          0 |         35 |        154 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\00_START_HERE.md                                                | Markdown   |        125 |          0 |         50 |        175 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\COMMIT_MESSAGE.md                                               | Markdown   |        149 |          0 |         27 |        176 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\CONFIGURATION.md                                                | Markdown   |        150 |          0 |         41 |        191 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\FINAL_STRUCTURE.md                                              | Markdown   |        194 |          0 |         46 |        240 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\FINAL_SUMMARY.md                                                | Markdown   |        209 |          0 |         57 |        266 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\HTML_UPDATE_NEEDED.md                                           | Markdown   |         60 |          0 |         12 |         72 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\LATEST_UPDATES.md                                               | Markdown   |        163 |          0 |         46 |        209 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\LAZY_DEVELOPER_GUIDE.md                                         | Markdown   |        175 |          0 |         43 |        218 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\PATCH_NOTES_DEV.md                                              | Markdown   |        158 |          0 |         40 |        198 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\PATCH_NOTES_USER.md                                             | Markdown   |         96 |          0 |         27 |        123 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\PROJECT_OVERVIEW.md                                             | Markdown   |        216 |          0 |         50 |        266 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\STRUCTURE_GUIDE.md                                              | Markdown   |        150 |          0 |         31 |        181 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\UI_ARCHITECTURE.md                                              | Markdown   |        178 |          0 |         43 |        221 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\UI_CONTROLLER_UPDATES.md                                        | Markdown   |         58 |          0 |         20 |         78 |
+| a:\Desktop\Coding\Visualizer\threeJS\docs\WHAT_WE_BUILT.md                                                | Markdown   |        159 |          0 |         43 |        202 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\Effect.js                                                    | JavaScript |         54 |          3 |         12 |         69 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\EffectsDefaults.js                                           | JavaScript |         61 |         15 |          8 |         84 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\EffectsManager.js                                            | JavaScript |        130 |         28 |         36 |        194 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\clickEffects\ClickEffect.js                                  | JavaScript |         12 |          0 |          5 |         17 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\clickEffects\ClickSnake.js                                   | JavaScript |        102 |         14 |         26 |        142 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\idleEffects\CameraOrbit.js                                   | JavaScript |         31 |         11 |         13 |         55 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\idleEffects\IdleEffect.js                                    | JavaScript |          9 |          0 |          5 |         14 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\idleEffects\RandomCubes.js                                   | JavaScript |         21 |          2 |         13 |         36 |
+| a:\Desktop\Coding\Visualizer\threeJS\effects\idleEffects\SimulatedDrag.js                                 | JavaScript |        110 |         26 |         32 |        168 |
+| a:\Desktop\Coding\Visualizer\threeJS\index.html                                                           | HTML       |        102 |         14 |         20 |        136 |
+| a:\Desktop\Coding\Visualizer\threeJS\main.js                                                              | JavaScript |         46 |          2 |         16 |         64 |
+| a:\Desktop\Coding\Visualizer\threeJS\package-lock.json                                                    | JSON       |      1,007 |          0 |          1 |      1,008 |
+| a:\Desktop\Coding\Visualizer\threeJS\package.json                                                         | JSON       |         16 |          0 |          1 |         17 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\README.md                                                         | Markdown   |        208 |          0 |         58 |        266 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\effects\click\templates\click-effects.html    | HTML       |          9 |          1 |          2 |         12 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\effects\drag\templates\drag-effects.html      | HTML       |         82 |          1 |         14 |         97 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\effects\global\templates\global-settings.html | HTML       |         36 |          1 |          7 |         44 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\effects\idle\templates\idle-effects.html      | HTML       |         90 |          3 |         14 |        107 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\grid\templates\grid-menu.html                 | HTML       |         29 |          5 |          6 |         40 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\outline\styles\outline-styles.css             | CSS        |          0 |          0 |          1 |          1 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\outline\templates\outline-header.html         | HTML       |          0 |          0 |          1 |          1 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\outline\templates\outline-item.html           | HTML       |          0 |          0 |          1 |          1 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\outline\templates\outline.html                | HTML       |          0 |          0 |          1 |          1 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\settings-manager.js                           | JavaScript |        130 |         14 |         26 |        170 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\settings\settings-modal.js                             | JavaScript |         18 |          0 |         12 |         30 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\components\ui-card.js                                             | JavaScript |         87 |          9 |         10 |        106 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\event-handlers.js                                                 | JavaScript |        175 |          4 |         47 |        226 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\gradient-manager.js                                               | JavaScript |        100 |         12 |         22 |        134 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\modal-manager.js                                                  | JavaScript |        131 |         15 |         25 |        171 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\slider-utils.js                                                   | JavaScript |         52 |         14 |         12 |         78 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\ui-constants.js                                                   | JavaScript |        118 |         11 |          8 |        137 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\ui-controller.js                                                  | JavaScript |         22 |         12 |         17 |         51 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\ui-defaults.js                                                    | JavaScript |          9 |         11 |          5 |         25 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\ui-helpers.js                                                     | JavaScript |         45 |          4 |         11 |         60 |
+| a:\Desktop\Coding\Visualizer\threeJS\ui\ui-init.js                                                        | JavaScript |        128 |         14 |         41 |        183 |
+| a:\Desktop\Coding\Visualizer\threeJS\visualizer.html                                                      | HTML       |         78 |          2 |         18 |         98 |
+| a:\Desktop\Coding\Visualizer\threeJS\vite.config.js                                                       | JavaScript |         12 |          0 |          3 |         15 |
+| Total                                                                                                     |            |      5,827 |        248 |      1,219 |      7,294 |
++-----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

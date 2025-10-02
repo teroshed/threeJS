@@ -159,6 +159,11 @@ async function openCategory(category) {
             settingsContent.innerHTML = html;
             console.log(`✅ Loaded ${category} from external file`);
             
+            // Initialize drag-effects specific UI
+            if (category === 'drag-effects') {
+                await initDragEffectsUI();
+            }
+            
             // Trigger re-initialization of controls for this category
             window.dispatchEvent(new CustomEvent('category-loaded', { detail: { category } }));
             return;
@@ -180,4 +185,22 @@ async function openCategory(category) {
     } else {
         console.warn(`⚠️ No template found for ${category}`);
     }
+}
+
+// Initialize drag effects specific UI elements (color palettes, etc.)
+async function initDragEffectsUI() {
+    const { populateZModes } = await import('../../ui-helpers.js');
+    const { Z_MODES } = await import('../../ui-constants.js');
+    const { createColorPaletteGrid, COLOR_PALETTE_KEYS } = await import('../../ui-color-palettes.js');
+    
+    // Populate Z-modes dropdown for ClickSnake
+    populateZModes('snakeZMode', Z_MODES.WAVE);
+    
+    // Create color palette grid for DragSpiral
+    createColorPaletteGrid('spiralColorPaletteGrid', COLOR_PALETTE_KEYS.RAINBOW, (paletteKey) => {
+        console.log(`🎨 Selected palette: ${paletteKey}`);
+        // TODO: Update DragSpiral to use selected palette
+    });
+    
+    console.log('🎨 Drag effects UI initialized (Z-modes + color palettes)');
 }

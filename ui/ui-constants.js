@@ -125,6 +125,13 @@ export const DIRECTION_KEYS = {
     RADIAL: 'radial'
 };
 
+// 🎯 Vertex Marker Shape Options
+export const VERTEX_MARKER_SHAPES = {
+    NONE: 'none',
+    SPHERE: 'sphere',
+    BOX: 'box'
+};
+
 // 🧭 Gradient Direction Options
 export const GRADIENT_DIRECTIONS = {
     'vertical': { name: 'Vertical ↕️', angle: 0 },

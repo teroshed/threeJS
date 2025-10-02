@@ -3,7 +3,8 @@
  */
 
 import EFFECTS_DEFAULTS from '../effects/EffectsDefaults.js';
-import { Z_MODES, Z_MODE_INFO, BACKGROUND_GRADIENTS, GRADIENT_DIRECTIONS } from './ui-constants.js';
+import GLOBAL_CONFIG from '../effects/GlobalConfig.js';
+import { Z_MODES, Z_MODE_INFO, BACKGROUND_GRADIENTS, GRADIENT_DIRECTIONS, VERTEX_MARKER_SHAPES } from './ui-constants.js';
 import { UI_DEFAULTS } from './ui-defaults.js';
 import { setupSmartSlider } from './slider-utils.js';
 import { setCheckboxValue, setInputValue, toggleRotationSlider } from './ui-helpers.js';
@@ -30,6 +31,9 @@ export function initializeUIValues() {
     toggleRotationSlider('snake', UI_DEFAULTS.rotationEnabled);
     populateZModes();
 
+    // Drag Spiral defaults
+    setCheckboxValue('dragSpiralActive', false); // Start disabled
+    
     // Random Cubes defaults
     const rcDefaults = EFFECTS_DEFAULTS.RANDOM_CUBES;
     
@@ -70,6 +74,12 @@ export function initializeUIValues() {
     
     populateGradientDirections();
     createGradientGrid();
+    
+    // Vertex marker defaults
+    setupSmartSlider('vertexMarkerSize', GLOBAL_CONFIG.vertexMarkerSize, { min: 0, max: 0.5, step: 0.01 });
+    setupSmartSlider('outlineOpacity', GLOBAL_CONFIG.outlineOpacity, { min: 0, max: 1, step: 0.05 });
+    setCheckboxValue('useVertexMarkers', GLOBAL_CONFIG.useVertexMarkers);
+    populateVertexMarkerShapes();
     
     // Hide angle slider if radial is selected by default
     const defaultDirection = UI_DEFAULTS.gradientDirection;
@@ -164,6 +174,31 @@ function handleGradientClick(key, clickedOption) {
     
     // Toggle gradient controls visibility for solid colors
     toggleGradientControlsForSolids(key);
+}
+
+function populateVertexMarkerShapes() {
+    const select = document.getElementById('vertexMarkerShape');
+    if (!select) return;
+
+    select.innerHTML = '';
+
+    const shapes = [
+        { value: VERTEX_MARKER_SHAPES.NONE, label: '⚫ None' },
+        { value: VERTEX_MARKER_SHAPES.SPHERE, label: '🔵 Sphere' },
+        { value: VERTEX_MARKER_SHAPES.BOX, label: '🔲 Box' }
+    ];
+
+    shapes.forEach(shape => {
+        const option = document.createElement('option');
+        option.value = shape.value;
+        option.textContent = shape.label;
+        if (shape.value === GLOBAL_CONFIG.vertexMarkerShape) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+
+    console.log('🎯 Populated vertex marker shapes with default:', GLOBAL_CONFIG.vertexMarkerShape);
 }
 
 function toggleGradientControlsForSolids(gradientKey) {

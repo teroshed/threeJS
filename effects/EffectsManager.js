@@ -1,4 +1,5 @@
 import ClickSnake from './clickEffects/ClickSnake.js';
+import DragSpiral from './clickEffects/DragSpiral.js';
 import RandomCubes from './idleEffects/RandomCubes.js';
 import CameraOrbit from './idleEffects/CameraOrbit.js';
 import EFFECTS_DEFAULTS from './EffectsDefaults.js';
@@ -8,7 +9,8 @@ export default class EffectsManager {
 
     // Click effects configuration - sourced from defaults
     static ON_CLICK_EFFECTS = [
-        EFFECTS_DEFAULTS.CLICK_SNAKE
+        EFFECTS_DEFAULTS.CLICK_SNAKE,
+        EFFECTS_DEFAULTS.DRAG_SPIRAL
     ];
 
     // Idle effects configuration - sourced from defaults
@@ -59,19 +61,25 @@ export default class EffectsManager {
             this.onClickEffects.push(effectInstance);
         });
 
-        // Initialize idle effects from configuration
-        EffectsManager.IDLE_EFFECTS.forEach(effectConfig => {
-            const { name, class: EffectClass, ...params } = effectConfig;
-            
-            // Extract parameter values in order (excluding name and class)
-            const paramValues = Object.values(params);
-            
-            // Create instance with spread parameters
-            const effectInstance = new EffectClass(...paramValues);
-            
-            console.log(`Initialized idle effect: ${name}`, params);
-            this.idleEffects.push(effectInstance);
-        });
+                // Initialize idle effects from configuration
+                EffectsManager.IDLE_EFFECTS.forEach(effectConfig => {
+                    const { name, class: EffectClass, ...params } = effectConfig;
+                    
+                    // Extract parameter values in order (excluding name and class)
+                    const paramValues = Object.values(params);
+                    
+                    // Create instance with spread parameters
+                    const effectInstance = new EffectClass(...paramValues);
+                    
+                    // If this is SimulatedDrag, give it a reference to this manager
+                    if (name === 'SimulatedDrag') {
+                        effectInstance.effectsManager = this;
+                        console.log('🎨 SimulatedDrag linked to EffectsManager!');
+                    }
+                    
+                    console.log(`Initialized idle effect: ${name}`, params);
+                    this.idleEffects.push(effectInstance);
+                });
 
         this.clickRateInterval = setInterval(this.onClickTick.bind(this), EffectsManager.ON_CLICK_RATE);
     }

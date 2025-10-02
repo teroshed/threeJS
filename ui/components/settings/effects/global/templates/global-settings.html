@@ -39,5 +39,44 @@
     </div>
     <input type="range" id="bgOpacity">
   </div>
+
+  <h4 style="color: #00ffff; margin: 30px 0 20px 0;">🎯 Vertex Markers</h4>
+  
+  <div class="control-group">
+    <div class="control-label">
+      <span>Enable Vertex Markers</span>
+    </div>
+    <label class="checkbox-container">
+      <input type="checkbox" id="useVertexMarkers" checked>
+      <span>Show corner markers</span>
+    </label>
+  </div>
+
+  <div class="control-group" id="vertexMarkerControls">
+    <div class="control-label">
+      <span>Marker Shape</span>
+    </div>
+    <select id="vertexMarkerShape">
+      <option value="none">⚫ None</option>
+      <option value="sphere">🔵 Sphere</option>
+      <option value="box">🔲 Box</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Marker Size</span>
+      <span class="control-value" id="vertexMarkerSizeValue">--</span>
+    </div>
+    <input type="range" id="vertexMarkerSize">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Outline Opacity</span>
+      <span class="control-value" id="outlineOpacityValue">--</span>
+    </div>
+    <input type="range" id="outlineOpacity">
+  </div>
 </div>
 

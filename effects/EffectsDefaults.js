@@ -1,4 +1,5 @@
 import ClickSnake from './clickEffects/ClickSnake.js';
+import DragSpiral from './clickEffects/DragSpiral.js';
 import RandomCubes from './idleEffects/RandomCubes.js';
 import CameraOrbit from './idleEffects/CameraOrbit.js';
 import SimulatedDrag from './idleEffects/SimulatedDrag.js';
@@ -35,6 +36,22 @@ const EFFECTS_DEFAULTS = {
         planeDistance: 0        // Distance of interaction plane from camera (0 = at origin)
     },
 
+    // Drag Spiral Effect Configuration
+    DRAG_SPIRAL: {
+        name: "DragSpiral",
+        class: DragSpiral,
+        spiralArms: 3,          // Number of spiral arms (1-6)
+        spiralTightness: 1.5,   // How tight the spiral (0.5-3.0)
+        maxCubes: 150,          // Maximum cubes in effect
+        cubeSize: 0.8,          // Base cube size
+        fadeSpeed: 0.02,        // Fade out speed
+        rotationSpeed: 0.08,    // Individual cube rotation
+        randomColor: true,      // Use rainbow colors
+        fixedColor: '#00ffff',  // Fixed color if randomColor is false
+        colorShift: 5,          // Hue shift amount per cube (0-360)
+        sizeVariation: 0.4      // Size randomness (0-1)
+    },
+
     // Random Cubes Effect Configuration
     RANDOM_CUBES: {
         name: "RandomCubes",
@@ -58,25 +75,28 @@ const EFFECTS_DEFAULTS = {
         tilt: 0               // Camera tilt angle (0-90 degrees)
     },
 
-    // Simulated Drag Effect Configuration
+            // Simulated Drag Effect Configuration
+            // 🎯 META-EFFECT: Triggers all active drag effects!
     SIMULATED_DRAG: {
         name: "SimulatedDrag",
         class: SimulatedDrag,
         pattern: 'circle',    // 'circle', 'line', 'spiral', 'figure8', 'lissajous', 'random'
         speed: 0.05,          // Animation speed
-        trailLength: 100,     // Max cubes in trail
-        cubeSize: 0.5,        // Cube size
-        fadeSpeed: 0.01,      // How fast cubes fade
-        rotationSpeed: 0.05,  // Cube rotation speed
-        randomColor: true,    // Random colors
-        fixedColor: '#00ffff', // Fixed color (if randomColor is false)
+        trailLength: 100,     // [UNUSED - kept for compatibility]
+        cubeSize: 0.5,        // [UNUSED - kept for compatibility]
+        fadeSpeed: 0.01,      // [UNUSED - kept for compatibility]
+        rotationSpeed: 0.05,  // [UNUSED - kept for compatibility]
+        randomColor: true,    // [UNUSED - kept for compatibility]
+        fixedColor: '#00ffff', // [UNUSED - kept for compatibility]
         pathSize: 5           // Size/radius of the pattern
-    },
+            },
 
     // Global Settings
+    // NOTE: Visual settings like outlineWidth/outlineOpacity are in GlobalConfig.js
+    // to avoid circular dependencies
     GLOBAL: {
-        clickDelay: 30, // ms delay between click events (0 = no delay)
-        frameRate: 60   // fps
+        clickDelay: 30,  // ms delay between click events (0 = no delay)
+        frameRate: 60    // Target FPS
     }
 };
 

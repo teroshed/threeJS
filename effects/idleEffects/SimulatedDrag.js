@@ -2,10 +2,12 @@ import { IdleEffect } from "./IdleEffect.js";
 import * as THREE from 'three';
 
 /**
- * 🎨 SIMULATED DRAG - Autopilot drawing patterns
+ * 🎨 SIMULATED DRAG - Autopilot Meta-Effect
  * 
  * This effect simulates mouse dragging by automatically moving a virtual cursor
- * and creating cubes along its path, just like ClickSnake but automated.
+ * and TRIGGERING ALL ACTIVE DRAG EFFECTS (ClickSnake, DragSpiral, etc.)
+ * 
+ * It's a meta-effect that drives other effects! 🤯
  */
 class SimulatedDrag extends IdleEffect {
     constructor(pattern, speed, trailLength, cubeSize, fadeSpeed, rotationSpeed, randomColor, fixedColor, pathSize) {
@@ -14,26 +16,21 @@ class SimulatedDrag extends IdleEffect {
         this.active = false;
         
         console.log('🎨 SimulatedDrag initialized with pattern:', pattern);
+        console.log('🎨 This is a META-EFFECT that triggers all active drag effects!');
 
         // Pattern settings
         this.pattern = pattern;           // 'circle', 'line', 'spiral', 'figure8', 'random', 'lissajous'
         this.speed = speed;                // How fast the cursor moves
-        this.trailLength = trailLength;    // Max cubes in trail
         this.pathSize = pathSize;          // Size/radius of the pattern
-
-        // Cube settings
-        this.cubeSize = cubeSize;
-        this.fadeSpeed = fadeSpeed;
-        this.rotationSpeed = rotationSpeed;
-        this.randomColor = randomColor;
-        this.fixedColor = fixedColor;
 
         // Animation state
         this.t = 0;                        // Time parameter for animation
         this.virtualCursor = new THREE.Vector2(0, 0);
-        this.isDrawing = true;             // Always drawing for this effect
         this.frameCounter = 0;             // Frame counter for throttling
         this.spawnInterval = 3;            // Spawn cube every N frames
+        
+        // Reference to EffectsManager (will be set by EffectsManager)
+        this.effectsManager = null;
     }
 
     update(camera, scene, mouse) {
@@ -43,41 +40,41 @@ class SimulatedDrag extends IdleEffect {
             return;
         }
 
+        if (!this.effectsManager) {
+            console.warn('⚠️ SimulatedDrag: No effectsManager reference! Cannot trigger drag effects.');
+            return;
+        }
+
         // Update time parameter
         this.t += this.speed;
 
         // Calculate virtual cursor position based on pattern
         this.updateCursorPosition();
 
-        // Throttle cube creation (only create every N frames)
+        // Throttle triggering (only trigger every N frames)
         this.frameCounter++;
         if (this.frameCounter >= this.spawnInterval) {
             this.frameCounter = 0;
-            // Create cube at virtual cursor position
-            this.createCubeAtCursor(camera);
+            
+            // 🎯 TRIGGER ALL ACTIVE DRAG EFFECTS WITH VIRTUAL CURSOR!
+            this.triggerDragEffects(camera);
         }
-
-        // Manage trail length
-        if (this.cubeArray.length > this.trailLength) {
-            this.removeCube(0);
-        }
-
-        // Apply fade effect
-        this.cubeArray.forEach(cube => {
-            cube.material.opacity -= this.fadeSpeed;
-            if (cube.material.opacity <= 0) {
-                this.scene.remove(cube);
+    }
+    
+    /**
+     * Trigger all active drag effects (ClickSnake, DragSpiral, etc.)
+     * with the virtual cursor position
+     */
+    triggerDragEffects(camera) {
+        if (!this.effectsManager) return;
+        
+        // Call onClick() on all active drag effects
+        this.effectsManager.onClickEffects.forEach(effect => {
+            if (effect.active && effect !== this) {
+                // Pass virtual cursor to the effect
+                effect.onClick(this.virtualCursor, camera);
             }
         });
-        this.cubeArray = this.cubeArray.filter(cube => cube.material.opacity > 0);
-
-        // Apply rotation
-        if (this.rotationSpeed > 0) {
-            this.cubeArray.forEach(cube => {
-                cube.rotation.x += this.rotationSpeed;
-                cube.rotation.y += this.rotationSpeed;
-            });
-        }
     }
 
     updateCursorPosition() {
@@ -134,64 +131,6 @@ class SimulatedDrag extends IdleEffect {
         }
     }
 
-    createCubeAtCursor(camera) {
-        // Convert 2D cursor position to 3D world position
-        const raycaster = new THREE.Raycaster();
-        raycaster.setFromCamera(this.virtualCursor, camera);
-
-        // Create a plane perpendicular to camera view, at a visible distance
-        // Place it at z = -5 (or configurable planeDistance)
-        const planeDistance = 5; // Distance in front of camera origin
-        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -planeDistance);
-        const intersectionPoint = new THREE.Vector3();
-        raycaster.ray.intersectPlane(plane, intersectionPoint);
-
-        if (!intersectionPoint) {
-            console.warn('⚠️ No intersection point found!');
-            return;
-        }
-
-        // Create cube at intersection point
-        const geometry = new THREE.BoxGeometry(this.cubeSize, this.cubeSize, this.cubeSize);
-        
-        let finalColor;
-        if (this.randomColor) {
-            finalColor = Math.random() * 0xFFFFFF;
-        } else {
-            finalColor = new THREE.Color(this.fixedColor).getHex();
-        }
-
-        const material = new THREE.MeshBasicMaterial({ 
-            color: finalColor, 
-            opacity: 1, 
-            transparent: true 
-        });
-        
-        const cube = new THREE.Mesh(geometry, material);
-        cube.position.copy(intersectionPoint);
-        
-        // Add outline/edges to the cube
-        const edges = new THREE.EdgesGeometry(geometry);
-        const lineMaterial = new THREE.LineBasicMaterial({ 
-            color: 0x000000,  // Black outline
-            transparent: true,
-            opacity: 0.6,
-            linewidth: 2
-        });
-        const outline = new THREE.LineSegments(edges, lineMaterial);
-        cube.add(outline); // Attach outline to cube so it follows rotation
-        
-        this.cubeArray.push(cube);
-        this.scene.add(cube);
-    }
-
-    removeCube(index) {
-        const cube = this.cubeArray[index];
-        if (cube) {
-            this.scene.remove(cube);
-            this.cubeArray.splice(index, 1);
-        }
-    }
 }
 
 export default SimulatedDrag;

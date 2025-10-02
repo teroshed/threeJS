@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Three.js Visualizer</title>
+    <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/panel.css">
+    <link rel="stylesheet" href="/styles/panel-simple.css">
+    <link rel="stylesheet" href="/styles/buttons.css">
+  </head>
+  <body>
+    <!-- Simple Main Panel with Toggles -->
+    <div class="control-panel" id="controlPanel">
+      <div class="panel-header">
+        <h2 class="panel-title">🎛️ Effects</h2>
+        <button class="close-btn" id="closePanel">×</button>
+      </div>
+
+      <!-- Quick Toggles -->
+      <div class="effect-category">
+        <div class="category-header">
+          <h3>Active Effects</h3>
+          <a href="./settings.html" class="cog-btn" title="Open Settings" style="text-decoration: none;">⚙️</a>
+        </div>
+        
+        <div class="effect-toggle">
+          <input type="checkbox" id="clickSnakeActive" checked>
+          <label for="clickSnakeActive">🐍 Click Snake</label>
+        </div>
+        
+        <div class="effect-toggle">
+          <input type="checkbox" id="randomCubesActive">
+          <label for="randomCubesActive">✨ Random Cubes</label>
+        </div>
+        
+        <div class="effect-toggle">
+          <input type="checkbox" id="cameraOrbitActive">
+          <label for="cameraOrbitActive">🔄 Camera Orbit</label>
+        </div>
+
+        <button class="btn btn-danger" id="clearEffects" style="margin-top: 15px; width: 100%;">
+          🗑️ Clear All
+        </button>
+      </div>
+    </div>
+
+    <button class="toggle-btn" id="togglePanel">⚙️</button>
+
+    <script type="module" src="/main.js"></script>
+    <script type="module">
+      // Simple UI controller for visualizer page (no modal)
+      import { setEffectsManager } from './ui/event-handlers.js';
+      import { initGradientManager } from './ui/gradient-manager.js';
+      
+      // Wait for effectsManager from main.js
+      window.addEventListener('load', () => {
+        if (window.effectsManager && window.scene) {
+          setEffectsManager(window.effectsManager);
+          initGradientManager(window.scene);
+          
+          // Wire up checkboxes
+          document.getElementById('clickSnakeActive')?.addEventListener('change', (e) => {
+            window.effectsManager.setEffectActive('ClickSnake', e.target.checked);
+          });
+          
+          document.getElementById('randomCubesActive')?.addEventListener('change', (e) => {
+            window.effectsManager.setEffectActive('RandomCubes', e.target.checked);
+          });
+          
+          document.getElementById('cameraOrbitActive')?.addEventListener('change', (e) => {
+            window.effectsManager.setEffectActive('CameraOrbit', e.target.checked);
+          });
+          
+          document.getElementById('clearEffects')?.addEventListener('click', () => {
+            window.effectsManager.clearEffects();
+          });
+          
+          // Panel toggle
+          const toggleBtn = document.getElementById('togglePanel');
+          const panel = document.getElementById('controlPanel');
+          const closeBtn = document.getElementById('closePanel');
+          
+          toggleBtn?.addEventListener('click', () => {
+            panel?.classList.add('open');
+          });
+          
+          closeBtn?.addEventListener('click', () => {
+            panel?.classList.remove('open');
+          });
+          
+          console.log('🎛️ Visualizer UI initialized');
+        }
+      });
+    </script>
+  </body>
+</html>
+

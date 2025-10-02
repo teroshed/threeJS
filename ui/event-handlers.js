@@ -3,8 +3,10 @@
  */
 
 import { setupRangeControl, setupCheckbox, setupColorPicker, toggleRotationSlider } from './ui-helpers.js';
+import { setupSmartSlider } from './slider-utils.js';
 import { applyGradientBackground, setDirection, setOpacity, setAngle, updateGradientPreviews, currentGradient } from './gradient-manager.js';
-
+import { createColorPaletteGrid, getColorFromPalette, COLOR_PALETTE_KEYS } from './ui-color-palettes.js';
+import EFFECTS_DEFAULTS from '../effects/EffectsDefaults.js';
 let effectsManager = null;
 
 export function setEffectsManager(manager) {
@@ -14,6 +16,7 @@ export function setEffectsManager(manager) {
 export function setupAllEventListeners() {
     setupPanelToggles();
     setupClickSnakeControls();
+    setupDragSpiralControls();
     setupRandomCubesControls();
     setupCameraOrbitControls();
     setupSimulatedDragControls();
@@ -89,6 +92,55 @@ function setupClickSnakeControls() {
         updateEffectConfig('ClickSnake', 'zMode', e.target.value);
         console.log(`🎢 Z-mode changed to: ${e.target.value}`);
     });
+}
+
+function setupDragSpiralControls() {
+    setupCheckbox('dragSpiralActive', (checked) => {
+        effectsManager?.setEffectActive('DragSpiral', checked);
+    });
+    
+    // Spiral Arms
+    setupSmartSlider('spiralArms', 'spiralArmsValue', EFFECTS_DEFAULTS.DRAG_SPIRAL.spiralArms, (value) => {
+        updateDragEffect('DragSpiral', 'spiralArms', parseInt(value));
+    });
+    
+    // Spiral Tightness
+    setupSmartSlider('spiralTightness', 'spiralTightnessValue', EFFECTS_DEFAULTS.DRAG_SPIRAL.spiralTightness, (value) => {
+        updateDragEffect('DragSpiral', 'spiralTightness', parseFloat(value));
+    });
+    
+    // Max Cubes
+    setupSmartSlider('spiralMaxCubes', 'spiralMaxCubesValue', EFFECTS_DEFAULTS.DRAG_SPIRAL.maxCubes, (value) => {
+        updateDragEffect('DragSpiral', 'maxCubes', parseInt(value));
+    });
+    
+    // Cube Size
+    setupSmartSlider('spiralCubeSize', 'spiralCubeSizeValue', EFFECTS_DEFAULTS.DRAG_SPIRAL.cubeSize, (value) => {
+        updateDragEffect('DragSpiral', 'baseCubeSize', parseFloat(value));
+    });
+    
+    // Fade Speed
+    setupSmartSlider('spiralFadeSpeed', 'spiralFadeSpeedValue', EFFECTS_DEFAULTS.DRAG_SPIRAL.fadeSpeed, (value) => {
+        updateDragEffect('DragSpiral', 'fadeSpeed', parseFloat(value));
+    });
+    
+    // Rotation Speed
+    setupSmartSlider('spiralRotationSpeed', 'spiralRotationSpeedValue', EFFECTS_DEFAULTS.DRAG_SPIRAL.rotationSpeed, (value) => {
+        updateDragEffect('DragSpiral', 'rotationSpeed', parseFloat(value));
+    });
+    
+    // Color Shift
+    setupSmartSlider('spiralColorShift', 'spiralColorShiftValue', EFFECTS_DEFAULTS.DRAG_SPIRAL.colorShift, (value) => {
+        updateDragEffect('DragSpiral', 'colorShift', parseFloat(value));
+    });
+    
+    // Size Variation
+    setupSmartSlider('spiralSizeVariation', 'spiralSizeVariationValue', EFFECTS_DEFAULTS.DRAG_SPIRAL.sizeVariation, (value) => {
+        updateDragEffect('DragSpiral', 'sizeVariation', parseFloat(value));
+    });
+    
+    // Color Palette Grid (will be set up when modal opens)
+    console.log('✅ Drag Spiral controls initialized');
 }
 
 function setupRandomCubesControls() {
@@ -226,6 +278,26 @@ function setupGlobalControls() {
         console.log(`🧭 Gradient direction changed to: ${e.target.value}`);
     });
 
+    // Vertex marker controls
+    setupCheckbox('useVertexMarkers', (checked) => {
+        updateGlobalEffectProperty('useVertexMarkers', checked);
+        console.log(`🎯 Vertex markers: ${checked ? 'ON' : 'OFF'}`);
+    });
+
+    const markerShapeSelect = document.getElementById('vertexMarkerShape');
+    markerShapeSelect?.addEventListener('change', (e) => {
+        updateGlobalEffectProperty('vertexMarkerShape', e.target.value);
+        console.log(`🎯 Marker shape changed to: ${e.target.value}`);
+    });
+
+    setupRangeControl('vertexMarkerSize', 'vertexMarkerSizeValue', (value) => {
+        updateGlobalEffectProperty('vertexMarkerSize', parseFloat(value));
+    });
+
+    setupRangeControl('outlineOpacity', 'outlineOpacityValue', (value) => {
+        updateGlobalEffectProperty('outlineOpacity', parseFloat(value));
+    });
+
     document.getElementById('clearEffects')?.addEventListener('click', () => {
         effectsManager?.clearEffects();
     });
@@ -257,6 +329,17 @@ function toggleGradientControls(gradientKey) {
     }
 }
 
+// Helper function to update drag effect properties (specifically for DragSpiral)
+function updateDragEffect(effectName, property, value) {
+    if (!effectsManager) return;
+    
+    const effect = effectsManager.onClickEffects.find(e => e.name === effectName);
+    if (effect && effect[property] !== undefined) {
+        effect[property] = value;
+        console.log(`🌀 ${effectName}.${property} updated to:`, value);
+    }
+}
+
 function updateEffectConfig(effectName, property, value) {
     if (!effectsManager) return;
 
@@ -268,4 +351,17 @@ function updateEffectConfig(effectName, property, value) {
             console.log(`Updated ${effectName}.${property} to ${value}`);
         }
     });
+}
+
+function updateGlobalEffectProperty(property, value) {
+    if (!effectsManager) return;
+
+    // Update ALL effects (both onClick and idle)
+    const allEffects = [...effectsManager.onClickEffects, ...effectsManager.idleEffects];
+    
+    allEffects.forEach(effect => {
+        effect[property] = value;
+    });
+    
+    console.log(`✨ Updated global property ${property} to ${value} for all effects`);
 }

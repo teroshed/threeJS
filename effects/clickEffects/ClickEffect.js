@@ -9,7 +9,12 @@ export class ClickEffect extends Effect {
 
     onClick(mouse, camera)
     {
+        if (!this.active) return;
+
+        // Your click logic here
     }
+
+    
 
     update(camera, scene) {
         super.update(camera, scene);
