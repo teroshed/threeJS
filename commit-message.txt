@@ -1,0 +1,35 @@
+feat: Complete interactive 3D effects system with smart UI controls
+
+✨ Features:
+- Click Snake effect with 6 Z-position modes (wave, spiral, pulse, etc.)
+- Smart sliders that auto-calculate ranges from config defaults
+- Visual gradient background system (10 presets + direction + opacity)
+- Professional glassmorphism UI with real-time controls
+- Extensible effects architecture with inheritance hierarchy
+
+🏗️ Architecture:
+- Clean separation: effects/ (logic) + ui/ (controls)
+- Single source of truth for all configuration
+- Data-driven effect system (easy to extend)
+- Magic slider system (change default → slider adapts automatically)
+
+🔧 Technical:
+- Raycasting for accurate 3D positioning
+- Z-boundary clamping with configurable min/max
+- Real-time parameter adjustment
+- Canvas-based gradient generation
+- Effects Manager with lifecycle management
+
+🐛 Fixes:
+- Fixed gradient opacity (now properly dims instead of affecting smoothness)
+- Fixed magic sliders not recalculating on config change
+- Fixed Z-position clamping boundaries
+
+📁 Structure:
+- effects/EffectsDefaults.js - Effect configuration
+- ui/ui-options.js - UI defaults and presets
+- ui/ui-controller.js - UI ↔ Effects bridge
+- Comprehensive docs (README, CONFIGURATION, STRUCTURE_GUIDE)
+
+🎯 For full details see COMMIT_MESSAGE.md
+

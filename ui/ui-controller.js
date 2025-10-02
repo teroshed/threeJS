@@ -1,7 +1,8 @@
 // UI Controller - connects UI to EffectsManager
 import * as THREE from 'three';
 import EFFECTS_DEFAULTS from '../effects/EffectsDefaults.js';
-import { Z_MODES, BACKGROUND_GRADIENTS, GRADIENT_DIRECTIONS, UI_DEFAULTS } from './ui-options.js';
+import { Z_MODES, Z_MODE_INFO, BACKGROUND_GRADIENTS, GRADIENT_DIRECTIONS } from './ui-constants.js';
+import { UI_DEFAULTS } from './ui-defaults.js';
 
 // Get reference to effects manager from main.js
 let effectsManager = null;
@@ -76,8 +77,12 @@ function initializeUIValues() {
     
     setCheckboxValue('snakeAutoFade', snakeDefaults.autoFade);
     setCheckboxValue('snakeRandomColor', snakeDefaults.randomColor);
+    setCheckboxValue('snakeRotationEnabled', UI_DEFAULTS.rotationEnabled);
     setInputValue('snakeColor', snakeDefaults.fixedColor);
     setCheckboxValue('clickSnakeActive', true);
+
+    // Set initial rotation slider visibility
+    toggleRotationSlider('snake', UI_DEFAULTS.rotationEnabled);
 
     // Populate Z-mode dropdown
     populateZModes();
@@ -92,7 +97,11 @@ function initializeUIValues() {
     setupSmartSlider('rcRotationSpeed', rcDefaults.rotationSpeed);
     
     setCheckboxValue('rcRandomColor', rcDefaults.cubeRandomColor);
+    setCheckboxValue('rcRotationEnabled', UI_DEFAULTS.rotationEnabled);
     setCheckboxValue('randomCubesActive', false);
+
+    // Set initial rotation slider visibility for RC
+    toggleRotationSlider('rc', UI_DEFAULTS.rotationEnabled);
 
     // Global defaults
     const globalDefaults = EFFECTS_DEFAULTS.GLOBAL;
@@ -122,18 +131,28 @@ function setupSmartSlider(id, defaultValue, overrides = {}) {
     }
 }
 
+function toggleRotationSlider(prefix, enabled) {
+    const sliderGroup = document.getElementById(`${prefix}RotationSliderGroup`);
+    if (sliderGroup) {
+        sliderGroup.style.display = enabled ? 'block' : 'none';
+    }
+}
+
 function populateZModes() {
     const select = document.getElementById('snakeZMode');
     if (!select) return;
 
     select.innerHTML = '';
 
-    Object.entries(Z_MODES).forEach(([key, mode]) => {
+    // Use Z_MODES enum keys
+    Object.entries(Z_MODES).forEach(([enumKey, value]) => {
+        const info = Z_MODE_INFO[value];
         const option = document.createElement('option');
-        option.value = key;
-        option.textContent = `${mode.name} - ${mode.description}`;
-        // Use UI_DEFAULTS for default Z mode
-        if (key === UI_DEFAULTS.defaultZMode) {
+        option.value = value;
+        option.textContent = `${info.name} - ${info.description}`;
+        
+        // Use UI_DEFAULTS which now uses enum
+        if (value === UI_DEFAULTS.defaultZMode) {
             option.selected = true;
         }
         select.appendChild(option);
@@ -365,6 +384,12 @@ function setupEventListeners() {
         updateEffectConfig('ClickSnake', 'randomColor', checked);
     });
 
+    // Rotation toggle for ClickSnake
+    setupCheckbox('snakeRotationEnabled', (checked) => {
+        toggleRotationSlider('snake', checked);
+        updateEffectConfig('ClickSnake', 'rotationSpeed', checked ? parseFloat(document.getElementById('snakeRotationSpeed').value) : 0);
+    });
+
     setupColorPicker('snakeColor', (color) => {
         updateEffectConfig('ClickSnake', 'fixedColor', color);
     });
@@ -403,6 +428,12 @@ function setupEventListeners() {
 
     setupCheckbox('rcRandomColor', (checked) => {
         updateEffectConfig('RandomCubes', 'cubeRandomColor', checked);
+    });
+
+    // Rotation toggle for RandomCubes
+    setupCheckbox('rcRotationEnabled', (checked) => {
+        toggleRotationSlider('rc', checked);
+        updateEffectConfig('RandomCubes', 'rotationSpeed', checked ? parseFloat(document.getElementById('rcRotationSpeed').value) : 0);
     });
 
     setupCheckbox('randomCubesActive', (checked) => {
@@ -482,4 +513,3 @@ function updateEffectConfig(effectName, property, value) {
         }
     });
 }
-

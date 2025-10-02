@@ -1,47 +1,42 @@
 /**
- * ⚙️ UI OPTIONS - SINGLE SOURCE OF TRUTH FOR UI DEFAULTS
+ * 🎯 UI CONSTANTS
  * 
- * Change ANY UI default here - everything updates automatically!
- * This is THE place to configure the control panel behavior.
+ * Enums, presets, and configuration options for the UI
  */
 
-// 🎨 Default UI State
-export const UI_DEFAULTS = {
-    // Background settings
-    defaultBackground: 'twilight',    // Which gradient to show on load
-    gradientDirection: 'vertical',    // Default gradient direction
-    gradientOpacity: 1.0,             // Default background opacity (0.0 - 1.0)
-    
-    // Effect defaults
-    defaultZMode: 'random',           // Default Z-position mode for ClickSnake
-    
-    // Panel state
-    panelCollapsed: false             // Start with panel open/closed
+// 🎢 Z-Position Mode Enum (use these keys!)
+export const Z_MODES = {
+    SET: 'set',
+    RANDOM: 'random',
+    WAVE: 'wave',
+    SPIRAL: 'spiral',
+    PULSE: 'pulse',
+    OSCILLATE: 'oscillate'
 };
 
-// 🎢 Z-Position Modes
-export const Z_MODES = {
-    'set': {
+// 🎢 Z-Position Mode Descriptions
+export const Z_MODE_INFO = {
+    [Z_MODES.SET]: {
         name: 'Fixed',
         description: 'Cubes at fixed Z position'
     },
-    'random': {
+    [Z_MODES.RANDOM]: {
         name: 'Random',
         description: 'Random depth variation'
     },
-    'wave': {
+    [Z_MODES.WAVE]: {
         name: 'Wave',
         description: 'Smooth sine wave pattern'
     },
-    'spiral': {
+    [Z_MODES.SPIRAL]: {
         name: 'Spiral',
         description: 'Spiraling depth effect'
     },
-    'pulse': {
+    [Z_MODES.PULSE]: {
         name: 'Pulse',
         description: 'Rhythmic depth pulsing'
     },
-    'oscillate': {
+    [Z_MODES.OSCILLATE]: {
         name: 'Oscillate',
         description: 'Back and forth motion'
     }
