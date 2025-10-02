@@ -139,6 +139,9 @@ class DragSpiral extends ClickEffect {
     update(camera, scene, mouse) {
         super.update(camera, scene, mouse);
         
+        // Apply beat-responsive effects to all cubes
+        this.pulseToBeat(scene);
+        
         // Apply fade effect
         this.cubeArray.forEach(cube => {
             cube.material.opacity -= this.fadeSpeed;
@@ -158,6 +161,83 @@ class DragSpiral extends ClickEffect {
                 return false;
             }
             return true;
+        });
+    }
+
+    /**
+     * 🎵 PULSE TO BEAT - DragSpiral Audio Response
+     * 
+     * Enhanced beat response for DragSpiral with spiral-specific effects
+     * @param {THREE.Scene} scene - The Three.js scene
+     */
+    pulseToBeat(scene) {
+        if (!this.audioAnalyzer || !this.cubeArray) return;
+
+        const beat = this.audioAnalyzer.getBeat();
+        const volume = this.audioAnalyzer.getVolumeLevel();
+        const bass = this.audioAnalyzer.getBassLevel();
+        const treble = this.audioAnalyzer.getTrebleLevel();
+
+        this.cubeArray.forEach((cube, index) => {
+            // Beat response - immediate pulse with intensity
+            if (beat.isBeat) {
+                const beatIntensity = Math.min(beat.intensity || 1, 2);
+                
+                // Scale based on beat intensity
+                const scaleMultiplier = 1 + (beatIntensity * 0.4);
+                cube.scale.setScalar(scaleMultiplier);
+                
+                // Opacity burst on beat
+                cube.material.opacity = Math.min(cube.material.opacity + beatIntensity * 0.3, 1);
+                
+                // Enhanced spiral rotation on beat
+                cube.rotation.x += beatIntensity * 0.2;
+                cube.rotation.y += beatIntensity * 0.2;
+                cube.rotation.z += beatIntensity * 0.15;
+                
+                // Color shift on beat
+                if (this.randomColor) {
+                    const beatHue = (Date.now() * 0.002 + index * 0.1) % 1;
+                    const beatColor = new THREE.Color().setHSL(beatHue, 1, 0.7);
+                    cube.material.color.lerp(beatColor, 0.4);
+                }
+            }
+            
+            // Volume response - continuous scaling
+            const volumeScale = 1 + (volume * 0.3);
+            cube.scale.lerp(new THREE.Vector3(volumeScale, volumeScale, volumeScale), 0.08);
+            
+            // Bass response - spiral expansion and red color
+            if (bass > 0.2) {
+                // Expand spiral radius based on bass
+                const bassExpansion = bass * 0.5;
+                cube.position.x *= (1 + bassExpansion * 0.1);
+                cube.position.y *= (1 + bassExpansion * 0.1);
+                
+                // Bass color (red spectrum)
+                if (this.randomColor) {
+                    const bassColor = new THREE.Color().setHSL(0.0, 1, 0.3 + bass * 0.4);
+                    cube.material.color.lerp(bassColor, 0.1);
+                }
+            }
+            
+            // Treble response - fast rotation and blue color
+            if (treble > 0.2) {
+                // Enhanced spiral rotation
+                cube.rotation.x += treble * 0.1;
+                cube.rotation.y += treble * 0.1;
+                cube.rotation.z += treble * 0.08;
+                
+                // Treble color (blue spectrum)
+                if (this.randomColor) {
+                    const trebleColor = new THREE.Color().setHSL(0.6, 1, 0.3 + treble * 0.4);
+                    cube.material.color.lerp(trebleColor, 0.1);
+                }
+            }
+            
+            // Overall volume affects opacity
+            const targetOpacity = Math.min(0.6 + volume * 0.4, 1);
+            cube.material.opacity = THREE.MathUtils.lerp(cube.material.opacity, targetOpacity, 0.06);
         });
     }
 

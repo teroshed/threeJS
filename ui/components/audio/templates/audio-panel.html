@@ -1,0 +1,108 @@
+<!-- 🎵 AUDIO PANEL COMPONENT -->
+<div class="audio-panel" id="audioPanel">
+  <div class="audio-header">
+    <h2 class="audio-title">🎵 Audio</h2>
+    <button class="audio-close-btn" id="audioCloseBtn">×</button>
+  </div>
+
+  <div class="audio-body">
+    <!-- File Upload Section -->
+    <div class="audio-section">
+      <div class="section-header">
+        <h3>📁 Upload</h3>
+      </div>
+      
+      <div class="control-group">
+        <label for="audioFileInput" class="control-label">Choose Audio File</label>
+        <input type="file" id="audioFileInput" accept="audio/*" class="file-input">
+        <div class="file-info" id="fileInfo" style="display: none;">
+          <span class="file-name" id="fileName"></span>
+          <span class="file-size" id="fileSize"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playback Controls Section -->
+    <div class="audio-section" id="playbackSection" style="display: none;">
+      <div class="section-header">
+        <h3>🎮 Controls</h3>
+      </div>
+      
+      <div class="control-group">
+        <div class="button-group">
+          <button id="playPauseBtn" class="btn btn-primary">▶️ Play</button>
+          <button id="stopBtn" class="btn btn-secondary">⏹️ Stop</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label for="volumeSlider" class="control-label">🔊 Volume</label>
+        <div class="slider-container">
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" class="slider">
+          <span class="slider-value" id="volumeValue">100%</span>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label for="seekSlider" class="control-label">⏱️ Progress</label>
+        <div class="slider-container">
+          <input type="range" id="seekSlider" min="0" max="100" step="0.1" value="0" class="slider">
+          <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis Controls Section -->
+    <div class="audio-section" id="analysisSection" style="display: none;">
+      <div class="section-header">
+        <h3>📊 Analysis</h3>
+      </div>
+      
+      <div class="control-group">
+        <label for="beatThreshold" class="control-label">🥁 Beat Sensitivity</label>
+        <div class="slider-container">
+          <input type="range" id="beatThreshold" min="0" max="1" step="0.01" value="0.3" class="slider">
+          <span class="slider-value" id="beatThresholdValue">30%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audio Status Section -->
+    <div class="audio-section" id="statusSection" style="display: none;">
+      <div class="section-header">
+        <h3>📈 Status</h3>
+      </div>
+      
+      <div class="status-grid">
+        <div class="status-item">
+          <span class="status-label">Volume</span>
+          <div class="level-bar">
+            <div class="level-fill" id="volumeLevelBar"></div>
+          </div>
+        </div>
+        
+        <div class="status-item">
+          <span class="status-label">Bass</span>
+          <div class="level-bar">
+            <div class="level-fill bass" id="bassLevelBar"></div>
+          </div>
+        </div>
+        
+        <div class="status-item">
+          <span class="status-label">Treble</span>
+          <div class="level-bar">
+            <div class="level-fill treble" id="trebleLevelBar"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="beat-indicator" id="beatIndicator">
+        <span class="beat-text">🎵</span>
+        <span class="beat-label">Beat</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Audio Panel Toggle Button -->
+<button class="audio-toggle-btn" id="audioToggleBtn">🎵</button>

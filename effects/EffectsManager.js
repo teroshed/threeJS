@@ -84,6 +84,26 @@ export default class EffectsManager {
         this.clickRateInterval = setInterval(this.onClickTick.bind(this), EffectsManager.ON_CLICK_RATE);
     }
 
+    /**
+     * 🎵 Set Audio Analyzer for All Effects
+     * 
+     * Provides audio analysis capabilities to all effects
+     * @param {AudioAnalyzer} audioAnalyzer - The shared audio analyzer instance
+     */
+    setAudioAnalyzer(audioAnalyzer) {
+        // Set audio analyzer for click effects
+        this.onClickEffects.forEach(effect => {
+            effect.setAudioAnalyzer(audioAnalyzer);
+        });
+        
+        // Set audio analyzer for idle effects
+        this.idleEffects.forEach(effect => {
+            effect.setAudioAnalyzer(audioAnalyzer);
+        });
+        
+        console.log('🎵 Audio analyzer set for all effects');
+    }
+
     onClickTick() {
         if(this.mouseDown) {
             for(let i = 0; i < this.onClickEffects.length; i++) {

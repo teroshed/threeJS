@@ -1,11 +1,169 @@
-<!-- ⚡ CLICK EFFECTS - COMING SOON -->
-<div style="text-align: center; padding: 60px 20px;">
-  <div style="font-size: 72px; margin-bottom: 20px;">⚡</div>
-  <h3 style="color: #ffc107; margin-bottom: 10px;">Click Effects</h3>
-  <p style="color: rgba(255,255,255,0.6);">Coming soon! Effects that trigger on single click.</p>
-  <p style="color: rgba(255,255,255,0.4); margin-top: 20px; font-size: 14px;">
-    This category will contain effects that activate on a single mouse click,
-    different from drag effects which require holding down the mouse button.
-  </p>
+<!-- ⚡ CLICK EFFECTS -->
+<div class="control-section">
+  <h4 style="color: #ffc107; margin-bottom: 20px;">
+    ⚡ Click Snake 
+    <span style="font-size: 12px; background: linear-gradient(45deg, #9c27b0, #e91e63, #ff4081); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-left: 10px;">🎵 Audio-Responsive</span>
+  </h4>
+  
+  <!-- Audio Response Info -->
+  <div style="background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(233, 30, 99, 0.1)); border: 1px solid rgba(156, 39, 176, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 14px;">
+    <div style="background: linear-gradient(45deg, #9c27b0, #e91e63); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold; margin-bottom: 8px;">🎵 Audio Features:</div>
+    <div style="color: rgba(255, 255, 255, 0.8); line-height: 1.4;">
+      • <strong>Beat Response:</strong> Trail pulses and scales on beats<br>
+      • <strong>Bass Response:</strong> Red colors + vertical movement<br>
+      • <strong>Treble Response:</strong> Blue colors + fast rotation<br>
+      • <strong>Volume Scaling:</strong> Trail size changes with audio level
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="control-label">
+      <span>Max Length</span>
+      <span class="control-value" id="csMaxLengthValue">--</span>
+    </div>
+    <input type="range" id="csMaxLength">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Cube Size</span>
+      <span class="control-value" id="csCubeSizeValue">--</span>
+    </div>
+    <input type="range" id="csCubeSize">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Fade Speed</span>
+      <span class="control-value" id="csFadeSpeedValue">--</span>
+    </div>
+    <input type="range" id="csFadeSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Rotation Speed</span>
+      <span class="control-value" id="csRotationSpeedValue">--</span>
+    </div>
+    <input type="range" id="csRotationSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="checkbox-wrapper">
+      <input type="checkbox" id="csAutoFade" checked>
+      <label for="csAutoFade">Auto Fade</label>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="checkbox-wrapper">
+      <input type="checkbox" id="csRandomColor" checked>
+      <label for="csRandomColor">Random Colors</label>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Fixed Color</span>
+    </div>
+    <input type="color" id="csColor" value="#ff00ff">
+  </div>
+</div>
+
+<!-- Drag Spiral Section -->
+<div class="control-section" style="margin-top: 30px;">
+  <h4 style="color: #ffc107; margin-bottom: 20px;">
+    🌀 Drag Spiral 
+    <span style="font-size: 12px; background: linear-gradient(45deg, #9c27b0, #e91e63, #ff4081); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-left: 10px;">🎵 Audio-Responsive</span>
+  </h4>
+  
+  <!-- Audio Response Info -->
+  <div style="background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(233, 30, 99, 0.1)); border: 1px solid rgba(156, 39, 176, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 14px;">
+    <div style="background: linear-gradient(45deg, #9c27b0, #e91e63); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold; margin-bottom: 8px;">🎵 Audio Features:</div>
+    <div style="color: rgba(255, 255, 255, 0.8); line-height: 1.4;">
+      • <strong>Beat Response:</strong> Spiral pulses and rotates on beats<br>
+      • <strong>Bass Response:</strong> Red colors + spiral expansion<br>
+      • <strong>Treble Response:</strong> Blue colors + enhanced rotation<br>
+      • <strong>Volume Scaling:</strong> Spiral size changes with audio level
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="control-label">
+      <span>Spiral Arms</span>
+      <span class="control-value" id="dsSpiralArmsValue">--</span>
+    </div>
+    <input type="range" id="dsSpiralArms" min="1" max="6" step="1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Spiral Tightness</span>
+      <span class="control-value" id="dsSpiralTightnessValue">--</span>
+    </div>
+    <input type="range" id="dsSpiralTightness">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Max Cubes</span>
+      <span class="control-value" id="dsMaxCubesValue">--</span>
+    </div>
+    <input type="range" id="dsMaxCubes">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Cube Size</span>
+      <span class="control-value" id="dsCubeSizeValue">--</span>
+    </div>
+    <input type="range" id="dsCubeSize">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Fade Speed</span>
+      <span class="control-value" id="dsFadeSpeedValue">--</span>
+    </div>
+    <input type="range" id="dsFadeSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Rotation Speed</span>
+      <span class="control-value" id="dsRotationSpeedValue">--</span>
+    </div>
+    <input type="range" id="dsRotationSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Color Shift</span>
+      <span class="control-value" id="dsColorShiftValue">--</span>
+    </div>
+    <input type="range" id="dsColorShift">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Size Variation</span>
+      <span class="control-value" id="dsSizeVariationValue">--</span>
+    </div>
+    <input type="range" id="dsSizeVariation">
+  </div>
+
+  <div class="control-group">
+    <div class="checkbox-wrapper">
+      <input type="checkbox" id="dsRandomColor" checked>
+      <label for="dsRandomColor">Random Colors</label>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Fixed Color</span>
+    </div>
+    <input type="color" id="dsColor" value="#00ffff">
+  </div>
 </div>
 

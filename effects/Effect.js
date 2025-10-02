@@ -9,7 +9,8 @@ export class Effect {
         this.randomColor = true;
         this.fixedColor = '#ff00ff';
         this.active = false; // Default to inactive
-        
+        this.audioAnalyzer = null; // Will be set by EffectsManager
+              
         // Outline settings from global config (can be overridden by child classes)
         this.outlineWidth = GLOBAL_CONFIG.outlineWidth;
         this.outlineOpacity = GLOBAL_CONFIG.outlineOpacity;
@@ -26,6 +27,17 @@ export class Effect {
 
     setActive(active) {
         this.active = active;
+    }
+
+    /**
+     * 🎵 Set Audio Analyzer Reference
+     * 
+     * Called by EffectsManager to provide audio analysis capabilities
+     * @param {AudioAnalyzer} audioAnalyzer - The shared audio analyzer instance
+     */
+    setAudioAnalyzer(audioAnalyzer) {
+        this.audioAnalyzer = audioAnalyzer;
+        console.log(`🎵 Audio analyzer set for ${this.constructor.name}`);
     }
 
     update(camera, scene, mouse) {
@@ -52,9 +64,96 @@ export class Effect {
         });
     }
 
+
+    /**
+     * 🎵 PULSE TO BEAT - Audio-Responsive Effect
+     * 
+     * Makes cubes pulse and react to audio beats and frequency data
+     * @param {THREE.Scene} scene - The Three.js scene
+     */
+    pulseToBeat(scene) {
+        if (!this.audioAnalyzer || !this.cubeArray) return;
+
+        this.cubeArray.forEach(cube => {
+            const beat = this.audioAnalyzer.getBeat();
+            const volume = this.audioAnalyzer.getVolumeLevel();
+            const bass = this.audioAnalyzer.getBassLevel();
+            const treble = this.audioAnalyzer.getTrebleLevel();
+            
+            // Beat detection (debug logging removed for performance)
+            
+            // Base scale and opacity
+            const baseScale = 1.0;
+            const baseOpacity = cube.material.opacity || 0.8;
+            
+            // Calculate target scale based on audio
+            let targetScale = baseScale;
+            
+            // Beat response - immediate pulse
+            if (beat.isBeat) {
+                const beatIntensity = Math.min(beat.intensity || 1, 2); // Cap at 2x
+                targetScale += beatIntensity * 0.3; // Add to target scale
+                cube.material.opacity = Math.min(baseOpacity * (1 + beatIntensity * 0.5), 1);
+                
+                // Add slight rotation on beat
+                cube.rotation.x += beatIntensity * 0.1;
+                cube.rotation.y += beatIntensity * 0.1;
+                cube.rotation.z += beatIntensity * 0.05;
+            }
+            
+            // Volume response - continuous scaling
+            targetScale += volume * 0.3;
+            
+            // Bass response - additional scale and color (no position changes)
+            if (bass > 0.3) {
+                targetScale += bass * 0.2; // Scale instead of moving position
+                // Add bass color shift
+                if (this.randomColor) {
+                    const bassColor = new THREE.Color().setHSL(0.1, 1, 0.5 + bass * 0.3); // Red-orange
+                    cube.material.color.lerp(bassColor, 0.1);
+                }
+            }
+            
+            // Treble response - rotation and brightness
+            if (treble > 0.3) {
+                cube.rotation.x += treble * 0.05;
+                cube.rotation.z += treble * 0.03;
+                // Add treble brightness
+                cube.material.emissive = new THREE.Color().setHSL(0.6, 1, treble * 0.2); // Cyan
+            }
+            
+            // Apply smooth scaling to target
+            const targetScaleVector = new THREE.Vector3(targetScale, targetScale, targetScale);
+            cube.scale.lerp(targetScaleVector, 0.1);
+            
+            // Smooth opacity based on overall volume
+            const targetOpacity = Math.min(baseOpacity * (0.5 + volume * 0.5), 1);
+            cube.material.opacity = THREE.MathUtils.lerp(cube.material.opacity, targetOpacity, 0.1);
+        });
+    }
+
+    /**
+     * 🎵 PULSE ALL CUBES TO BEAT
+     * 
+     * Applies beat response to all cubes in the effect
+     */
+    pulseAllCubesToBeat() {
+        if (!this.audioAnalyzer || !this.cubeArray) return;
+        
+        this.cubeArray.forEach(cube => {
+            this.pulseToBeat(this.scene);
+        });
+    }
+
     removeCube(index) {
+        if (!this.cubeArray || index < 0 || index >= this.cubeArray.length) {
+            return;
+        }
+        const cube = this.cubeArray[index];
+        if (this.scene && cube) {
+            this.scene.remove(cube);
+        }
         this.cubeArray.splice(index, 1);
-        this.scene.remove(this.cubeArray[index]);
     }
 
     createCube(size, position, color) {

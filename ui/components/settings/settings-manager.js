@@ -225,7 +225,6 @@ function scrollToEffect(effectName) {
     setTimeout(() => {
         // Try multiple selectors to find the effect section
         const section = document.querySelector(`[data-effect-section="${effectName}"]`) ||
-                       document.querySelector(`h4:has-text("${effectName}")`) ||
                        Array.from(document.querySelectorAll('h4')).find(h4 => 
                            h4.textContent.includes(effectName)
                        );

@@ -3,7 +3,7 @@ import DragSpiral from './clickEffects/DragSpiral.js';
 import RandomCubes from './idleEffects/RandomCubes.js';
 import CameraOrbit from './idleEffects/CameraOrbit.js';
 import SimulatedDrag from './idleEffects/SimulatedDrag.js';
-import { Z_MODES } from '../ui/ui-constants.js';
+import { Z_MODES, PATTERN_TYPES, COLOR_MODES, SPAWN_MODES } from '../enums/index.js';
 
 /**
  * 🎯 CENTRALIZED EFFECT CONFIGURATION
@@ -26,7 +26,7 @@ const EFFECTS_DEFAULTS = {
         cubeSize: 1,
         fadeSpeed: 0.05,
         rotationSpeed: 0.1,
-        randomColor: true,
+        colorMode: COLOR_MODES.RANDOM,
         fixedColor: '#ff00ff',
         zMode: Z_MODES.WAVE,  // Using enum for type safety!
         zValue: 0,              // Base Z position
@@ -46,8 +46,8 @@ const EFFECTS_DEFAULTS = {
         cubeSize: 0.8,          // Base cube size
         fadeSpeed: 0.02,        // Fade out speed
         rotationSpeed: 0.08,    // Individual cube rotation
-        randomColor: true,      // Use rainbow colors
-        fixedColor: '#00ffff',  // Fixed color if randomColor is false
+        colorMode: COLOR_MODES.RANDOM,  // Use rainbow colors
+        fixedColor: '#00ffff',  // Fixed color if colorMode is FIXED
         colorShift: 5,          // Hue shift amount per cube (0-360)
         sizeVariation: 0.4      // Size randomness (0-1)
     },
@@ -56,12 +56,21 @@ const EFFECTS_DEFAULTS = {
     RANDOM_CUBES: {
         name: "RandomCubes",
         class: RandomCubes,
-        maxCubes: 10,
-        cubeSize: 0.25,
-        cubeSpawnRate: 0.1,
+        maxCubes: 50,
+        cubeSize: 0.5,
+        cubeSpawnRate: 0.3,
         cubeFadeRate: 0.01,
-        cubeRandomColor: true,
-        rotationSpeed: 0.02
+                colorMode: COLOR_MODES.RANDOM,
+        rotationSpeed: 0.02,
+        // Random location bounds (world coordinates)
+        spawnBounds: {
+            xMin: -20,
+            xMax: 20,
+            yMin: -10,
+            yMax: 10,
+            zMin: -20,
+            zMax: 20
+        }
     },
 
     // Camera Orbit Effect Configuration
@@ -80,13 +89,13 @@ const EFFECTS_DEFAULTS = {
     SIMULATED_DRAG: {
         name: "SimulatedDrag",
         class: SimulatedDrag,
-        pattern: 'circle',    // 'circle', 'line', 'spiral', 'figure8', 'lissajous', 'random'
+        pattern: PATTERN_TYPES.CIRCLE,    // Use enum for type safety
         speed: 0.05,          // Animation speed
         trailLength: 100,     // [UNUSED - kept for compatibility]
         cubeSize: 0.5,        // [UNUSED - kept for compatibility]
         fadeSpeed: 0.01,      // [UNUSED - kept for compatibility]
         rotationSpeed: 0.05,  // [UNUSED - kept for compatibility]
-        randomColor: true,    // [UNUSED - kept for compatibility]
+        colorMode: COLOR_MODES.RANDOM,    // [UNUSED - kept for compatibility]
         fixedColor: '#00ffff', // [UNUSED - kept for compatibility]
         pathSize: 5           // Size/radius of the pattern
             },

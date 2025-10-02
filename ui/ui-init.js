@@ -9,6 +9,7 @@ import { UI_DEFAULTS } from './ui-defaults.js';
 import { setupSmartSlider } from './slider-utils.js';
 import { setCheckboxValue, setInputValue, toggleRotationSlider } from './ui-helpers.js';
 import { getGradientCSS, currentGradient, currentDirection, applyGradientBackground } from './gradient-manager.js';
+import { createColorPaletteGrid, COLOR_PALETTE_KEYS } from './ui-color-palettes.js';
 import { setupAllBadgeSyncs, setEffectsManager as setOutlineSyncManager } from './outline-sync.js';
 
 export function initializeUIValues() {
@@ -34,6 +35,20 @@ export function initializeUIValues() {
 
     // Drag Spiral defaults
     setCheckboxValue('dragSpiralActive', false); // Start disabled
+    const ds = EFFECTS_DEFAULTS.DRAG_SPIRAL;
+    setupSmartSlider('spiralArms', ds.spiralArms, { min: 1, max: 12, step: 1 });
+    setupSmartSlider('spiralTightness', ds.spiralTightness, { min: 0.1, max: 5, step: 0.05 });
+    setupSmartSlider('spiralMaxCubes', ds.maxCubes, { min: 10, max: 600, step: 5 });
+    setupSmartSlider('spiralCubeSize', ds.cubeSize, { min: 0.1, max: 3, step: 0.05 });
+    setupSmartSlider('spiralFadeSpeed', ds.fadeSpeed, { min: 0.001, max: 0.1, step: 0.001 });
+    setupSmartSlider('spiralRotationSpeed', ds.rotationSpeed, { min: 0, max: 0.3, step: 0.005 });
+    setupSmartSlider('spiralColorShift', ds.colorShift, { min: 0, max: 60, step: 1 });
+    setupSmartSlider('spiralSizeVariation', ds.sizeVariation, { min: 0, max: 1, step: 0.01 });
+    // Create color palette grid for DragSpiral (if present in DOM)
+    createColorPaletteGrid('spiralColorPaletteGrid', COLOR_PALETTE_KEYS.RAINBOW, (paletteKey) => {
+        // Placeholder: hook for when we wire DragSpiral palette setting
+        console.log('🎨 DragSpiral palette selected:', paletteKey);
+    });
     
     // Random Cubes defaults
     const rcDefaults = EFFECTS_DEFAULTS.RANDOM_CUBES;

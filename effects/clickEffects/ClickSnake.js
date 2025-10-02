@@ -108,6 +108,9 @@ class ClickSnake extends ClickEffect {
     update(camera, scene, mouse) {
         super.update(camera, scene, mouse);
 
+        // Apply beat-responsive effects to all cubes
+        this.pulseToBeat(scene);
+
         if(this.autoFade) {
             // Iterate backwards to avoid index issues when removing
             for(let i = this.cubeArray.length - 1; i >= 0; i--) {
@@ -118,6 +121,73 @@ class ClickSnake extends ClickEffect {
                 }
             }
         }
+    }
+
+    /**
+     * 🎵 PULSE TO BEAT - ClickSnake Audio Response
+     * 
+     * Enhanced beat response for ClickSnake with trail effects
+     * @param {THREE.Scene} scene - The Three.js scene
+     */
+    pulseToBeat(scene) {
+        if (!this.audioAnalyzer || !this.cubeArray) return;
+
+        const beat = this.audioAnalyzer.getBeat();
+        const volume = this.audioAnalyzer.getVolumeLevel();
+        const bass = this.audioAnalyzer.getBassLevel();
+        const treble = this.audioAnalyzer.getTrebleLevel();
+
+        this.cubeArray.forEach((cube, index) => {
+            // Beat response - immediate pulse with intensity
+            if (beat.isBeat) {
+                const beatIntensity = Math.min(beat.intensity || 1, 2);
+                
+                // Scale based on beat intensity and position in trail
+                const trailPosition = index / this.cubeArray.length; // 0 to 1
+                const scaleMultiplier = 1 + (beatIntensity * 0.3 * (1 - trailPosition * 0.5));
+                cube.scale.setScalar(scaleMultiplier);
+                
+                // Opacity burst on beat (stronger for newer cubes)
+                const opacityBoost = beatIntensity * 0.4 * (1 - trailPosition * 0.3);
+                cube.material.opacity = Math.min(cube.material.opacity + opacityBoost, 1);
+                
+                // Add rotation on beat
+                cube.rotation.x += beatIntensity * 0.1;
+                cube.rotation.y += beatIntensity * 0.1;
+                cube.rotation.z += beatIntensity * 0.05;
+            }
+            
+            // Volume response - continuous scaling
+            const volumeScale = 1 + (volume * 0.2);
+            cube.scale.lerp(new THREE.Vector3(volumeScale, volumeScale, volumeScale), 0.05);
+            
+            // Bass response - vertical movement and color
+            if (bass > 0.3) {
+                cube.position.y += Math.sin(Date.now() * 0.01 + index * 0.1) * bass * 0.1;
+                
+                // Bass color (red spectrum)
+                if (this.randomColor) {
+                    const bassColor = new THREE.Color().setHSL(0.0, 1, 0.3 + bass * 0.4);
+                    cube.material.color.lerp(bassColor, 0.1);
+                }
+            }
+            
+            // Treble response - fast rotation and blue color
+            if (treble > 0.3) {
+                cube.rotation.x += treble * 0.05;
+                cube.rotation.z += treble * 0.03;
+                
+                // Treble color (blue spectrum)
+                if (this.randomColor) {
+                    const trebleColor = new THREE.Color().setHSL(0.6, 1, 0.3 + treble * 0.4);
+                    cube.material.color.lerp(trebleColor, 0.1);
+                }
+            }
+            
+            // Overall volume affects opacity
+            const targetOpacity = Math.min(0.7 + volume * 0.3, 1);
+            cube.material.opacity = THREE.MathUtils.lerp(cube.material.opacity, targetOpacity, 0.05);
+        });
     }
 
     setActive(active) {
