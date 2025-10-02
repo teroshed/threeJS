@@ -3,7 +3,7 @@
  */
 
 import { initGradientManager, applyGradientBackground } from './gradient-manager.js';
-import { initializeUIValues } from './ui-init.js';
+import { initializeUIValues, initOutlineSyncing } from './ui-init.js';
 import { setupAllEventListeners, setEffectsManager } from './event-handlers.js';
 import { initModalSystem } from './components/settings/settings-manager.js';
 import { UI_DEFAULTS } from './ui-defaults.js';
@@ -20,6 +20,9 @@ export function initUI(manager, sceneRef, rendererRef) {
     
     // Set effects manager reference for event handlers
     setEffectsManager(manager);
+    
+    // Initialize outline badge syncing
+    initOutlineSyncing(manager);
     
     // Initialize modal system
     initModalSystem();

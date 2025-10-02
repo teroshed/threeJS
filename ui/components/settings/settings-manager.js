@@ -59,12 +59,22 @@ export async function initModalSystem() {
         showGridView();
     });
 
-    // Outline item clicks (quick jump)
+    // Outline item clicks (quick jump + scroll)
     document.querySelectorAll('.outline-item').forEach(item => {
         item.addEventListener('click', () => {
             const category = item.dataset.category;
+            const effectName = item.dataset.effect;
+            const sectionName = item.dataset.section;
+            
             if (category) {
-                openCategory(category);
+                openCategory(category).then(() => {
+                    // Scroll to specific effect or section after category loads
+                    if (effectName) {
+                        scrollToEffect(effectName);
+                    } else if (sectionName) {
+                        scrollToSection(sectionName);
+                    }
+                });
             }
         });
     });
@@ -142,6 +152,9 @@ async function openCategory(category) {
     
     showSettingsView(titles[category] || 'Settings');
     
+    // Update outline active states
+    updateOutlineActiveState(category);
+    
     // Map category names to file paths
     const pathMap = {
         'click-effects': '/ui/components/settings/effects/click/templates/click-effects.html',
@@ -185,6 +198,61 @@ async function openCategory(category) {
     } else {
         console.warn(`⚠️ No template found for ${category}`);
     }
+}
+
+/**
+ * Update outline item active states based on current category
+ */
+function updateOutlineActiveState(category) {
+    // Remove active from all outline items
+    document.querySelectorAll('.outline-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Add active to first item in current category
+    const categoryItems = document.querySelectorAll(`.outline-item[data-category="${category}"]`);
+    if (categoryItems.length > 0) {
+        categoryItems[0].classList.add('active');
+    }
+    
+    console.log(`📋 Outline updated for category: ${category}`);
+}
+
+/**
+ * Scroll to a specific effect section in settings
+ */
+function scrollToEffect(effectName) {
+    setTimeout(() => {
+        // Try multiple selectors to find the effect section
+        const section = document.querySelector(`[data-effect-section="${effectName}"]`) ||
+                       document.querySelector(`h4:has-text("${effectName}")`) ||
+                       Array.from(document.querySelectorAll('h4')).find(h4 => 
+                           h4.textContent.includes(effectName)
+                       );
+        
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            console.log(`📜 Scrolled to effect: ${effectName}`);
+        }
+    }, 100); // Wait for content to render
+}
+
+/**
+ * Scroll to a specific section in global settings
+ */
+function scrollToSection(sectionName) {
+    setTimeout(() => {
+        // Try to find section by data attribute or heading text
+        const section = document.querySelector(`[data-section="${sectionName}"]`) ||
+                       Array.from(document.querySelectorAll('h4')).find(h4 => 
+                           h4.textContent.toLowerCase().includes(sectionName.toLowerCase())
+                       );
+        
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            console.log(`📜 Scrolled to section: ${sectionName}`);
+        }
+    }, 100);
 }
 
 // Initialize drag effects specific UI elements (color palettes, etc.)

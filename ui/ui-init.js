@@ -9,6 +9,7 @@ import { UI_DEFAULTS } from './ui-defaults.js';
 import { setupSmartSlider } from './slider-utils.js';
 import { setCheckboxValue, setInputValue, toggleRotationSlider } from './ui-helpers.js';
 import { getGradientCSS, currentGradient, currentDirection, applyGradientBackground } from './gradient-manager.js';
+import { setupAllBadgeSyncs, setEffectsManager as setOutlineSyncManager } from './outline-sync.js';
 
 export function initializeUIValues() {
     // Click Snake defaults
@@ -214,4 +215,14 @@ function toggleGradientControlsForSolids(gradientKey) {
     if (angleGroup) {
         angleGroup.style.display = isSolidColor ? 'none' : 'block';
     }
+}
+
+/**
+ * Initialize outline badge syncing after effects manager is ready
+ * @param {EffectsManager} effectsManager - The effects manager instance
+ */
+export function initOutlineSyncing(effectsManager) {
+    setOutlineSyncManager(effectsManager);
+    setupAllBadgeSyncs();
+    console.log('📋 Outline syncing initialized');
 }

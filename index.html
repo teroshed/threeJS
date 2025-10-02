@@ -128,10 +128,15 @@
           <!-- Drag Effects Section -->
           <div class="outline-section">
             <div class="outline-section-title" data-category="drag-effects" style="cursor: pointer;">🖱️ Drag</div>
-            <div class="outline-item active" data-category="drag-effects" data-effect="ClickSnake">
+            <div class="outline-item" data-category="drag-effects" data-effect="ClickSnake">
               <span class="outline-item-icon">🐍</span>
               <span>Click Snake</span>
-              <span class="outline-item-badge">ON</span>
+              <span class="outline-item-badge" style="display: none;">ON</span>
+            </div>
+            <div class="outline-item" data-category="drag-effects" data-effect="DragSpiral">
+              <span class="outline-item-icon">🌀</span>
+              <span>Drag Spiral</span>
+              <span class="outline-item-badge" style="display: none;">ON</span>
             </div>
           </div>
 
@@ -141,23 +146,34 @@
             <div class="outline-item" data-category="idle-effects" data-effect="RandomCubes">
               <span class="outline-item-icon">✨</span>
               <span>Random Cubes</span>
+              <span class="outline-item-badge" style="display: none;">ON</span>
             </div>
             <div class="outline-item" data-category="idle-effects" data-effect="CameraOrbit">
               <span class="outline-item-icon">🔄</span>
               <span>Camera Orbit</span>
+              <span class="outline-item-badge" style="display: none;">ON</span>
+            </div>
+            <div class="outline-item" data-category="idle-effects" data-effect="SimulatedDrag">
+              <span class="outline-item-icon">🎨</span>
+              <span>Simulated Drag</span>
+              <span class="outline-item-badge" style="display: none;">ON</span>
             </div>
           </div>
 
           <!-- Global Section -->
           <div class="outline-section">
             <div class="outline-section-title" data-category="global-settings" style="cursor: pointer;">🌍 Global</div>
-            <div class="outline-item" data-category="global-settings">
+            <div class="outline-item" data-category="global-settings" data-section="background">
               <span class="outline-item-icon">🎨</span>
               <span>Background</span>
             </div>
-            <div class="outline-item" data-category="global-settings">
+            <div class="outline-item" data-category="global-settings" data-section="timing">
               <span class="outline-item-icon">⏱️</span>
               <span>Timing</span>
+            </div>
+            <div class="outline-item" data-category="global-settings" data-section="vertex-markers">
+              <span class="outline-item-icon">🎯</span>
+              <span>Vertex Markers</span>
             </div>
           </div>
         </div>
