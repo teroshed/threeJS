@@ -62,7 +62,7 @@ export function initializeUIValues() {
 
     // Global defaults
     const globalDefaults = EFFECTS_DEFAULTS.GLOBAL;
-    setupSmartSlider('clickRate', globalDefaults.clickRate);
+    setupSmartSlider('clickDelay', globalDefaults.clickDelay, { min: 0, max: 200, step: 1 });
 
     // Background gradient controls
     setupSmartSlider('bgOpacity', UI_DEFAULTS.gradientOpacity, { min: 0, max: 1, step: 0.05 });

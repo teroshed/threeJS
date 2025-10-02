@@ -17,7 +17,7 @@ export default class EffectsManager {
         EFFECTS_DEFAULTS.CAMERA_ORBIT
     ];
 
-    static ON_CLICK_RATE = EFFECTS_DEFAULTS.GLOBAL.clickRate;
+    static ON_CLICK_RATE = EFFECTS_DEFAULTS.GLOBAL.clickDelay;
     static FRAME_RATE = EFFECTS_DEFAULTS.GLOBAL.frameRate;
 
     constructor() {

@@ -59,7 +59,17 @@ export function setupSmartSlider(id, defaultValue, overrides = {}) {
         input.step = range.step;
         input.value = defaultValue;
         
-        valueDisplay.textContent = defaultValue;
+        // Check if the value display already has a suffix (like 'ms')
+        const currentText = valueDisplay.textContent;
+        const hasSuffix = currentText.includes('ms') || currentText.includes('%') || currentText.includes('°');
+        
+        if (hasSuffix) {
+            // Extract the suffix and apply it
+            const suffix = currentText.match(/(ms|%|°|[a-zA-Z]+)$/)?.[0] || '';
+            valueDisplay.textContent = `${defaultValue}${suffix}`;
+        } else {
+            valueDisplay.textContent = defaultValue;
+        }
         
         console.log(`📊 Smart slider [${id}]: min=${range.min}, max=${range.max}, step=${range.step}, default=${defaultValue}`);
     }

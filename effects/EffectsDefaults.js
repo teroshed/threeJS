@@ -59,8 +59,8 @@ const EFFECTS_DEFAULTS = {
 
     // Global Settings
     GLOBAL: {
-        clickRate: 30, // ms between click events
-        frameRate: 60  // fps
+        clickDelay: 30, // ms delay between click events (0 = no delay)
+        frameRate: 60   // fps
     }
 };
 

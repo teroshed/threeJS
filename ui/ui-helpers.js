@@ -16,14 +16,15 @@ export function setCheckboxValue(id, checked) {
     }
 }
 
-export function setupRangeControl(inputId, valueId, callback) {
+export function setupRangeControl(inputId, valueId, callback, formatter = null) {
     const input = document.getElementById(inputId);
     const valueDisplay = document.getElementById(valueId);
     
     if (input && valueDisplay) {
         input.addEventListener('input', (e) => {
             const value = e.target.value;
-            valueDisplay.textContent = value;
+            // Use formatter if provided, otherwise just display the value
+            valueDisplay.textContent = formatter ? formatter(value) : value;
             callback(value);
         });
     }

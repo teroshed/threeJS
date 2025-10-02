@@ -154,11 +154,11 @@ function setupCameraOrbitControls() {
 }
 
 function setupGlobalControls() {
-    setupRangeControl('clickRate', 'clickRateValue', (value) => {
-        const rateMs = parseInt(value);
-        effectsManager?.setClickRate(rateMs);
-        console.log(`⏱️ Click rate updated to: ${rateMs}ms`);
-    });
+    setupRangeControl('clickDelay', 'clickDelayValue', (value) => {
+        const delayMs = parseInt(value);
+        effectsManager?.setClickRate(delayMs);
+        console.log(`⏱️ Click delay updated to: ${delayMs}ms`);
+    }, (value) => `${value}ms`); // Add 'ms' suffix to display
 
     setupRangeControl('bgOpacity', 'bgOpacityValue', (value) => {
         setOpacity(parseFloat(value));
