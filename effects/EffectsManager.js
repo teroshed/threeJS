@@ -1,5 +1,6 @@
 import ClickSnake from './clickEffects/ClickSnake.js';
 import RandomCubes from './idleEffects/RandomCubes.js';
+import CameraOrbit from './idleEffects/CameraOrbit.js';
 import EFFECTS_DEFAULTS from './EffectsDefaults.js';
 
 
@@ -12,7 +13,8 @@ export default class EffectsManager {
 
     // Idle effects configuration - sourced from defaults
     static IDLE_EFFECTS = [
-        EFFECTS_DEFAULTS.RANDOM_CUBES
+        EFFECTS_DEFAULTS.RANDOM_CUBES,
+        EFFECTS_DEFAULTS.CAMERA_ORBIT
     ];
 
     static ON_CLICK_RATE = EFFECTS_DEFAULTS.GLOBAL.clickRate;

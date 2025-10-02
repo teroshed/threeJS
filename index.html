@@ -3,7 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title>Three.js Visualizer</title>
-    <link rel="stylesheet" href="/public/styles.css">
+    <!-- Modular CSS imports -->
+    <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/panel.css">
+    <link rel="stylesheet" href="/styles/controls.css">
+    <link rel="stylesheet" href="/styles/inputs.css">
+    <link rel="stylesheet" href="/styles/gradients.css">
+    <link rel="stylesheet" href="/styles/buttons.css">
   </head>
   <body>
     <!-- Control Panel -->
@@ -174,6 +180,56 @@
         </div>
       </div>
 
+      <!-- Camera Orbit Effect -->
+      <div class="control-section">
+        <div class="section-title">
+          🔄 Camera Orbit
+          <input type="checkbox" id="cameraOrbitActive">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Orbit Radius</span>
+            <span class="control-value" id="orbitRadiusValue">--</span>
+          </div>
+          <input type="range" id="orbitRadius">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Orbit Speed</span>
+            <span class="control-value" id="orbitSpeedValue">--</span>
+          </div>
+          <input type="range" id="orbitSpeed">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Direction</span>
+          </div>
+          <select id="orbitDirection">
+            <option value="1">Clockwise ↻</option>
+            <option value="-1">Counter-Clockwise ↺</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Height Offset</span>
+            <span class="control-value" id="orbitHeightValue">--</span>
+          </div>
+          <input type="range" id="orbitHeight">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Camera Tilt</span>
+            <span class="control-value" id="orbitTiltValue">--</span>
+          </div>
+          <input type="range" id="orbitTilt">
+        </div>
+      </div>
+
       <!-- Global Settings -->
       <div class="control-section">
         <div class="section-title">⚙️ Global Settings</div>
@@ -198,6 +254,14 @@
             <span>Gradient Direction</span>
           </div>
           <select id="bgGradientDirection"></select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Gradient Angle</span>
+            <span class="control-value" id="bgAngleValue">--</span>
+          </div>
+          <input type="range" id="bgAngle">
         </div>
 
         <div class="control-group">

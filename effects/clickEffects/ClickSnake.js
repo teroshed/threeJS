@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 class ClickSnake extends ClickEffect {
 
-    constructor(maxLength, autoFade, cubeSize, fadeSpeed, rotationSpeed, randomColor, fixedColor, zMode, zValue, zVariance, zMin, zMax) {
+    constructor(maxLength, autoFade, cubeSize, fadeSpeed, rotationSpeed, randomColor, fixedColor, zMode, zValue, zVariance, zMin, zMax, planeDistance) {
         super();
 
         this.name = "ClickSnake";
@@ -24,6 +24,7 @@ class ClickSnake extends ClickEffect {
         this.zVariance = zVariance;
         this.zMin = zMin;
         this.zMax = zMax;
+        this.planeDistance = planeDistance || 0;  // Distance of interaction plane from camera
         this.zCounter = 0; // For wave/pulse effects
     }
 
@@ -81,8 +82,9 @@ class ClickSnake extends ClickEffect {
         const raycaster = new THREE.Raycaster();
         raycaster.setFromCamera(mouse, camera);
 
-        // Create a plane at z=0 to intersect with
-        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+        // Create a plane at z=planeDistance, perpendicular to Z axis
+        // This creates a simple XY plane at a specific depth
+        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -this.planeDistance);
         const intersectionPoint = new THREE.Vector3();
         
         // Find intersection point

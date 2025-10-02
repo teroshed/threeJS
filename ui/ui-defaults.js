@@ -11,15 +11,12 @@ export const UI_DEFAULTS = {
     // Background settings
     defaultBackground: 'twilight',              // Which gradient to show on load
     gradientDirection: 'vertical',              // Default gradient direction  
-    gradientAngle: 140,                           // Default gradient angle (0-360, only for custom)
+    gradientAngle: 140,                         // Default gradient angle (0-360)
     gradientOpacity: 0.65,                      // Default background opacity (0.0 - 1.0)
-    
-    // Effect defaults
-    defaultZMode: Z_MODES.SPIRAL,               // Default Z-position mode (enum!)
     
     // Panel state
     panelCollapsed: false,                      // Start with panel open/closed
     
     // Feature toggles
-    rotationEnabled: true                       // Start with rotation on/off
+    rotationEnabled: true                       // Start with cube rotation on/off
 };

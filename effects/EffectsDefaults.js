@@ -1,5 +1,7 @@
 import ClickSnake from './clickEffects/ClickSnake.js';
 import RandomCubes from './idleEffects/RandomCubes.js';
+import CameraOrbit from './idleEffects/CameraOrbit.js';
+import { Z_MODES } from '../ui/ui-constants.js';
 
 /**
  * Centralized configuration for all effects
@@ -18,11 +20,12 @@ const EFFECTS_DEFAULTS = {
         rotationSpeed: 0.1,
         randomColor: true,
         fixedColor: '#ff00ff',
-        zMode: 'random',      // 'set', 'random', 'wave', 'spiral', 'pulse', 'oscillate'
-        zValue: 0,            // Base Z position
-        zVariance: 2,       // Variance amount for random/wave modes
-        zMin: -5,             // Minimum Z boundary
-        zMax: 10               // Maximum Z boundary
+        zMode: Z_MODES.WAVE,  // Using enum for type safety!
+        zValue: 0,              // Base Z position
+        zVariance: 2,           // Variance amount for random/wave modes
+        zMin: -5,               // Minimum Z boundary
+        zMax: 10,               // Maximum Z boundary
+        planeDistance: 0        // Distance of interaction plane from camera (0 = at origin)
     },
 
     // Random Cubes Effect Configuration
@@ -35,6 +38,17 @@ const EFFECTS_DEFAULTS = {
         cubeFadeRate: 0.01,
         cubeRandomColor: true,
         rotationSpeed: 0.02
+    },
+
+    // Camera Orbit Effect Configuration
+    CAMERA_ORBIT: {
+        name: "CameraOrbit",
+        class: CameraOrbit,
+        radius: 10,           // Distance from origin
+        speed: 0.005,         // Rotation speed
+        direction: 1,         // 1 = clockwise, -1 = counter-clockwise
+        height: 0,            // Y position offset
+        tilt: 0               // Camera tilt angle (0-90 degrees)
     },
 
     // Global Settings
