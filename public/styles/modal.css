@@ -29,11 +29,11 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     width: 90vw;
-    max-width: 900px;
+    max-width: 1200px;
     height: 80vh;
     max-height: 700px;
     display: flex;
-    flex-direction: row-reverse; /* Tabs on the right! */
+    flex-direction: row;
     overflow: hidden;
     animation: slideUp 0.3s ease;
 }

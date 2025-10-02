@@ -7,6 +7,11 @@ export class Effect {
         this.rotationSpeed = 0.02; // Default rotation speed
         this.randomColor = true;
         this.fixedColor = '#ff00ff';
+        this.active = false; // Default to inactive
+    }
+
+    setActive(active) {
+        this.active = active;
     }
 
     update(camera, scene, mouse) {
@@ -48,6 +53,17 @@ export class Effect {
         cube.position.x = position.x;
         cube.position.y = position.y;
         cube.position.z = position.z;
+        
+        // Add black outline to cube for better visual definition
+        const edges = new THREE.EdgesGeometry(geometry);
+        const lineMaterial = new THREE.LineBasicMaterial({ 
+            color: 0x000000,  // Black outline
+            transparent: true,
+            opacity: 0.6,
+            linewidth: 2
+        });
+        const outline = new THREE.LineSegments(edges, lineMaterial);
+        cube.add(outline); // Attach to cube so it follows all transformations
         
         this.cubeArray.push(cube);
         this.scene.add(cube);

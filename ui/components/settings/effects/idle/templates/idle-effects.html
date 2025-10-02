@@ -1,0 +1,186 @@
+<!-- ✨ IDLE EFFECTS (Random Cubes + Camera Orbit) -->
+
+<!-- Random Cubes Section -->
+<div class="control-section">
+  <h4 style="color: #71b280; margin-bottom: 20px;">✨ Random Cubes</h4>
+  <div class="control-group">
+    <div class="control-label">
+      <span>Max Cubes</span>
+      <span class="control-value" id="rcMaxCubesValue">--</span>
+    </div>
+    <input type="range" id="rcMaxCubes">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Cube Size</span>
+      <span class="control-value" id="rcCubeSizeValue">--</span>
+    </div>
+    <input type="range" id="rcCubeSize">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Spawn Rate</span>
+      <span class="control-value" id="rcSpawnRateValue">--</span>
+    </div>
+    <input type="range" id="rcSpawnRate">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Fade Rate</span>
+      <span class="control-value" id="rcFadeRateValue">--</span>
+    </div>
+    <input type="range" id="rcFadeRate">
+  </div>
+
+  <div class="control-group">
+    <div class="checkbox-wrapper">
+      <input type="checkbox" id="rcRotationEnabled" checked>
+      <label for="rcRotationEnabled">Enable Rotation</label>
+    </div>
+  </div>
+
+  <div class="control-group" id="rcRotationSliderGroup">
+    <div class="control-label">
+      <span>Rotation Speed</span>
+      <span class="control-value" id="rcRotationSpeedValue">--</span>
+    </div>
+    <input type="range" id="rcRotationSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="checkbox-wrapper">
+      <input type="checkbox" id="rcRandomColor" checked>
+      <label for="rcRandomColor">Random Colors</label>
+    </div>
+  </div>
+</div>
+
+<!-- Camera Orbit Section -->
+<div class="control-section" style="margin-top: 30px;">
+  <h4 style="color: #71b280; margin-bottom: 20px;">🔄 Camera Orbit</h4>
+  <div class="control-group">
+    <div class="control-label">
+      <span>Orbit Radius</span>
+      <span class="control-value" id="orbitRadiusValue">--</span>
+    </div>
+    <input type="range" id="orbitRadius">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Orbit Speed</span>
+      <span class="control-value" id="orbitSpeedValue">--</span>
+    </div>
+    <input type="range" id="orbitSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Direction</span>
+    </div>
+    <select id="orbitDirection">
+      <option value="1">Clockwise ↻</option>
+      <option value="-1">Counter-Clockwise ↺</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Height Offset</span>
+      <span class="control-value" id="orbitHeightValue">--</span>
+    </div>
+    <input type="range" id="orbitHeight">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Camera Tilt</span>
+      <span class="control-value" id="orbitTiltValue">--</span>
+    </div>
+    <input type="range" id="orbitTilt">
+  </div>
+</div>
+
+<!-- Simulated Drag Section -->
+<div class="control-section" style="margin-top: 30px;">
+  <h4 style="color: #71b280; margin-bottom: 20px;">🎨 Simulated Drag</h4>
+  
+  <div class="control-group">
+    <div class="control-label">
+      <span>Pattern</span>
+    </div>
+    <select id="simDragPattern">
+      <option value="circle">Circle 🔵</option>
+      <option value="line">Line ➖</option>
+      <option value="spiral">Spiral 🌀</option>
+      <option value="figure8">Figure-8 ∞</option>
+      <option value="lissajous">Lissajous 〰️</option>
+      <option value="random">Random Walk 🎲</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Speed</span>
+      <span class="control-value" id="simDragSpeedValue">--</span>
+    </div>
+    <input type="range" id="simDragSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Trail Length</span>
+      <span class="control-value" id="simDragTrailLengthValue">--</span>
+    </div>
+    <input type="range" id="simDragTrailLength">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Cube Size</span>
+      <span class="control-value" id="simDragCubeSizeValue">--</span>
+    </div>
+    <input type="range" id="simDragCubeSize">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Fade Speed</span>
+      <span class="control-value" id="simDragFadeSpeedValue">--</span>
+    </div>
+    <input type="range" id="simDragFadeSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Rotation Speed</span>
+      <span class="control-value" id="simDragRotationSpeedValue">--</span>
+    </div>
+    <input type="range" id="simDragRotationSpeed">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Path Size</span>
+      <span class="control-value" id="simDragPathSizeValue">--</span>
+    </div>
+    <input type="range" id="simDragPathSize">
+  </div>
+
+  <div class="control-group">
+    <div class="checkbox-wrapper">
+      <input type="checkbox" id="simDragRandomColor" checked>
+      <label for="simDragRandomColor">Random Colors</label>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Fixed Color</span>
+    </div>
+    <input type="color" id="simDragColor" value="#00ffff">
+  </div>
+</div>

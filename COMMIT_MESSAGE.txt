@@ -1,0 +1,87 @@
+feat: Add cube outlines and redesign control panel layout
+
+🎨 Major UI/UX improvements and visual enhancements
+
+## New Features
+
+### Cube Outlines
+- Added black outlines to all cubes using EdgesGeometry + LineSegments
+- Outlines automatically follow cube rotations (attached to parent mesh)
+- Applied to all effects: ClickSnake, RandomCubes, SimulatedDrag
+- Configurable opacity (60%) for subtle but visible edges
+
+### Simulated Drag Effect
+- New idle effect that automatically draws patterns of cubes
+- 6 different patterns: circle, line, spiral, figure8, lissajous, random
+- Frame throttling to prevent cube spam (spawns every 3 frames)
+- Full UI controls for pattern, speed, trail length, cube size, etc.
+- Uses raycasting for accurate 3D positioning
+
+### Control Panel Redesign
+- Split panel into two distinct sections: Drag Effects and Idle Effects
+- Each section has its own header and cog button for quick settings access
+- Cog buttons open modal directly to relevant category (no grid navigation)
+- Component-based architecture with reusable effect-toggle template
+- Enhanced visual feedback (green glow for active effects)
+- Clean section dividers and improved spacing
+
+## Technical Changes
+
+### Effects System
+- Modified `Effect.js` base class to add outlines to all cubes in `createCube()`
+- Created `effects/idleEffects/SimulatedDrag.js` with pattern-based cursor movement
+- Updated `EffectsDefaults.js` with SimulatedDrag configuration
+- Registered SimulatedDrag in EffectsManager's IDLE_EFFECTS array
+
+### UI Architecture
+- Created `ui/components/panel/` folder for panel components
+- Added `effect-toggle.html` template for reusable effect toggles
+- Restructured `index.html` with semantic panel-body/panel-footer sections
+- Enhanced `panel-simple.css` with two-section vertical layout
+- Updated `settings-manager.js` to handle category-specific cog buttons
+
+### Event Handling
+- Added event handlers for SimulatedDrag controls in `ui/event-handlers.js`
+- Cog buttons now use `data-category` attribute for direct navigation
+- Updated modal system to support direct category opening
+
+## Documentation
+- Created `ui/components/panel/README.md` - Panel component docs
+- Created `docs/PANEL_STRUCTURE.md` - Architecture guide with diagrams
+- Added visual structure diagrams and interaction flows
+
+## File Changes
+
+### New Files
+- `effects/idleEffects/SimulatedDrag.js` - Simulated drag effect class
+- `ui/components/panel/effect-toggle.html` - Reusable toggle template
+- `ui/components/panel/README.md` - Component documentation
+- `docs/PANEL_STRUCTURE.md` - Panel architecture guide
+
+### Modified Files
+- `effects/Effect.js` - Added outline creation in createCube()
+- `effects/EffectsDefaults.js` - Added SIMULATED_DRAG configuration
+- `effects/EffectsManager.js` - Registered SimulatedDrag effect
+- `index.html` - Restructured control panel with two sections
+- `public/styles/panel-simple.css` - Enhanced two-section layout styling
+- `ui/components/settings/settings-manager.js` - Direct category navigation
+- `ui/event-handlers.js` - Added SimulatedDrag controls
+- `ui/components/settings/effects/idle/templates/idle-effects.html` - Added SimulatedDrag UI
+
+## Visual Improvements
+- ✨ Cubes now have crisp black edges that make them pop
+- 🎨 Control panel has clear visual hierarchy with section separation
+- 🖱️ Improved hover states and transitions throughout UI
+- 🔄 Active effects glow green (#00ff64) with bold text
+- ⚙️ Cog buttons rotate 90° on hover for better feedback
+
+## Breaking Changes
+None - all changes are additive and backward compatible
+
+---
+
+Commit stats:
+- 9 files modified
+- 4 files created
+- ~500 lines added
+- 0 breaking changes

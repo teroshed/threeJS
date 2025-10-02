@@ -6,349 +6,156 @@
     <!-- Modular CSS imports -->
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/panel.css">
-    <link rel="stylesheet" href="/styles/panel-new.css">
+    <link rel="stylesheet" href="/styles/panel-simple.css">
     <link rel="stylesheet" href="/styles/controls.css">
     <link rel="stylesheet" href="/styles/inputs.css">
     <link rel="stylesheet" href="/styles/gradients.css">
     <link rel="stylesheet" href="/styles/buttons.css">
     <link rel="stylesheet" href="/styles/modal.css">
+    <link rel="stylesheet" href="/styles/grid-menu.css">
+    <link rel="stylesheet" href="/styles/outline-panel.css">
+    <link rel="stylesheet" href="/styles/scrollbar.css">
   </head>
   <body>
-    <!-- Simplified Control Panel -->
+    
+    <!-- Simple Main Panel with Toggles -->
     <div class="control-panel" id="controlPanel">
       <div class="panel-header">
         <h2 class="panel-title">🎛️ Effects</h2>
         <button class="close-btn" id="closePanel">×</button>
       </div>
 
-      <!-- Click Effects Section -->
-      <div class="effect-category">
-        <div class="category-header">
-          <h3>⚡ Click Effects</h3>
-          <button class="cog-btn" data-modal="click-effects" title="Configure">⚙️</button>
+      <div class="panel-body">
+        <!-- Drag Effects Section -->
+        <div class="effect-category">
+          <div class="category-header">
+            <h3>🖱️ Drag Effects</h3>
+            <button class="cog-btn" data-category="drag" title="Configure Drag Effects">⚙️</button>
+          </div>
+          
+          <div class="effect-toggle">
+            <input type="checkbox" id="clickSnakeActive" checked>
+            <label for="clickSnakeActive">
+              <span class="effect-icon">🐍</span>
+              <span class="effect-name">Click Snake</span>
+            </label>
+          </div>
         </div>
-        
-        <div class="effect-toggle">
-          <input type="checkbox" id="clickSnakeActive" checked>
-          <label for="clickSnakeActive">🐍 Click Snake</label>
+
+        <!-- Idle Effects Section -->
+        <div class="effect-category">
+          <div class="category-header">
+            <h3>✨ Idle Effects</h3>
+            <button class="cog-btn" data-category="idle" title="Configure Idle Effects">⚙️</button>
+          </div>
+          
+          <div class="effect-toggle">
+            <input type="checkbox" id="randomCubesActive">
+            <label for="randomCubesActive">
+              <span class="effect-icon">✨</span>
+              <span class="effect-name">Random Cubes</span>
+            </label>
+          </div>
+          
+          <div class="effect-toggle">
+            <input type="checkbox" id="cameraOrbitActive">
+            <label for="cameraOrbitActive">
+              <span class="effect-icon">🔄</span>
+              <span class="effect-name">Camera Orbit</span>
+            </label>
+          </div>
+
+          <div class="effect-toggle">
+            <input type="checkbox" id="simulatedDragActive">
+            <label for="simulatedDragActive">
+              <span class="effect-icon">🎨</span>
+              <span class="effect-name">Simulated Drag</span>
+            </label>
+          </div>
         </div>
       </div>
 
-      <!-- Idle Effects Section -->
-      <div class="effect-category">
-        <div class="category-header">
-          <h3>✨ Idle Effects</h3>
-          <button class="cog-btn" data-modal="idle-effects" title="Configure">⚙️</button>
-        </div>
-        
-        <div class="effect-toggle">
-          <input type="checkbox" id="randomCubesActive">
-          <label for="randomCubesActive">✨ Random Cubes</label>
-        </div>
-        
-        <div class="effect-toggle">
-          <input type="checkbox" id="cameraOrbitActive">
-          <label for="cameraOrbitActive">🔄 Camera Orbit</label>
-        </div>
-      </div>
-
-      <!-- Global Settings -->
-      <div class="effect-category">
-        <div class="category-header">
-          <h3>🌍 Global</h3>
-          <button class="cog-btn" data-modal="global-settings" title="Configure">⚙️</button>
-        </div>
-        
-        <button class="btn btn-danger" id="clearEffects" style="margin-top: 10px;">Clear All</button>
+      <!-- Panel Footer -->
+      <div class="panel-footer">
+        <button class="btn btn-danger" id="clearEffects">
+          🗑️ Clear All
+        </button>
       </div>
     </div>
 
     <button class="toggle-btn" id="togglePanel">⚙️</button>
 
-    <!-- Settings Modal -->
+    <!-- Settings Modal with Grid Inside -->
     <div class="modal-overlay" id="settingsModal">
-      <div class="modal-container">
+      <div class="modal-container" style="max-width: 1200px;">
         <button class="modal-close" id="modalClose">×</button>
         
-        <!-- Sidebar with Tabs -->
-        <div class="modal-sidebar">
-          <div class="modal-tab active" data-tab="click-effects">
-            🐍 Click Snake
+        <!-- Main Content Area (Grid or Settings) -->
+        <div class="modal-main-content">
+          <!-- Grid Menu View (Loaded from grid-menu.html) -->
+          <div class="modal-view" id="gridView">
+            <!-- Content loaded dynamically by modal-manager.js -->
           </div>
-          <div class="modal-tab" data-tab="idle-effects">
-            ✨ Idle Effects
-          </div>
-          <div class="modal-tab" data-tab="global-settings">
-            🌍 Global
+
+          <!-- Settings View (Shown when category clicked) -->
+          <div class="modal-view hidden" id="settingsView">
+            <div class="settings-header">
+              <button class="back-btn" id="backToGrid">← Back</button>
+              <h2 class="settings-title" id="settingsTitle">Settings</h2>
+            </div>
+
+            <div class="settings-content" id="settingsContent">
+              <!-- Content will be dynamically loaded based on category -->
+            </div>
           </div>
         </div>
 
-        <!-- Modal Content -->
-        <div class="modal-content">
-          <!-- Click Snake Settings -->
-          <div class="tab-content active" id="click-effects">
-            <div class="modal-header">
-              <h2 class="modal-title">🐍 Click Snake Settings</h2>
-              <p class="modal-description">Configure the trail of cubes that follows your clicks</p>
-            </div>
+        <!-- IDE-Style Outline (Always visible on right) -->
+        <div class="modal-outline">
+          <div class="outline-header">
+            <div class="outline-title">OUTLINE</div>
+          </div>
 
-            <div class="control-section">
-              <!-- All ClickSnake controls will go here -->
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Max Length</span>
-                  <span class="control-value" id="snakeMaxLengthValue">--</span>
-                </div>
-                <input type="range" id="snakeMaxLength">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Cube Size</span>
-                  <span class="control-value" id="snakeCubeSizeValue">--</span>
-                </div>
-                <input type="range" id="snakeCubeSize">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Fade Speed</span>
-                  <span class="control-value" id="snakeFadeSpeedValue">--</span>
-                </div>
-                <input type="range" id="snakeFadeSpeed">
-              </div>
-
-              <div class="control-group">
-                <div class="checkbox-wrapper">
-                  <input type="checkbox" id="snakeRotationEnabled" checked>
-                  <label for="snakeRotationEnabled">Enable Rotation</label>
-                </div>
-              </div>
-
-              <div class="control-group" id="snakeRotationSliderGroup">
-                <div class="control-label">
-                  <span>Rotation Speed</span>
-                  <span class="control-value" id="snakeRotationSpeedValue">--</span>
-                </div>
-                <input type="range" id="snakeRotationSpeed">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Z-Position Mode</span>
-                </div>
-                <select id="snakeZMode"></select>
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Z Min</span>
-                  <span class="control-value" id="snakeZMinValue">--</span>
-                </div>
-                <input type="range" id="snakeZMin">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Z Max</span>
-                  <span class="control-value" id="snakeZMaxValue">--</span>
-                </div>
-                <input type="range" id="snakeZMax">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Z Variance</span>
-                  <span class="control-value" id="snakeZVarianceValue">--</span>
-                </div>
-                <input type="range" id="snakeZVariance">
-              </div>
-
-              <div class="control-group">
-                <div class="checkbox-wrapper">
-                  <input type="checkbox" id="snakeAutoFade" checked>
-                  <label for="snakeAutoFade">Auto Fade</label>
-                </div>
-              </div>
-
-              <div class="control-group">
-                <div class="checkbox-wrapper">
-                  <input type="checkbox" id="snakeRandomColor" checked>
-                  <label for="snakeRandomColor">Random Colors</label>
-                </div>
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Fixed Color</span>
-                </div>
-                <input type="color" id="snakeColor" value="#ff00ff">
-              </div>
+          <!-- Drag Effects Section -->
+          <div class="outline-section">
+            <div class="outline-section-title" data-category="drag-effects" style="cursor: pointer;">🖱️ Drag</div>
+            <div class="outline-item active" data-category="drag-effects" data-effect="ClickSnake">
+              <span class="outline-item-icon">🐍</span>
+              <span>Click Snake</span>
+              <span class="outline-item-badge">ON</span>
             </div>
           </div>
 
-          <!-- Idle Effects Settings -->
-          <div class="tab-content" id="idle-effects">
-            <div class="modal-header">
-              <h2 class="modal-title">✨ Idle Effects Settings</h2>
-              <p class="modal-description">Configure background effects (Random Cubes & Camera Orbit)</p>
+          <!-- Idle Effects Section -->
+          <div class="outline-section">
+            <div class="outline-section-title" data-category="idle-effects" style="cursor: pointer;">✨ Idle</div>
+            <div class="outline-item" data-category="idle-effects" data-effect="RandomCubes">
+              <span class="outline-item-icon">✨</span>
+              <span>Random Cubes</span>
             </div>
-
-            <div class="control-section">
-              <h4 style="color: #8a2be2; margin-bottom: 15px;">✨ Random Cubes</h4>
-              
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Max Cubes</span>
-                  <span class="control-value" id="rcMaxCubesValue">--</span>
-                </div>
-                <input type="range" id="rcMaxCubes">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Cube Size</span>
-                  <span class="control-value" id="rcCubeSizeValue">--</span>
-                </div>
-                <input type="range" id="rcCubeSize">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Spawn Rate</span>
-                  <span class="control-value" id="rcSpawnRateValue">--</span>
-                </div>
-                <input type="range" id="rcSpawnRate">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Fade Rate</span>
-                  <span class="control-value" id="rcFadeRateValue">--</span>
-                </div>
-                <input type="range" id="rcFadeRate">
-              </div>
-
-              <div class="control-group">
-                <div class="checkbox-wrapper">
-                  <input type="checkbox" id="rcRotationEnabled" checked>
-                  <label for="rcRotationEnabled">Enable Rotation</label>
-                </div>
-              </div>
-
-              <div class="control-group" id="rcRotationSliderGroup">
-                <div class="control-label">
-                  <span>Rotation Speed</span>
-                  <span class="control-value" id="rcRotationSpeedValue">--</span>
-                </div>
-                <input type="range" id="rcRotationSpeed">
-              </div>
-
-              <div class="control-group">
-                <div class="checkbox-wrapper">
-                  <input type="checkbox" id="rcRandomColor" checked>
-                  <label for="rcRandomColor">Random Colors</label>
-                </div>
-              </div>
-
-              <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
-
-              <h4 style="color: #8a2be2; margin-bottom: 15px;">🔄 Camera Orbit</h4>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Orbit Radius</span>
-                  <span class="control-value" id="orbitRadiusValue">--</span>
-                </div>
-                <input type="range" id="orbitRadius">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Orbit Speed</span>
-                  <span class="control-value" id="orbitSpeedValue">--</span>
-                </div>
-                <input type="range" id="orbitSpeed">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Direction</span>
-                </div>
-                <select id="orbitDirection">
-                  <option value="1">Clockwise ↻</option>
-                  <option value="-1">Counter-Clockwise ↺</option>
-                </select>
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Height Offset</span>
-                  <span class="control-value" id="orbitHeightValue">--</span>
-                </div>
-                <input type="range" id="orbitHeight">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Camera Tilt</span>
-                  <span class="control-value" id="orbitTiltValue">--</span>
-                </div>
-                <input type="range" id="orbitTilt">
-              </div>
+            <div class="outline-item" data-category="idle-effects" data-effect="CameraOrbit">
+              <span class="outline-item-icon">🔄</span>
+              <span>Camera Orbit</span>
             </div>
           </div>
 
-          <!-- Global Settings -->
-          <div class="tab-content" id="global-settings">
-            <div class="modal-header">
-              <h2 class="modal-title">🌍 Global Settings</h2>
-              <p class="modal-description">Configure app-wide settings and background</p>
+          <!-- Global Section -->
+          <div class="outline-section">
+            <div class="outline-section-title" data-category="global-settings" style="cursor: pointer;">🌍 Global</div>
+            <div class="outline-item" data-category="global-settings">
+              <span class="outline-item-icon">🎨</span>
+              <span>Background</span>
             </div>
-
-            <div class="control-section">
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Click Delay</span>
-                  <span class="control-value" id="clickDelayValue">--ms</span>
-                </div>
-                <input type="range" id="clickDelay">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Background Gradient</span>
-                </div>
-                <div class="gradient-grid" id="gradientGrid"></div>
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Gradient Direction</span>
-                </div>
-                <select id="bgGradientDirection"></select>
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Gradient Angle</span>
-                  <span class="control-value" id="bgAngleValue">--</span>
-                </div>
-                <input type="range" id="bgAngle">
-              </div>
-
-              <div class="control-group">
-                <div class="control-label">
-                  <span>Gradient Opacity</span>
-                  <span class="control-value" id="bgOpacityValue">--</span>
-                </div>
-                <input type="range" id="bgOpacity">
-              </div>
+            <div class="outline-item" data-category="global-settings">
+              <span class="outline-item-icon">⏱️</span>
+              <span>Timing</span>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- ✅ All templates now loaded from external files in ui/components/settings/effects/ -->
 
     <script type="module" src="/main.js"></script>
     <script type="module" src="/ui/ui-controller.js"></script>

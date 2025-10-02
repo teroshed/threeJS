@@ -14,7 +14,8 @@ export default class EffectsManager {
     // Idle effects configuration - sourced from defaults
     static IDLE_EFFECTS = [
         EFFECTS_DEFAULTS.RANDOM_CUBES,
-        EFFECTS_DEFAULTS.CAMERA_ORBIT
+        EFFECTS_DEFAULTS.CAMERA_ORBIT,
+        EFFECTS_DEFAULTS.SIMULATED_DRAG
     ];
 
     static ON_CLICK_RATE = EFFECTS_DEFAULTS.GLOBAL.clickDelay;

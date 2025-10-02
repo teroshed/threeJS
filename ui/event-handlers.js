@@ -16,6 +16,7 @@ export function setupAllEventListeners() {
     setupClickSnakeControls();
     setupRandomCubesControls();
     setupCameraOrbitControls();
+    setupSimulatedDragControls();
     setupGlobalControls();
 }
 
@@ -150,6 +151,51 @@ function setupCameraOrbitControls() {
 
     setupCheckbox('cameraOrbitActive', (checked) => {
         effectsManager?.setEffectActive('CameraOrbit', checked);
+    });
+}
+
+function setupSimulatedDragControls() {
+    setupRangeControl('simDragSpeed', 'simDragSpeedValue', (value) => {
+        updateEffectConfig('SimulatedDrag', 'speed', parseFloat(value));
+    });
+
+    setupRangeControl('simDragTrailLength', 'simDragTrailLengthValue', (value) => {
+        updateEffectConfig('SimulatedDrag', 'trailLength', parseInt(value));
+    });
+
+    setupRangeControl('simDragCubeSize', 'simDragCubeSizeValue', (value) => {
+        updateEffectConfig('SimulatedDrag', 'cubeSize', parseFloat(value));
+    });
+
+    setupRangeControl('simDragFadeSpeed', 'simDragFadeSpeedValue', (value) => {
+        updateEffectConfig('SimulatedDrag', 'fadeSpeed', parseFloat(value));
+    });
+
+    setupRangeControl('simDragRotationSpeed', 'simDragRotationSpeedValue', (value) => {
+        updateEffectConfig('SimulatedDrag', 'rotationSpeed', parseFloat(value));
+    });
+
+    setupRangeControl('simDragPathSize', 'simDragPathSizeValue', (value) => {
+        updateEffectConfig('SimulatedDrag', 'pathSize', parseFloat(value));
+    });
+
+    const patternSelect = document.getElementById('simDragPattern');
+    patternSelect?.addEventListener('change', (e) => {
+        updateEffectConfig('SimulatedDrag', 'pattern', e.target.value);
+        console.log(`🎨 Pattern changed to: ${e.target.value}`);
+    });
+
+    setupCheckbox('simDragRandomColor', (checked) => {
+        updateEffectConfig('SimulatedDrag', 'randomColor', checked);
+    });
+
+    setupColorPicker('simDragColor', (color) => {
+        updateEffectConfig('SimulatedDrag', 'fixedColor', color);
+    });
+
+    setupCheckbox('simulatedDragActive', (checked) => {
+        console.log('🎨 SimulatedDrag checkbox clicked:', checked);
+        effectsManager?.setEffectActive('SimulatedDrag', checked);
     });
 }
 

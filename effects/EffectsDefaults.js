@@ -1,6 +1,7 @@
 import ClickSnake from './clickEffects/ClickSnake.js';
 import RandomCubes from './idleEffects/RandomCubes.js';
 import CameraOrbit from './idleEffects/CameraOrbit.js';
+import SimulatedDrag from './idleEffects/SimulatedDrag.js';
 import { Z_MODES } from '../ui/ui-constants.js';
 
 /**
@@ -55,6 +56,21 @@ const EFFECTS_DEFAULTS = {
         direction: 1,         // 1 = clockwise, -1 = counter-clockwise
         height: 0,            // Y position offset
         tilt: 0               // Camera tilt angle (0-90 degrees)
+    },
+
+    // Simulated Drag Effect Configuration
+    SIMULATED_DRAG: {
+        name: "SimulatedDrag",
+        class: SimulatedDrag,
+        pattern: 'circle',    // 'circle', 'line', 'spiral', 'figure8', 'lissajous', 'random'
+        speed: 0.05,          // Animation speed
+        trailLength: 100,     // Max cubes in trail
+        cubeSize: 0.5,        // Cube size
+        fadeSpeed: 0.01,      // How fast cubes fade
+        rotationSpeed: 0.05,  // Cube rotation speed
+        randomColor: true,    // Random colors
+        fixedColor: '#00ffff', // Fixed color (if randomColor is false)
+        pathSize: 5           // Size/radius of the pattern
     },
 
     // Global Settings

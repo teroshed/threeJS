@@ -5,11 +5,16 @@
 import { initGradientManager, applyGradientBackground } from './gradient-manager.js';
 import { initializeUIValues } from './ui-init.js';
 import { setupAllEventListeners, setEffectsManager } from './event-handlers.js';
-import { initModalSystem } from './modal-manager.js';
+import { initModalSystem } from './components/settings/settings-manager.js';
 import { UI_DEFAULTS } from './ui-defaults.js';
+import { initSettingsModal } from './components/settings/settings-modal.js';
 
 // Export the main initialization function
 export function initUI(manager, sceneRef, rendererRef) {
+
+
+
+    
     // Initialize gradient manager with scene reference
     initGradientManager(sceneRef);
     
@@ -18,6 +23,16 @@ export function initUI(manager, sceneRef, rendererRef) {
     
     // Initialize modal system
     initModalSystem();
+
+    
+    
+    // Listen for category loads to re-initialize controls
+    window.addEventListener('category-loaded', (e) => {
+        const category = e.detail.category;
+        console.log(`🔄 Reinitializing controls for: ${category}`);
+        initializeUIValues();
+        setupAllEventListeners();
+    });
     
     // Initialize all UI values from defaults
     initializeUIValues();
@@ -27,6 +42,9 @@ export function initUI(manager, sceneRef, rendererRef) {
     
     // Apply initial background gradient
     applyGradientBackground(UI_DEFAULTS.defaultBackground);
+
+    //Newly added by me
+    initSettingsModal();
     
-    console.log('🎛️ UI Controller initialized');
+    console.log('🎛️ UI Controller initialized with grid navigation');
 }
