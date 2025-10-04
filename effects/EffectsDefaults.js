@@ -3,6 +3,8 @@ import DragSpiral from './clickEffects/DragSpiral.js';
 import RandomCubes from './idleEffects/RandomCubes.js';
 import CameraOrbit from './idleEffects/CameraOrbit.js';
 import SimulatedDrag from './idleEffects/SimulatedDrag.js';
+import Kaleidoscope from './idleEffects/Kaleidoscope.js';
+import Supershape from './idleEffects/Supershape.js';
 import { Z_MODES, PATTERN_TYPES, COLOR_MODES, SPAWN_MODES } from '../enums/index.js';
 
 /**
@@ -82,6 +84,55 @@ const EFFECTS_DEFAULTS = {
         direction: 1,         // 1 = clockwise, -1 = counter-clockwise
         height: 0,            // Y position offset
         tilt: 0               // Camera tilt angle (0-90 degrees)
+    },
+
+    // Kaleidoscope Effect Configuration
+    KALEIDOSCOPE: {
+        name: "Kaleidoscope",
+        class: Kaleidoscope,
+        // Parameters in the order expected by the constructor
+        maxCubes: 1,          // Not used for kaleidoscope, but required by base class
+        cubeSize: 1,          // Not used for kaleidoscope, but required by base class
+        cubeSpawnRate: 0,     // Not used for kaleidoscope, but required by base class
+        cubeFadeRate: 0,      // Not used for kaleidoscope, but required by base class
+        cubeRandomColor: false, // Not used for kaleidoscope, but required by base class
+        rotationSpeed: 0.001, // Rotation speed of the kaleidoscope
+        spawnBounds: {        // Not used for kaleidoscope, but required by base class
+            xMin: 0, xMax: 0, yMin: 0, yMax: 0, zMin: 0, zMax: 0
+        },
+        // Kaleidoscope-specific properties (set in constructor)
+        segments: 12,         // Number of symmetry segments (4-64)
+        baseRadius: 2.0,      // Base radius for the kaleidoscope
+        frequencyBins: 120,   // Number of frequency bins to sample
+        lineWidth: 2.0,       // Line width for the kaleidoscope lines
+        mirrorAlpha: 0.7      // Alpha for mirrored segments
+    },
+    
+    SUPERSHAPE: {
+        name: "Supershape",
+        class: Supershape,
+        // Parameters in the order expected by the constructor
+        maxCubes: 1,          // Not used for supershape, but required by base class
+        cubeSize: 1,          // Not used for supershape, but required by base class
+        cubeSpawnRate: 0,     // Not used for supershape, but required by base class
+        cubeFadeRate: 0,      // Not used for supershape, but required by base class
+        cubeRandomColor: false, // Not used for supershape, but required by base class
+        rotationSpeed: 0.002, // Rotation speed of the supershape
+        spawnBounds: {        // Not used for supershape, but required by base class
+            xMin: 0, xMax: 0, yMin: 0, yMax: 0, zMin: 0, zMax: 0
+        },
+        // Supershape-specific properties (set in constructor)
+        segments: 12,         // Number of symmetry segments (4-64)
+        baseRadius: 2.0,      // Base radius for the supershape
+        frequencyBins: 120,   // Number of frequency bins to sample
+        lineWidth: 2.0,       // Line width for the supershape lines
+        mirrorAlpha: 0.7,     // Alpha for mirrored segments
+        m: 6,                 // Symmetry parameter
+        a: 1,                 // First scaling parameter
+        b: 1,                 // Second scaling parameter
+        n1: 0.5,              // First shape parameter
+        n2: 0.5,              // Second shape parameter
+        n3: 0.5               // Third shape parameter
     },
 
             // Simulated Drag Effect Configuration

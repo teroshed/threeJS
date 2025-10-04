@@ -89,37 +89,30 @@ export class Effect {
             // Calculate target scale based on audio
             let targetScale = baseScale;
             
-            // Beat response - immediate pulse
+            // Beat response - immediate pulse (more sensitive)
             if (beat.isBeat) {
-                const beatIntensity = Math.min(beat.intensity || 1, 2); // Cap at 2x
-                targetScale += beatIntensity * 0.3; // Add to target scale
-                cube.material.opacity = Math.min(baseOpacity * (1 + beatIntensity * 0.5), 1);
+                const beatIntensity = Math.min(beat.intensity || 1, 3); // Cap at 3x, increased from 2x
+                targetScale += beatIntensity * 0.8; // Increased from 0.3 to 0.8
+                cube.material.opacity = Math.min(baseOpacity * (1 + beatIntensity * 0.8), 1); // Increased from 0.5 to 0.8
                 
-                // Add slight rotation on beat
-                cube.rotation.x += beatIntensity * 0.1;
-                cube.rotation.y += beatIntensity * 0.1;
-                cube.rotation.z += beatIntensity * 0.05;
+                // Add more pronounced rotation on beat
+                cube.rotation.x += beatIntensity * 0.3; // Increased from 0.1 to 0.3
+                cube.rotation.y += beatIntensity * 0.3; // Increased from 0.1 to 0.3
+                cube.rotation.z += beatIntensity * 0.2; // Increased from 0.05 to 0.2
             }
             
-            // Volume response - continuous scaling
-            targetScale += volume * 0.3;
+            // Volume response - continuous scaling (more sensitive)
+            targetScale += volume * 0.6; // Increased from 0.3 to 0.6
             
-            // Bass response - additional scale and color (no position changes)
+            // Bass response - additional scale (no color changes)
             if (bass > 0.3) {
                 targetScale += bass * 0.2; // Scale instead of moving position
-                // Add bass color shift
-                if (this.randomColor) {
-                    const bassColor = new THREE.Color().setHSL(0.1, 1, 0.5 + bass * 0.3); // Red-orange
-                    cube.material.color.lerp(bassColor, 0.1);
-                }
             }
             
-            // Treble response - rotation and brightness
+            // Treble response - rotation only (no color changes)
             if (treble > 0.3) {
                 cube.rotation.x += treble * 0.05;
                 cube.rotation.z += treble * 0.03;
-                // Add treble brightness
-                cube.material.emissive = new THREE.Color().setHSL(0.6, 1, treble * 0.2); // Cyan
             }
             
             // Apply smooth scaling to target

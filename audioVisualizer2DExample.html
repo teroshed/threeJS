@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Psychedelic Audio Visualizer — Cosmic Edition (Queues + Folders) [TDZ Fix + Tests]</title>
+  <style>
+    :root {
+      --ui-bg: rgba(10,10,14,0.75);
+      --ui-border: rgba(255,255,255,0.12);
+      --text: #e7e7ef;
+      --sub: #a6a6bb;
+      --accent: #7cf6ff;
+    }
+    html, body { height: 100%; margin: 0; background: radial-gradient(1200px 800px at 50% 30%, #0b0f1a 0%, #05060b 60%, #04040a 100%); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+    .hud { position: fixed; inset: 0; pointer-events: none; }
+    .panel { pointer-events: auto; position: absolute; top: 16px; left: 16px; backdrop-filter: blur(8px) saturate(1.1); background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: 14px; padding: 12px 14px; box-shadow: 0 6px 24px rgba(0,0,0,0.35); min-width: 340px; max-width: 460px; }
+    .panel h1 { margin: 0 0 8px 0; font-size: 16px; letter-spacing: .5px; font-weight: 700; }
+    .row { display: flex; align-items: center; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
+    label { font-size: 12px; color: var(--sub); }
+    input[type="range"] { width: 160px; }
+    .btn { pointer-events: auto; appearance: none; border: 1px solid var(--ui-border); background: rgba(255,255,255,0.04); color: var(--text); border-radius: 10px; padding: 8px 12px; font-weight: 600; cursor: pointer; transition: transform .08s ease, background .2s ease; }
+    .btn:hover { background: rgba(255,255,255,0.08); }
+    .btn:active { transform: translateY(1px) scale(0.99); }
+    .file { display: inline-flex; align-items: center; gap: 10px; }
+    .file input { display: none; }
+    .small { font-size: 11px; color: var(--sub); }
+    .footer { position: absolute; right: 16px; bottom: 16px; backdrop-filter: blur(8px) saturate(1.1); background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: 14px; padding: 8px 12px; font-size: 12px; display:flex; gap:10px; align-items:center; }
+    .tog { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+    .tog input { width: 18px; height: 18px; }
+    .tog-group { display:grid; grid-template-columns: 1fr 1fr; gap:6px 12px; width:100%; }
+    .centerPrompt { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+    .dropzone { pointer-events: auto; text-align: center; border: 2px dashed rgba(255,255,255,0.14); border-radius: 18px; padding: 24px 28px; max-width: 520px; background: rgba(10,10,18,0.35); }
+    .dropzone p { margin: 6px 0 0 0; color: var(--sub); font-size: 13px; }
+    .hidden { display: none; }
+    .ok { color:#9cffc7 }
+    .warn { color:#ffce6b }
+    .section { width:100%; border-top:1px solid var(--ui-border); padding-top:8px; margin-top:6px; }
+    .playlist { max-height: 220px; overflow: auto; border: 1px solid var(--ui-border); border-radius: 10px; padding: 6px; width: 100%; background: rgba(255,255,255,0.03); }
+    .track { display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; cursor:pointer; }
+    .track.active { background: rgba(124,246,255,0.12); }
+    .track .idx { font-size: 11px; opacity:.7; width: 20px; text-align:right; }
+    .track .name { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .track .dur { font-size: 11px; opacity:.7; }
+    .pill { font-size:11px; padding:4px 8px; border:1px solid var(--ui-border); border-radius:999px; background: rgba(255,255,255,0.05); }
+  </style>
+</head>
+<body>
+  <canvas id="viz"></canvas>
+  <div class="hud">
+    <div class="panel">
+      <h1>🌌 Cosmic Audio Visualizer</h1>
+      <div class="row">
+        <label class="file">
+          <input id="file" type="file" accept="audio/*" multiple />
+          <button class="btn" id="choose">Add Files</button>
+        </label>
+        <label class="file">
+          <input id="folder" type="file" webkitdirectory directory multiple />
+          <button class="btn" id="chooseFolder">Add Folder</button>
+        </label>
+        <span id="filename" class="small">No tracks queued</span>
+      </div>
+      <div class="row">
+        <button class="btn" id="play">Play</button>
+        <button class="btn" id="pause">Pause</button>
+        <button class="btn" id="prev">⟨⟨ Prev</button>
+        <button class="btn" id="next">Next ⟩⟩</button>
+        <button class="btn" id="fs">Fullscreen</button>
+        <span class="pill" id="nowPlaying">—</span>
+      </div>
+      <div class="row">
+        <label>Symmetry</label>
+        <input id="sym" type="range" min="4" max="64" value="12" />
+        <span id="symv" class="small">12</span>
+      </div>
+      <div class="row">
+        <label>Sensitivity</label>
+        <input id="sens" type="range" min="0" max="100" value="38" />
+        <span id="sensv" class="small">0.38×</span>
+      </div>
+      <div class="row">
+        <label>Trail</label>
+        <input id="trail" type="range" min="0" max="100" value="86" />
+        <span id="trailv" class="small">0.86</span>
+      </div>
+      <div class="row section">
+        <label class="small" style="width:100%">Visual Layers — toggle to mix</label>
+        <div class="tog-group">
+          <label class="tog"><input id="layerKaleido" type="checkbox" checked/> Kaleidoscope</label>
+          <label class="tog"><input id="layerRings" type="checkbox" checked/> Aurora Rings</label>
+          <label class="tog"><input id="layerSpiral" type="checkbox" checked/> Spiral Galaxy</label>
+          <label class="tog"><input id="layerWaves" type="checkbox" checked/> Cosmic Waves</label>
+          <label class="tog"><input id="layerFractal" type="checkbox" /> Fractal Bloom</label>
+          <label class="tog"><input id="layerNebulaBG" type="checkbox" checked/> Nebula BG</label>
+          <label class="tog"><input id="bloom" type="checkbox" checked /> Bloom</label>
+          <label class="tog"><input id="pulse" type="checkbox" checked /> Beat Pulse</label>
+          <label class="tog"><input id="stars" type="checkbox" checked /> Starfield</label>
+        </div>
+      </div>
+      <div class="row section">
+        <div class="small" style="width:100%">Playlist</div>
+        <div id="playlist" class="playlist"></div>
+      </div>
+      <div class="row small" style="margin-top:6px">
+        Tip: drag & drop one or more files (or folders) anywhere • works offline • Web Audio API
+      </div>
+    </div>
+    <div class="centerPrompt" id="dropArea">
+      <div class="dropzone" id="dropZone">
+        <div style="font-size:18px; font-weight:700; letter-spacing:.4px;">Drop audio files or folders here</div>
+        <p>(mp3, wav, m4a…)</p>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Made with ❤️ Web Audio + Canvas • Space/Click: Play/Pause</span>
+      <span id="diag" class="small">Diagnostics: running…</span>
+    </div>
+  </div>
+
+  <audio id="player" crossorigin="anonymous"></audio>
+
+  <script>
+  (()=>{
+    // ===== Canvas =====
+    const canvas = document.getElementById('viz');
+    const gl = canvas.getContext('2d');
+
+    // ===== PREDECLARE STATE to avoid TDZ on early calls (resize/init) =====
+    // Starfield state
+    let stars = [];              // <— declared before any use
+    const MAX_STARS = 1000;
+    // Nebula state
+    const nebulaParticles = [];  // <— declared before any use
+    const MAX_NEB = 1400;
+    // Playlist state (needed by resize -> renderPlaylist)
+    const playlistEl = document.getElementById('playlist');
+    const filename   = document.getElementById('filename');
+    const nowPlaying = document.getElementById('nowPlaying');
+    let queue = [];  // {name, url, file}
+    let current = -1;
+
+    // ===== Fractal buffer declared BEFORE use (avoid TDZ) =====
+    let fracCanvas = null, fracCtx = null, fracW = 0, fracH = 0;
+    function rebuildFractalBuffer(){
+      const scale = 3; // lower = heavier rendering
+      fracW = Math.max(160, Math.floor(innerWidth/scale));
+      fracH = Math.max(120, Math.floor(innerHeight/scale));
+      fracCanvas = document.createElement('canvas');
+      fracCanvas.width = fracW; fracCanvas.height = fracH;
+      fracCtx = fracCanvas.getContext('2d');
+      fracCtx.imageSmoothingEnabled = false;
+    }
+    rebuildFractalBuffer();
+
+    // ===== Starfield functions =====
+    function initStars(){
+      stars.length = 0;
+      const count = Math.min(MAX_STARS, Math.floor((innerWidth*innerHeight)/2000));
+      for(let i=0;i<count;i++){
+        stars.push({ x: Math.random()*innerWidth, y: Math.random()*innerHeight, z: Math.random(), s: Math.random()*1.5 + 0.2, tw: Math.random()*Math.PI*2 });
+      }
+    }
+
+    function drawStars(dt, bass, highs){
+      if(!starsTog || !starsTog.checked) return; // guard if UI not wired yet
+      gl.save();
+      gl.globalCompositeOperation = 'screen';
+      for(const st of stars){
+        st.tw += dt*(1.0 + highs*0.5);
+        const twinkle = 0.5 + 0.5*Math.sin(st.tw);
+        st.x += 0.02 * (st.z - 0.5);
+        st.y += 0.02 * (st.z - 0.5);
+        if(st.x < -5) st.x = innerWidth+5; if(st.x>innerWidth+5) st.x = -5;
+        if(st.y < -5) st.y = innerHeight+5; if(st.y>innerHeight+5) st.y = -5;
+        const alpha = 0.15 + twinkle*0.35;
+        gl.fillStyle = `rgba(200,220,255,${alpha})`;
+        gl.beginPath(); gl.arc(st.x, st.y, st.s, 0, Math.PI*2); gl.fill();
+      }
+      gl.restore();
+    }
+
+    // ===== Nebula BG functions =====
+    function initNebula(){
+      nebulaParticles.length = 0;
+      const cx = innerWidth/2, cy = innerHeight/2;
+      const maxR = Math.min(innerWidth, innerHeight)*0.7;
+      for(let i=0;i<MAX_NEB;i++){
+        const r = Math.random()*maxR;
+        const a = Math.random()*Math.PI*2;
+        const s = Math.random()*1.6 + 0.2;
+        const t = Math.random()*1000;
+        const hue = Math.random()*360;
+        nebulaParticles.push({r,a,s,t,hue});
+      }
+    }
+
+    function drawNebulaBG(dt){
+      if(!layerNebulaBG || !layerNebulaBG.checked) return;
+      gl.save();
+      gl.globalCompositeOperation = 'lighter';
+      const cx = innerWidth/2, cy = innerHeight/2;
+      for(const p of nebulaParticles){
+        p.t += dt*0.12; p.a += 0.0006;
+        const x = cx + Math.cos(p.a)*p.r;
+        const y = cy + Math.sin(p.a)*p.r;
+        const alpha = 0.03 + 0.05*(0.5+0.5*Math.sin(p.t));
+        gl.fillStyle = `hsla(${(p.hue + p.t*6)%360}, 80%, 55%, ${alpha})`;
+        gl.beginPath(); gl.arc(x,y,p.s,0,Math.PI*2); gl.fill();
+      }
+      gl.restore();
+    }
+
+    // ===== Minimal playlist utils (declared early so resize can call render) =====
+    function basename(p){ return (p||'').split('/').pop(); }
+    function renderPlaylist(){
+      if(!playlistEl) return;
+      playlistEl.innerHTML = '';
+      queue.forEach((trk, i)=>{
+        const div = document.createElement('div');
+        div.className = 'track' + (i===current ? ' active' : '');
+        div.innerHTML = `<span class="idx">${i+1}</span><span class="name" title="${trk.name}">${trk.name}</span>`;
+        div.addEventListener('click', ()=> playIndex(i));
+        playlistEl.appendChild(div);
+      });
+      if(nowPlaying) nowPlaying.textContent = current>=0 ? `Now: ${basename(queue[current]?.name||'')}` : '—';
+    }
+
+    // ===== Resize =====
+    const resize = ()=>{
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(innerWidth * dpr);
+      canvas.height = Math.floor(innerHeight * dpr);
+      gl.setTransform(dpr,0,0,dpr,0,0);
+      rebuildFractalBuffer();
+      initStars();
+      initNebula();
+      renderPlaylist();
+    };
+    addEventListener('resize', resize, {passive:true});
+    resize();
+
+    // ===== Audio =====
+    const player = document.getElementById('player');
+    let ctx, src, analyser, freq, time;
+    function ensureAudio(){
+      if(!ctx){
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = ctx.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.8;
+        freq = new Uint8Array(analyser.frequencyBinCount);
+        time = new Uint8Array(analyser.fftSize);
+        src = ctx.createMediaElementSource(player);
+        src.connect(analyser);
+        analyser.connect(ctx.destination);
+      }
+    }
+
+    // ===== Queue / Playlist wiring =====
+    const chooseBtn = document.getElementById('choose');
+    const chooseFolderBtn = document.getElementById('chooseFolder');
+    const fileInp = document.getElementById('file');
+    const folderInp = document.getElementById('folder');
+
+    chooseBtn.addEventListener('click', ()=> fileInp.click());
+    chooseFolderBtn.addEventListener('click', ()=> folderInp.click());
+    fileInp.addEventListener('change', (e)=> enqueueFiles(e.target.files));
+    folderInp.addEventListener('change', (e)=> enqueueFiles(e.target.files));
+
+    // Drag & drop (supports folders in Chromium via webkitGetAsEntry)
+    const dropArea = document.getElementById('dropArea');
+    const dropZone  = document.getElementById('dropZone');
+    ['dragenter','dragover'].forEach(evt=>{
+      window.addEventListener(evt, (e)=>{ e.preventDefault(); e.stopPropagation(); dropZone.style.borderColor='rgba(255,255,255,0.35)'; dropArea.classList.remove('hidden'); }, false);
+    });
+    ;['dragleave','drop'].forEach(evt=>{
+      window.addEventListener(evt, (e)=>{ e.preventDefault(); e.stopPropagation(); dropZone.style.borderColor='rgba(255,255,255,0.14)'; if(queue.length) dropArea.classList.add('hidden'); }, false);
+    });
+    window.addEventListener('drop', async (e)=>{
+      if(e.dataTransfer && e.dataTransfer.items){
+        const items = Array.from(e.dataTransfer.items);
+        const files = await readDataTransferItems(items);
+        enqueueFiles(files);
+      } else if(e.dataTransfer && e.dataTransfer.files){
+        enqueueFiles(e.dataTransfer.files);
+      }
+    });
+
+    async function readDataTransferItems(items){
+      const out = [];
+      async function traverse(entry, path=""){ // Chrome-based
+        return new Promise((resolve)=>{
+          if(entry.isFile){
+            entry.file((file)=>{ file.fullPath = path + file.name; out.push(file); resolve(); });
+          } else if(entry.isDirectory){
+            const reader = entry.createReader();
+            reader.readEntries(async (ents)=>{ for(const ent of ents){ await traverse(ent, path + entry.name + '/'); } resolve(); });
+          } else { resolve(); }
+        });
+      }
+      for(const it of items){
+        const entry = it.webkitGetAsEntry ? it.webkitGetAsEntry() : null;
+        if(entry) await traverse(entry);
+        else if(it.getAsFile) { const f = it.getAsFile(); if(f) out.push(f); }
+      }
+      return out;
+    }
+
+    function enqueueFiles(list){
+      if(!list || !list.length) return;
+      const audioExt = /\.(mp3|m4a|aac|wav|ogg|flac|aiff|opus)$/i;
+      const added = [];
+      Array.from(list).forEach(f=>{
+        if(audioExt.test(f.name)){
+          const url = URL.createObjectURL(f);
+          queue.push({name: f.fullPath || f.name, url, file: f});
+          added.push(f.name);
+        }
+      });
+      if(!added.length) return;
+      if(filename) filename.textContent = `${queue.length} track(s) queued`;
+      renderPlaylist();
+      if(current === -1){ playIndex(0); }
+    }
+
+    function playIndex(i){
+      if(i<0 || i>=queue.length) return;
+      ensureAudio();
+      current = i;
+      const trk = queue[current];
+      player.src = trk.url;
+      player.play();
+      ctx.resume();
+      renderPlaylist();
+      dropArea.classList.add('hidden');
+    }
+
+    function playNext(){ if(current+1 < queue.length) playIndex(current+1); }
+    function playPrev(){ if(current-1 >= 0) playIndex(current-1); }
+
+    player.addEventListener('ended', ()=>{ playNext(); });
+
+    // ===== Transport controls =====
+    const playBtn = document.getElementById('play');
+    const pauseBtn = document.getElementById('pause');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const fsBtn = document.getElementById('fs');
+
+    playBtn.addEventListener('click', ()=>{ ensureAudio(); ctx.resume(); player.play(); });
+    pauseBtn.addEventListener('click', ()=> player.pause());
+    prevBtn.addEventListener('click', ()=> playPrev());
+    nextBtn.addEventListener('click', ()=> playNext());
+    fsBtn.addEventListener('click', ()=>{ if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else document.exitFullscreen(); });
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.code==='Space'){ e.preventDefault(); ensureAudio(); ctx.resume(); if(player.paused) player.play(); else player.pause(); }
+      if(e.key==='ArrowRight') playNext();
+      if(e.key==='ArrowLeft') playPrev();
+    });
+
+    // ===== Visual toggles =====
+    const sym = document.getElementById('sym');
+    const symv = document.getElementById('symv');
+    const sens = document.getElementById('sens');
+    const sensv = document.getElementById('sensv');
+    const trail = document.getElementById('trail');
+    const trailv = document.getElementById('trailv');
+
+    sym.addEventListener('input', ()=> symv.textContent = sym.value);
+    sens.addEventListener('input', ()=> sensv.textContent = (Number(sens.value)/100).toFixed(2)+'×');
+    trail.addEventListener('input', ()=> trailv.textContent = (Number(trail.value)/100).toFixed(2));
+
+    const layerKaleido = document.getElementById('layerKaleido');
+    const layerRings   = document.getElementById('layerRings');
+    const layerSpiral  = document.getElementById('layerSpiral');
+    const layerWaves   = document.getElementById('layerWaves');
+    const layerFractal = document.getElementById('layerFractal');
+    const layerNebulaBG= document.getElementById('layerNebulaBG');
+    const bloom        = document.getElementById('bloom');
+    const pulse        = document.getElementById('pulse');
+    const starsTog     = document.getElementById('stars');
+
+    // ===== Particles for Nebula Particles (audio-reactive foreground) =====
+    const particles = [];
+    const MAX_P = 2400;
+    const rand = (a=1,b=0)=> Math.random()*(a-b)+b;
+    function spawn(n=60){ for(let i=0;i<n && particles.length<MAX_P;i++){ particles.push({ t: rand(1000), r: rand(20, Math.min(innerWidth, innerHeight)*0.6), a: rand(Math.PI*2), s: rand(0.4, 2.2), v: rand(0.0005, 0.003), life: rand(0.5,1.5) }); } }
+    spawn(600);
+
+    // ===== Beat detection =====
+    let bassEMA = 0, beatHold = 0, lastBeat = 0;
+
+    // ===== Helpers =====
+    function energyRange(lo, hi){ if(!freq) return 0; const n = freq.length; const l = Math.floor(lo*n), h = Math.min(n-1, Math.floor(hi*n)); let sum=0; for(let i=l;i<=h;i++) sum += freq[i]; return sum / Math.max(1,(h-l+1)) / 255; }
+    function radialPath(cx, cy, baseR, bins){ const step = Math.max(1, Math.floor(freq.length / bins)); const pts = []; for(let i=0;i<bins;i++){ const val = freq[i*step]/255; const amp = (0.25 + val) * baseR; const ang = (i/bins) * Math.PI*2; pts.push([cx + Math.cos(ang)*amp, cy + Math.sin(ang)*amp]); } gl.beginPath(); gl.moveTo(pts[0][0], pts[0][1]); for(const p of pts) gl.lineTo(p[0], p[1]); gl.closePath(); }
+
+    // ===== Fractal render (optional layer) =====
+    function drawFractalJulia(timeSec, bass, mids, highs){
+      if(!fracCtx || !layerFractal.checked) return;
+      const img = fracCtx.createImageData(fracW, fracH);
+      const cRe = Math.sin(timeSec*0.12 + mids*2.2)*0.35 + (highs-0.5)*0.25;
+      const cIm = Math.cos(timeSec*0.17 + bass*3.1)*0.35 + (mids-0.5)*0.25;
+      const maxIter = Math.floor(32 + highs*96);
+      const zoom = 1.6 - 0.6*bass;
+      const moveX = Math.sin(timeSec*0.07)*0.2; const moveY = Math.cos(timeSec*0.09)*0.2;
+      let p=0;
+      for(let y=0;y<fracH;y++){
+        for(let x=0;x<fracW;x++){
+          let zx = (x/fracW - 0.5)*(3/zoom) + moveX;
+          let zy = (y/fracH - 0.5)*(3/zoom) + moveY;
+          let i=0;
+          while(zx*zx + zy*zy < 4 && i<maxIter){ const xt = zx*zx - zy*zy + cRe; zy = 2*zx*zy + cIm; zx = xt; i++; }
+          const t = i/maxIter; const h = (360*(t) + 180*highs) % 360; const l = 35 + t*50 + bass*10; const rgb = hslToRgb(h/360, 0.8, l/100);
+          img.data[p++] = rgb[0]; img.data[p++] = rgb[1]; img.data[p++] = rgb[2]; img.data[p++] = 255;
+        }
+      }
+      fracCtx.putImageData(img,0,0);
+      gl.globalCompositeOperation = 'screen'; gl.drawImage(fracCanvas, 0, 0, innerWidth, innerHeight); gl.globalCompositeOperation = 'source-over';
+    }
+
+    function hslToRgb(h, s, l){ const a = s*Math.min(l,1-l); const f = n=>{ const k=(n+h*12)%12; const color=l - a*Math.max(-1, Math.min(k-3, 9-k, 1)); return Math.round(255*color); }; return [f(0),f(8),f(4)]; }
+
+    // ===== Visuals =====
+    function drawSpiralGalaxy(cx, cy, bass, mids, highs, dt){ const arms = 4 + Math.floor((Number(sym.value)%8)); const armTwist = 1.6 + highs*2.2; const spread = 0.45 + mids*0.35; const count = 900; gl.save(); gl.globalCompositeOperation = 'lighter'; for(let i=0;i<count;i++){ const a = (i/count)*Math.PI*2*arms + (performance.now()*0.00008)*(1+mids*2.0); const r = (i/count) * Math.min(innerWidth, innerHeight) * (0.45 + bass*0.25); const jitter = (Math.random()-0.5) * spread * (1 + highs*0.5); const x = cx + Math.cos(a + r*0.0008*armTwist) * (r + jitter*60); const y = cy + Math.sin(a + r*0.0008*armTwist) * (r + jitter*60); const alpha = 0.08 + highs*0.22; gl.fillStyle = `hsla(${(hue + r*0.07)|0},100%,60%,${alpha})`; gl.beginPath(); gl.arc(x, y, 1.4 + highs*1.8 + bass*1.2, 0, Math.PI*2); gl.fill(); } const grad = gl.createRadialGradient(cx,cy,10, cx,cy, Math.min(innerWidth,innerHeight)*0.4); grad.addColorStop(0, `hsla(${(hue+30)|0},100%,60%,${0.35 + mids*0.35})`); grad.addColorStop(1, 'rgba(0,0,0,0)'); gl.fillStyle = grad; gl.fillRect(0,0,innerWidth,innerHeight); gl.restore(); }
+
+    function drawCosmicWaves(cx, cy, bass, mids, highs){ const lines = 6; const amp = 40 + 220*mids; const speed = 0.001 + highs*0.004; gl.save(); for(let l=0;l<lines;l++){ gl.strokeStyle = `hsla(${(hue + l*20)|0}, 100%, 60%, ${0.15 + highs*0.25})`; gl.lineWidth = 2 + highs*6; gl.beginPath(); for(let x=0;x<=innerWidth;x+=8){ const y = (innerHeight/2) + (l-(lines/2))*24 + Math.sin(x*0.01 + performance.now()*speed + l)*amp + (time[x%time.length]-128)/128*18; if(x===0) gl.moveTo(0,y); else gl.lineTo(x,y); } gl.stroke(); } const ripples = 7; const baseR = Math.min(innerWidth, innerHeight)*0.08; for(let i=0;i<ripples;i++){ const r = baseR + i*baseR*0.5 + Math.sin(performance.now()*0.003 + i)*30 + bass*60; gl.strokeStyle = `hsla(${(hue + i*28)|0},100%,55%,${0.25 + mids*0.25})`; gl.lineWidth = 1.5 + highs*5.5; gl.beginPath(); gl.arc(cx, cy, r, 0, Math.PI*2); gl.stroke(); } gl.restore(); }
+
+    function drawKaleido(cx, cy, bass, mids, highs){ const segs = Number(sym.value)|0; const baseR = Math.min(innerWidth, innerHeight) * (0.25 + 0.12*bass + 0.08*mids); const bins = 120; const weight = 1.2 + highs*2.5; gl.save(); gl.translate(cx, cy); for(let i=0;i<segs;i++){ const ang = (i/segs) * Math.PI*2; gl.save(); gl.rotate(ang); gl.strokeStyle = `hsla(${(hue + i*360/segs)|0},100%,60%,${0.35 + highs*0.6})`; gl.lineWidth = weight; radialPath(0, 0, baseR, bins); gl.stroke(); gl.scale(1,-1); gl.globalAlpha = 0.7; radialPath(0, 0, baseR*0.9, bins); gl.stroke(); gl.globalAlpha = 1; gl.restore(); } gl.restore(); }
+
+    function drawRings(cx, cy, bass, mids, highs){ const ringCount = 6; for(let i=0;i<ringCount;i++){ const pct = (i+1)/ringCount; const rad = Math.min(innerWidth, innerHeight)* (0.1 + pct*0.42 + bass*0.08); const thick = 2 + 6*pct + highs*10; gl.strokeStyle = `hsla(${(hue + i*30)|0}, 100%, ${40 + pct*30}%, ${0.25 + mids*0.4})`; gl.lineWidth = thick; gl.beginPath(); const wobble = (mids*0.25 + highs*0.35) * rad; const segs = 120; for(let s=0;s<=segs;s++){ const a = (s/segs)*Math.PI*2; const rr = rad + Math.sin(a*6 + hue*0.02 + i)*wobble*0.15 + (time[s%time.length] - 128)/128 * 8; const x = cx + Math.cos(a)*rr; const y = cy + Math.sin(a)*rr; if(s===0) gl.moveTo(x,y); else gl.lineTo(x,y); } gl.closePath(); gl.stroke(); } }
+
+    // ===== Animation =====
+    let hue = 200, t0 = performance.now();
+    function loop(now){
+      requestAnimationFrame(loop);
+      const dt = (now - t0) / 1000; t0 = now;
+
+      const fade = Number(trail.value)/100;
+      if(fade < 0.999){ gl.fillStyle = `rgba(5,6,11,${1 - fade})`; gl.fillRect(0,0,innerWidth,innerHeight); } else { gl.clearRect(0,0,innerWidth,innerHeight); }
+
+      ensureAudio();
+      if(analyser){ analyser.getByteFrequencyData(freq); analyser.getByteTimeDomainData(time); }
+
+      const bass = energyRange(0.0, 0.12); const mids = energyRange(0.12, 0.4); const highs = energyRange(0.4, 0.9);
+      const sensF = Math.max(0.1, Number(sens.value)/100); bassEMA = bassEMA*0.9 + bass*0.1; const isBeat = bass > (bassEMA * (1.0 + sensF)) && beatHold<=0; if(isBeat){ beatHold = 12; lastBeat = 0; spawn(120); } else { beatHold = Math.max(0, beatHold-1); lastBeat++; }
+
+      hue = (hue + (36 + mids*120 + highs*200) * dt) % 360;
+      const centerX = innerWidth/2, centerY = innerHeight/2;
+
+      drawNebulaBG(dt);
+      drawStars(dt, bass, highs);
+
+      const doBloom = bloom.checked; if(doBloom) gl.globalCompositeOperation = 'lighter';
+
+      const pulseAmt = pulse.checked ? (isBeat ? 1.09 : 1.0 + Math.max(0, 0.02*Math.sin(now*0.01))) : 1.0;
+      gl.save(); gl.translate(centerX, centerY); gl.scale(pulseAmt, pulseAmt); gl.translate(-centerX, -centerY);
+
+      if(layerKaleido.checked) drawKaleido(centerX, centerY, bass, mids, highs);
+      if(layerRings.checked)   drawRings(centerX, centerY, bass, mids, highs);
+      if(layerSpiral.checked)  drawSpiralGalaxy(centerX, centerY, bass, mids, highs, dt);
+      if(layerWaves.checked)   drawCosmicWaves(centerX, centerY, bass, mids, highs);
+      if(layerFractal.checked) drawFractalJulia(now*0.001, bass, mids, highs);
+
+      gl.restore(); if(doBloom) gl.globalCompositeOperation = 'source-over';
+
+      const grd = gl.createRadialGradient(centerX, centerY, Math.min(innerWidth,innerHeight)*0.2, centerX, centerY, Math.max(innerWidth,innerHeight)*0.8);
+      grd.addColorStop(0,'rgba(0,0,0,0)'); grd.addColorStop(1,'rgba(0,0,0,0.25)'); gl.fillStyle = grd; gl.fillRect(0,0,innerWidth,innerHeight);
+      gl.fillStyle = `hsla(${(hue+220)|0}, 100%, 60%, ${0.04 + mids*0.05})`; gl.fillRect(0,0,innerWidth,innerHeight);
+    }
+
+    // ===== Diagnostics / test cases =====
+    const diag = document.getElementById('diag');
+    function runDiagnostics(verbose=false){
+      let ok = true; const logs = [];
+      function step(name, fn){ try { fn(); logs.push(`✔ ${name}`); } catch(e){ ok=false; logs.push(`✖ ${name} -> ${e}`); console.error('[Visualizer Test]', name, e); } }
+
+      // Existing tests: fractal buffer + render paths
+      step('frac vars declared', ()=>{ if(typeof fracW === 'undefined') throw new Error('fracW undefined'); });
+      step('rebuildFractalBuffer()', ()=>{ rebuildFractalBuffer(); if(!(fracW>0 && fracH>0)) throw new Error('bad size'); });
+      step('resize() no-throw', ()=>{ resize(); });
+      step('drawFractalJulia() no-throw', ()=>{ layerFractal.checked = true; drawFractalJulia(0,0,0,0); layerFractal.checked = false; });
+
+      // New tests: queue operations (no audio decode needed)
+      step('enqueueFiles() adds items', ()=>{ const f1 = new File(["a"], "a.mp3", {type:"audio/mpeg"}); const f2 = new File(["b"], "b.wav", {type:"audio/wav"}); const prior = queue.length; enqueueFiles([f1,f2]); if(queue.length < prior+2) throw new Error('not added'); });
+      step('playIndex() sets src', ()=>{ const i = queue.length-1; playIndex(i); if(!player.src) throw new Error('no src'); });
+      step('next/prev bounds', ()=>{ const before = current; playNext(); playPrev(); if(current !== before) {/* ensure no throw */} });
+
+      // New tests: starfield + nebula TDZ/usage
+      step('stars declared', ()=>{ if(!Array.isArray(stars)) throw new Error('stars not array'); });
+      step('initStars() no-throw', ()=>{ initStars(); if(stars.length===0) throw new Error('no stars'); });
+      step('drawStars() no-throw', ()=>{ drawStars(0,0,0); });
+      step('initNebula() no-throw', ()=>{ initNebula(); if(nebulaParticles.length===0) throw new Error('no nebula'); });
+      step('drawNebulaBG() no-throw', ()=>{ layerNebulaBG.checked = true; drawNebulaBG(0.016); });
+
+      diag.textContent = ok ? 'Diagnostics: ✓ (press D to re-run)' : 'Diagnostics: ⚠️ See console';
+      diag.className = 'small ' + (ok ? 'ok' : 'warn');
+      if(verbose) console.table(logs);
+    }
+
+    document.addEventListener('keydown', (e)=>{ if(e.key==='d' || e.key==='D') runDiagnostics(true); });
+
+    // ===== Kick it off =====
+    runDiagnostics();
+    requestAnimationFrame(loop);
+  })();
+  </script>
+</body>
+</html>

@@ -195,44 +195,27 @@ class DragSpiral extends ClickEffect {
                 cube.rotation.y += beatIntensity * 0.2;
                 cube.rotation.z += beatIntensity * 0.15;
                 
-                // Color shift on beat
-                if (this.randomColor) {
-                    const beatHue = (Date.now() * 0.002 + index * 0.1) % 1;
-                    const beatColor = new THREE.Color().setHSL(beatHue, 1, 0.7);
-                    cube.material.color.lerp(beatColor, 0.4);
-                }
+                // No color changes on beat - keep original colors
             }
             
             // Volume response - continuous scaling
             const volumeScale = 1 + (volume * 0.3);
             cube.scale.lerp(new THREE.Vector3(volumeScale, volumeScale, volumeScale), 0.08);
             
-            // Bass response - spiral expansion and red color
+            // Bass response - spiral expansion only
             if (bass > 0.2) {
                 // Expand spiral radius based on bass
                 const bassExpansion = bass * 0.5;
                 cube.position.x *= (1 + bassExpansion * 0.1);
                 cube.position.y *= (1 + bassExpansion * 0.1);
-                
-                // Bass color (red spectrum)
-                if (this.randomColor) {
-                    const bassColor = new THREE.Color().setHSL(0.0, 1, 0.3 + bass * 0.4);
-                    cube.material.color.lerp(bassColor, 0.1);
-                }
             }
             
-            // Treble response - fast rotation and blue color
+            // Treble response - fast rotation only
             if (treble > 0.2) {
                 // Enhanced spiral rotation
                 cube.rotation.x += treble * 0.1;
                 cube.rotation.y += treble * 0.1;
                 cube.rotation.z += treble * 0.08;
-                
-                // Treble color (blue spectrum)
-                if (this.randomColor) {
-                    const trebleColor = new THREE.Color().setHSL(0.6, 1, 0.3 + treble * 0.4);
-                    cube.material.color.lerp(trebleColor, 0.1);
-                }
             }
             
             // Overall volume affects opacity

@@ -72,6 +72,140 @@
   </div>
 </div>
 
+<!-- Kaleidoscope Section -->
+<div class="control-section" style="margin-top: 30px;">
+  <h4 style="color: #71b280; margin-bottom: 20px;">
+    🌀 Kaleidoscope 
+    <span style="font-size: 12px; background: linear-gradient(45deg, #9c27b0, #e91e63, #ff4081); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-left: 10px;">🎵 Audio-Responsive</span>
+  </h4>
+  
+  <!-- Audio Response Info -->
+  <div style="background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(233, 30, 99, 0.1)); border: 1px solid rgba(156, 39, 176, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 14px;">
+    <div style="background: linear-gradient(45deg, #9c27b0, #e91e63); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold; margin-bottom: 8px;">🎵 Audio Features:</div>
+    <div style="color: rgba(255, 255, 255, 0.8); line-height: 1.4;">
+      • <strong>Beat Detection:</strong> Pattern intensity pulses on beats<br>
+      • <strong>Bass Response:</strong> Red color shifts + radius expansion<br>
+      • <strong>Treble Response:</strong> Blue color shifts + fast rotation<br>
+      • <strong>Frequency Mapping:</strong> Real-time audio spectrum visualization
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="control-label">
+      <span>Symmetry Segments</span>
+      <span class="control-value" id="kaleidoscopeSegmentsValue">--</span>
+    </div>
+    <input type="range" id="kaleidoscopeSegments" min="4" max="64" step="1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Base Radius</span>
+      <span class="control-value" id="kaleidoscopeRadiusValue">--</span>
+    </div>
+    <input type="range" id="kaleidoscopeRadius" min="0.5" max="5.0" step="0.1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Line Width</span>
+      <span class="control-value" id="kaleidoscopeLineWidthValue">--</span>
+    </div>
+    <input type="range" id="kaleidoscopeLineWidth" min="0.5" max="10.0" step="0.1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Rotation Speed</span>
+      <span class="control-value" id="kaleidoscopeRotationSpeedValue">--</span>
+    </div>
+    <input type="range" id="kaleidoscopeRotationSpeed" min="0" max="0.01" step="0.0001">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Mirror Alpha</span>
+      <span class="control-value" id="kaleidoscopeMirrorAlphaValue">--</span>
+    </div>
+    <input type="range" id="kaleidoscopeMirrorAlpha" min="0" max="1" step="0.01">
+  </div>
+</div>
+
+<!-- Supershape Section -->
+<div class="control-section" style="margin-top: 30px;">
+  <h4 style="color: #71b280; margin-bottom: 20px;">
+    🌟 Supershape 
+    <span style="font-size: 12px; background: linear-gradient(45deg, #9c27b0, #e91e63, #ff4081); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-left: 10px;">🎵 Audio-Responsive</span>
+  </h4>
+  
+  <!-- Audio Response Info -->
+  <div style="background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(233, 30, 99, 0.1)); border: 1px solid rgba(156, 39, 176, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 14px;">
+    <div style="background: linear-gradient(45deg, #9c27b0, #e91e63); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold; margin-bottom: 8px;">🎵 Audio Features:</div>
+    <div style="color: rgba(255, 255, 255, 0.8); line-height: 1.4;">
+      • <strong>Beat Detection:</strong> Shape morphs and pulses on beats<br>
+      • <strong>Bass Response:</strong> Radius expansion + color shifts<br>
+      • <strong>Treble Response:</strong> Fast rotation + brightness changes<br>
+      • <strong>Frequency Mapping:</strong> Real-time superformula parameter modulation
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="control-label">
+      <span>Symmetry Segments</span>
+      <span class="control-value" id="supershapeSegmentsValue">--</span>
+    </div>
+    <input type="range" id="supershapeSegments" min="4" max="64" step="1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Base Radius</span>
+      <span class="control-value" id="supershapeRadiusValue">--</span>
+    </div>
+    <input type="range" id="supershapeRadius" min="0.5" max="5.0" step="0.1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Symmetry (m)</span>
+      <span class="control-value" id="supershapeMValue">--</span>
+    </div>
+    <input type="range" id="supershapeM" min="1" max="20" step="1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Shape Parameter 1 (n1)</span>
+      <span class="control-value" id="supershapeN1Value">--</span>
+    </div>
+    <input type="range" id="supershapeN1" min="0.1" max="2.0" step="0.1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Shape Parameter 2 (n2)</span>
+      <span class="control-value" id="supershapeN2Value">--</span>
+    </div>
+    <input type="range" id="supershapeN2" min="0.1" max="2.0" step="0.1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Shape Parameter 3 (n3)</span>
+      <span class="control-value" id="supershapeN3Value">--</span>
+    </div>
+    <input type="range" id="supershapeN3" min="0.1" max="2.0" step="0.1">
+  </div>
+
+  <div class="control-group">
+    <div class="control-label">
+      <span>Rotation Speed</span>
+      <span class="control-value" id="supershapeRotationSpeedValue">--</span>
+    </div>
+    <input type="range" id="supershapeRotationSpeed" min="0" max="0.01" step="0.0001">
+  </div>
+</div>
+
 <!-- Camera Orbit Section -->
 <div class="control-section" style="margin-top: 30px;">
   <h4 style="color: #71b280; margin-bottom: 20px;">

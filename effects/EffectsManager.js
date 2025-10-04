@@ -17,6 +17,8 @@ export default class EffectsManager {
     static IDLE_EFFECTS = [
         EFFECTS_DEFAULTS.RANDOM_CUBES,
         EFFECTS_DEFAULTS.CAMERA_ORBIT,
+        EFFECTS_DEFAULTS.KALEIDOSCOPE,
+        EFFECTS_DEFAULTS.SUPERSHAPE,
         EFFECTS_DEFAULTS.SIMULATED_DRAG
     ];
 
@@ -55,6 +57,9 @@ export default class EffectsManager {
             // Create instance with spread parameters
             const effectInstance = new EffectClass(...paramValues);
             
+            // Set the name property for EffectsManager lookup
+            effectInstance.name = name;
+            
             console.log(`✅ Initialized click effect: ${name}`);
             console.log(`   Config params:`, params);
             console.log(`   cubeSize from config:`, params.cubeSize);
@@ -70,6 +75,9 @@ export default class EffectsManager {
                     
                     // Create instance with spread parameters
                     const effectInstance = new EffectClass(...paramValues);
+                    
+                    // Set the name property for EffectsManager lookup
+                    effectInstance.name = name;
                     
                     // If this is SimulatedDrag, give it a reference to this manager
                     if (name === 'SimulatedDrag') {

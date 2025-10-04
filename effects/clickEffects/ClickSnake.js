@@ -161,27 +161,15 @@ class ClickSnake extends ClickEffect {
             const volumeScale = 1 + (volume * 0.2);
             cube.scale.lerp(new THREE.Vector3(volumeScale, volumeScale, volumeScale), 0.05);
             
-            // Bass response - vertical movement and color
+            // Bass response - vertical movement only
             if (bass > 0.3) {
                 cube.position.y += Math.sin(Date.now() * 0.01 + index * 0.1) * bass * 0.1;
-                
-                // Bass color (red spectrum)
-                if (this.randomColor) {
-                    const bassColor = new THREE.Color().setHSL(0.0, 1, 0.3 + bass * 0.4);
-                    cube.material.color.lerp(bassColor, 0.1);
-                }
             }
             
-            // Treble response - fast rotation and blue color
+            // Treble response - fast rotation only
             if (treble > 0.3) {
                 cube.rotation.x += treble * 0.05;
                 cube.rotation.z += treble * 0.03;
-                
-                // Treble color (blue spectrum)
-                if (this.randomColor) {
-                    const trebleColor = new THREE.Color().setHSL(0.6, 1, 0.3 + treble * 0.4);
-                    cube.material.color.lerp(trebleColor, 0.1);
-                }
             }
             
             // Overall volume affects opacity

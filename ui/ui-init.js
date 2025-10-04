@@ -80,6 +80,30 @@ export function initializeUIValues() {
     
     setCheckboxValue('cameraOrbitActive', false);
 
+    // Kaleidoscope defaults
+    const kaleidoscopeDefaults = EFFECTS_DEFAULTS.KALEIDOSCOPE;
+    
+    setupSmartSlider('kaleidoscopeSegments', kaleidoscopeDefaults.segments, { min: 4, max: 64, step: 1 });
+    setupSmartSlider('kaleidoscopeRadius', kaleidoscopeDefaults.baseRadius, { min: 0.5, max: 5.0, step: 0.1 });
+    setupSmartSlider('kaleidoscopeLineWidth', kaleidoscopeDefaults.lineWidth, { min: 0.5, max: 10.0, step: 0.1 });
+    setupSmartSlider('kaleidoscopeRotationSpeed', kaleidoscopeDefaults.rotationSpeed, { min: 0, max: 0.01, step: 0.0001 });
+    setupSmartSlider('kaleidoscopeMirrorAlpha', kaleidoscopeDefaults.mirrorAlpha, { min: 0, max: 1, step: 0.01 });
+    
+    setCheckboxValue('kaleidoscopeActive', false);
+    
+    // Supershape defaults
+    const supershapeDefaults = EFFECTS_DEFAULTS.SUPERSHAPE;
+    
+    setupSmartSlider('supershapeSegments', supershapeDefaults.segments, { min: 4, max: 64, step: 1 });
+    setupSmartSlider('supershapeRadius', supershapeDefaults.baseRadius, { min: 0.5, max: 5.0, step: 0.1 });
+    setupSmartSlider('supershapeM', supershapeDefaults.m, { min: 1, max: 20, step: 1 });
+    setupSmartSlider('supershapeN1', supershapeDefaults.n1, { min: 0.1, max: 2.0, step: 0.1 });
+    setupSmartSlider('supershapeN2', supershapeDefaults.n2, { min: 0.1, max: 2.0, step: 0.1 });
+    setupSmartSlider('supershapeN3', supershapeDefaults.n3, { min: 0.1, max: 2.0, step: 0.1 });
+    setupSmartSlider('supershapeRotationSpeed', supershapeDefaults.rotationSpeed, { min: 0, max: 0.01, step: 0.0001 });
+    
+    setCheckboxValue('supershapeActive', false);
+
     // Global defaults
     const globalDefaults = EFFECTS_DEFAULTS.GLOBAL;
     setupSmartSlider('clickDelay', globalDefaults.clickDelay, { min: 0, max: 200, step: 1 });
@@ -106,6 +130,51 @@ export function initializeUIValues() {
     
     // Hide gradient controls if solid color is selected by default
     toggleGradientControlsForSolids(UI_DEFAULTS.defaultBackground);
+}
+
+/**
+ * Sync UI checkboxes with actual effect states
+ */
+export function syncUIWithEffectStates() {
+    // This will be called after effects are activated
+    console.log('🔄 Syncing UI with effect states...');
+    
+    // Get the effects manager from the global scope
+    const effectsManager = window.effectsManager;
+    if (!effectsManager) {
+        console.log('⚠️ EffectsManager not available for UI sync');
+        return;
+    }
+    
+    // Sync all effects
+    const allEffects = [...effectsManager.onClickEffects, ...effectsManager.idleEffects];
+    
+    allEffects.forEach(effect => {
+        const checkboxId = getCheckboxIdForEffect(effect.name);
+        if (checkboxId) {
+            const checkbox = document.getElementById(checkboxId);
+            if (checkbox) {
+                checkbox.checked = effect.active;
+                console.log(`🔄 Synced ${effect.name}: ${effect.active}`);
+            }
+        }
+    });
+}
+
+/**
+ * Get the checkbox ID for an effect name
+ */
+function getCheckboxIdForEffect(effectName) {
+    const mapping = {
+        'ClickSnake': 'clickSnakeActive',
+        'DragSpiral': 'dragSpiralActive',
+        'RandomCubes': 'randomCubesActive',
+        'CameraOrbit': 'cameraOrbitActive',
+        'Kaleidoscope': 'kaleidoscopeActive',
+        'Supershape': 'supershapeActive',
+        'SimulatedDrag': 'simulatedDragActive'
+    };
+    return mapping[effectName];
 }
 
 function populateZModes() {

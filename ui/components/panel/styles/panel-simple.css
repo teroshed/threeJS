@@ -1,0 +1,113 @@
+/* 🎛️ SIMPLE MAIN PANEL STYLES (For quick toggles) */
+
+/* Panel Body - Vertical Split */
+.panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.effect-category {
+    padding: 20px;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.effect-category:last-child {
+    border-bottom: none;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.category-header h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.95);
+    letter-spacing: 0.5px;
+}
+
+.cog-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cog-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: rotate(90deg);
+}
+
+.effect-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.effect-toggle:last-child {
+    border-bottom: none;
+}
+
+.effect-toggle input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #00ff64;
+}
+
+.effect-toggle label {
+    cursor: pointer;
+    color: rgba(255,255,255,0.75);
+    font-size: 14px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.effect-toggle label:hover {
+    color: rgba(255,255,255,0.95);
+}
+
+.effect-icon {
+    font-size: 18px;
+}
+
+.effect-name {
+    font-weight: 500;
+}
+
+.effect-toggle input[type="checkbox"]:checked + label {
+    color: #00ff64;
+    font-weight: 600;
+}
+
+.effect-toggle input[type="checkbox"]:checked + label .effect-name {
+    font-weight: 700;
+}
+
+/* Panel Footer */
+.panel-footer {
+    padding: 15px 20px;
+    border-top: 2px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.2);
+}
+

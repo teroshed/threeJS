@@ -45,6 +45,32 @@ export function setupCameraOrbitControls() {
     setupEffectActivation('cameraOrbitActive', 'CameraOrbit');
 }
 
+export function setupKaleidoscopeControls() {
+    // Range controls
+    setupEffectRangeControl('kaleidoscopeSegments', 'kaleidoscopeSegmentsValue', 'Kaleidoscope', 'segments', parseInt);
+    setupEffectRangeControl('kaleidoscopeRadius', 'kaleidoscopeRadiusValue', 'Kaleidoscope', 'baseRadius', parseFloat);
+    setupEffectRangeControl('kaleidoscopeLineWidth', 'kaleidoscopeLineWidthValue', 'Kaleidoscope', 'lineWidth', parseFloat);
+    setupEffectRangeControl('kaleidoscopeRotationSpeed', 'kaleidoscopeRotationSpeedValue', 'Kaleidoscope', 'rotationSpeed', parseFloat);
+    setupEffectRangeControl('kaleidoscopeMirrorAlpha', 'kaleidoscopeMirrorAlphaValue', 'Kaleidoscope', 'mirrorAlpha', parseFloat);
+    
+    // Activation
+    setupEffectActivation('kaleidoscopeActive', 'Kaleidoscope');
+}
+
+export function setupSupershapeControls() {
+    // Range controls
+    setupEffectRangeControl('supershapeSegments', 'supershapeSegmentsValue', 'Supershape', 'segments', parseInt);
+    setupEffectRangeControl('supershapeRadius', 'supershapeRadiusValue', 'Supershape', 'baseRadius', parseFloat);
+    setupEffectRangeControl('supershapeM', 'supershapeMValue', 'Supershape', 'm', parseInt);
+    setupEffectRangeControl('supershapeN1', 'supershapeN1Value', 'Supershape', 'n1', parseFloat);
+    setupEffectRangeControl('supershapeN2', 'supershapeN2Value', 'Supershape', 'n2', parseFloat);
+    setupEffectRangeControl('supershapeN3', 'supershapeN3Value', 'Supershape', 'n3', parseFloat);
+    setupEffectRangeControl('supershapeRotationSpeed', 'supershapeRotationSpeedValue', 'Supershape', 'rotationSpeed', parseFloat);
+    
+    // Activation
+    setupEffectActivation('supershapeActive', 'Supershape');
+}
+
 export function setupSimulatedDragControls() {
     // Range controls
     setupEffectRangeControl('simDragSpeed', 'simDragSpeedValue', 'SimulatedDrag', 'speed', parseFloat);
